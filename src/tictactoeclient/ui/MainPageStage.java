@@ -1,10 +1,11 @@
 
-package tic.tac.toe.client;
+package tictactoeclient.ui;
 
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import tictactoeclient.ui.fxml.MainPageBase;
 
 public class MainPageStage extends Application {
     

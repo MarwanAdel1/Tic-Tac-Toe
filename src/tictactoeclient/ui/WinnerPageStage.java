@@ -1,12 +1,13 @@
 
-package tic.tac.toe.client;
+package tictactoeclient.ui;
 
+import tictactoeclient.ui.fxml.WinnerBase;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Winner extends Application {
+public class WinnerPageStage extends Application {
     
     @Override
     public void start(Stage primaryStage) {

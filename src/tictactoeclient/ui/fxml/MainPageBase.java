@@ -1,4 +1,4 @@
-package tic.tac.toe.client;
+package tictactoeclient.ui.fxml;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
