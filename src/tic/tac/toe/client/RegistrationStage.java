@@ -6,27 +6,29 @@
 package tic.tac.toe.client;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
 import javafx.stage.Stage;
 
 /**
  *
- * @author Marwan Adel
+ * @author elshamey
  */
-public class TicTacToeClient extends Application {
+public class RegistrationStage extends Application {
     
     @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-      
+    public void start(Stage primaryStage) {
        
         
-        Scene scene = new Scene(root);
+        Parent root = new FXMLRegistrationBase1();
         
-        stage.setScene(scene);
-        stage.show();
+        Scene scene = new Scene(root, 600, 500);
+        
+      
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     /**
