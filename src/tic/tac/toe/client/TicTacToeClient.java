@@ -20,13 +20,8 @@ public class TicTacToeClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-<<<<<<< HEAD
+
         Parent root = new FXMLDocumentBase();
-=======
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-      
-       
->>>>>>> origin/zeinab
         
         Scene scene = new Scene(root);
         

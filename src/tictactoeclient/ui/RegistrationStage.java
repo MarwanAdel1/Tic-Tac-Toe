@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tic.tac.toe.client;
+package tictactoeclient.ui;
 
 import javafx.application.Application;
 
@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import javafx.stage.Stage;
+import tictactoeclient.ui.fxml.FXMLRegistrationBase;
 
 /**
  *
@@ -22,7 +23,7 @@ public class RegistrationStage extends Application {
     public void start(Stage primaryStage) {
        
         
-        Parent root = new FXMLRegistrationBase1();
+        Parent root = new FXMLRegistrationBase();
         
         Scene scene = new Scene(root, 600, 500);
         

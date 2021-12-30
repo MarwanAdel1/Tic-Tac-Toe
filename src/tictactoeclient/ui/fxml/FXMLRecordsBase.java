@@ -1,4 +1,4 @@
-package tic.tac.toe.client;
+package tictactoeclient.ui.fxml;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 
-public  class FXMLRecordsBase2 extends BorderPane {
+public  class FXMLRecordsBase extends BorderPane {
 
     protected final Label title;
     protected final GridPane gridPane;
@@ -41,7 +41,7 @@ public  class FXMLRecordsBase2 extends BorderPane {
     protected final Button btnPlay;
     protected final Button btnBack;
 
-    public FXMLRecordsBase2() {
+    public FXMLRecordsBase() {
 
         title = new Label();
         gridPane = new GridPane();
