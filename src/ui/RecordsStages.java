@@ -3,29 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tic.tac.toe.client;
-
+package ui;
 
 import javafx.application.Application;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ui.fxml.RecordsFXML;
 
 /**
  *
- * @author Marwan Adel
+ * @author elshamey
  */
-public class TicTacToeClient extends Application {
+public class RecordsStages extends Application {
     
     @Override
-    public void start(Stage stage) throws Exception {
-
-        Parent root = new FXMLDocumentBase();
+    public void start(Stage primaryStage) {
         
-        Scene scene = new Scene(root);
         
-        stage.setScene(scene);
-        stage.show();
+       Parent root = new RecordsFXML();
+       
+        
+        Scene scene = new Scene(root, 600, 500);
+        
+        
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     /**
