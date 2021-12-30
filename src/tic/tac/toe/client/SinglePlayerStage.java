@@ -5,33 +5,30 @@
  */
 package tic.tac.toe.client;
 
-import tictactoeclient.ui.fxml.MainPageBase;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
 import javafx.stage.Stage;
 
 /**
  *
- * @author Marwan Adel
+ * @author elshamey
  */
-public class TicTacToeClient extends Application {
+public class SinglePlayerStage extends Application {
     
     @Override
-    public void start(Stage stage) throws Exception {
-<<<<<<< HEAD
-        Parent root = new FXMLDocumentBase();
-=======
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+    public void start(Stage primaryStage) {
       
-       
->>>>>>> origin/zeinab
+        Parent root = new FXMLSinglePlayerBase();
         
-        Scene scene = new Scene(root);
         
-        stage.setScene(scene);
-        stage.show();
+        Scene scene = new Scene(root, 600, 500);
+        
+        
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     /**
