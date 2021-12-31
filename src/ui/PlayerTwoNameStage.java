@@ -3,26 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tic.tac.toe.client;
+package ui;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
  *
  * @author Nour
  */
+import ui.fxml.PlayerTwoNameStageFXML;
 public class PlayerTwoNameStage extends Application {
     
     @Override
     public void start(Stage stage) {
-        Parent root = new PlayerTwoNameStageBase();
+        Parent root = new PlayerTwoNameStageFXML();
         Scene scene = new Scene(root, 600 , 500);
         stage.setScene(scene);
         stage.show();

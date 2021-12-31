@@ -3,27 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tic.tac.toe.client;
+package ui;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import ui.fxml.LoginStageFXML;
 
 /**
  *
  * @author Nour
  */
-public class ChooseSymbolStage extends Application {
+public class LoginStage extends Application {
     
+   
     @Override
     public void start(Stage stage) {
-        Parent root = new ChooseSymbolStageBase();
-        Scene scene = new Scene(root, 600 , 500);
+        Parent root = new LoginStageFXML();
+        Scene scene = new Scene(root, 460 , 400);
         stage.setScene(scene);
         stage.show();
     }
