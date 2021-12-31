@@ -3,32 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tic.tac.toe.client;
+package ui;
 
 import javafx.application.Application;
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.stage.Stage;
 
 /**
  *
- * @author elshamey
+ * @author Nour
  */
-public class RegistrationStage extends Application {
+import ui.fxml.PlayerTwoNameStageFXML;
+public class PlayerTwoNameStage extends Application {
     
     @Override
-    public void start(Stage primaryStage) {
-       
-        
-        Parent root = new FXMLRegistrationBase1();
-        
-        Scene scene = new Scene(root, 600, 500);
-        
-      
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage stage) {
+        Parent root = new PlayerTwoNameStageFXML();
+        Scene scene = new Scene(root, 600 , 500);
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**
