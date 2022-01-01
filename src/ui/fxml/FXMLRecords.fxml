@@ -15,7 +15,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <right>
-      <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+      <GridPane alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="250.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,77 +30,50 @@
             <Insets bottom="30.0" right="30.0" />
          </BorderPane.margin>
          <children>
-            <Label fx:id="label4" text="O" visible="false" GridPane.rowIndex="1">
+            <Label fx:id="cell1" alignment="CENTER" prefHeight="89.0" prefWidth="105.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label3" text="O" visible="false" GridPane.columnIndex="2">
+            <Label fx:id="cell2" alignment="CENTER" prefHeight="111.0" prefWidth="146.0" GridPane.columnIndex="1">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label2" text="O" visible="false" GridPane.columnIndex="1">
+            <Label fx:id="cell3" alignment="CENTER" prefHeight="103.0" prefWidth="129.0" GridPane.columnIndex="2">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label9" text="O" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label fx:id="cell4" alignment="CENTER" prefHeight="110.0" prefWidth="150.0" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label8" text="O" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label fx:id="cell5" alignment="CENTER" prefHeight="102.0" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label7" text="O" visible="false" GridPane.rowIndex="2">
+            <Label fx:id="cell6" alignment="CENTER" prefHeight="98.0" prefWidth="157.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label6" text="O" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label fx:id="cell7" alignment="CENTER" prefHeight="88.0" prefWidth="155.0" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label5" text="O" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="cell8" alignment="CENTER" prefHeight="122.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
-            <Label fx:id="label1" text="O" visible="false">
+            <Label fx:id="cell9" alignment="CENTER" prefHeight="105.0" prefWidth="174.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font size="56.0" />
                </font>
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
             </Label>
          </children>
       </GridPane>

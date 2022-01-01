@@ -1,6 +1,9 @@
-package ui.fxml;
+package ui;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -10,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class GameStageFXML extends BorderPane {
 
@@ -44,8 +48,11 @@ public class GameStageFXML extends BorderPane {
     protected final Label cellGrid7;
     protected final Label cellGrid8;
     protected final Label cellGrid9;
+    
+    private Stage stage;
 
-    public GameStageFXML() {
+    public GameStageFXML(Stage stage) {
+        this.stage=stage;
 
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -218,51 +225,69 @@ public class GameStageFXML extends BorderPane {
         GridPane.setValignment(cellGrid1, javafx.geometry.VPos.CENTER);
         cellGrid1.setAlignment(javafx.geometry.Pos.CENTER);
         cellGrid1.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
+        cellGrid1.setPrefHeight(84.0);
+        cellGrid1.setPrefWidth(81.0);
         cellGrid1.setFont(new Font(57.0));
 
         GridPane.setColumnIndex(cellGrid2, 1);
         GridPane.setHalignment(cellGrid2, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(cellGrid2, javafx.geometry.VPos.CENTER);
         cellGrid2.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid2.setPrefHeight(84.0);
+        cellGrid2.setPrefWidth(77.0);
         cellGrid2.setFont(new Font(57.0));
 
         GridPane.setColumnIndex(cellGrid3, 2);
         GridPane.setHalignment(cellGrid3, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(cellGrid3, javafx.geometry.VPos.CENTER);
+        cellGrid3.setPrefHeight(84.0);
+        cellGrid3.setPrefWidth(80.0);
         cellGrid3.setFont(new Font(57.0));
 
         GridPane.setHalignment(cellGrid4, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid4, 1);
         GridPane.setValignment(cellGrid4, javafx.geometry.VPos.CENTER);
+        cellGrid4.setPrefHeight(84.0);
+        cellGrid4.setPrefWidth(83.0);
         cellGrid4.setFont(new Font(57.0));
 
         GridPane.setColumnIndex(cellGrid5, 1);
         GridPane.setHalignment(cellGrid5, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid5, 1);
         GridPane.setValignment(cellGrid5, javafx.geometry.VPos.CENTER);
+        cellGrid5.setPrefHeight(84.0);
+        cellGrid5.setPrefWidth(77.0);
         cellGrid5.setFont(new Font(57.0));
 
         GridPane.setColumnIndex(cellGrid6, 2);
         GridPane.setHalignment(cellGrid6, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid6, 1);
         GridPane.setValignment(cellGrid6, javafx.geometry.VPos.CENTER);
+        cellGrid6.setPrefHeight(84.0);
+        cellGrid6.setPrefWidth(79.0);
         cellGrid6.setFont(new Font(57.0));
 
         GridPane.setHalignment(cellGrid7, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid7, 2);
         GridPane.setValignment(cellGrid7, javafx.geometry.VPos.CENTER);
+        cellGrid7.setPrefHeight(84.0);
+        cellGrid7.setPrefWidth(80.0);
         cellGrid7.setFont(new Font(57.0));
 
         GridPane.setColumnIndex(cellGrid8, 1);
         GridPane.setHalignment(cellGrid8, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid8, 2);
         GridPane.setValignment(cellGrid8, javafx.geometry.VPos.CENTER);
+        cellGrid8.setPrefHeight(84.0);
+        cellGrid8.setPrefWidth(79.0);
         cellGrid8.setFont(new Font(57.0));
 
         GridPane.setColumnIndex(cellGrid9, 2);
         GridPane.setHalignment(cellGrid9, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid9, 2);
         GridPane.setValignment(cellGrid9, javafx.geometry.VPos.CENTER);
+        cellGrid9.setPrefHeight(84.0);
+        cellGrid9.setPrefWidth(79.0);
         cellGrid9.setFont(new Font(57.0));
         setCenter(gridPane0);
 
@@ -293,6 +318,11 @@ public class GameStageFXML extends BorderPane {
         gridPane0.getChildren().add(cellGrid7);
         gridPane0.getChildren().add(cellGrid8);
         gridPane0.getChildren().add(cellGrid9);
+        
+        ExitBt.setOnAction((ActionEvent event) -> {
+            Parent root = new MainPageFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
 
     }
 }

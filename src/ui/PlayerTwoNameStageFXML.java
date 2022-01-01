@@ -1,10 +1,14 @@
-package ui.fxml;
+package ui;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class PlayerTwoNameStageFXML extends AnchorPane {
 
@@ -12,9 +16,12 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
     protected final TextField PlayerTwoTextField;
     protected final Button SubmitButton;
     protected final Text WarningText;
+    
+    private Stage stage;
 
-    public PlayerTwoNameStageFXML() {
-
+    public PlayerTwoNameStageFXML(Stage stage) {
+        this.stage=stage;
+        
         text = new Text();
         PlayerTwoTextField = new TextField();
         SubmitButton = new Button();
@@ -56,6 +63,12 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
         getChildren().add(PlayerTwoTextField);
         getChildren().add(SubmitButton);
         getChildren().add(WarningText);
+        
+        
+        SubmitButton.setOnAction((ActionEvent event) -> {
+            Parent root= new GameStageFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
 
     }
 }
