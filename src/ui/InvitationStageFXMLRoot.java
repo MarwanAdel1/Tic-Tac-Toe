@@ -233,7 +233,7 @@ public class InvitationStageFXMLRoot extends BorderPane {
         
         
         invitationActionBt.setOnAction((event) -> {
-            Parent root = new GameStageFXML(stage);
+            Parent root = new ChooseSymbolStageFXML(stage, "Online Player", 2);
             stage.setScene(new Scene(root, 600, 500));
         });
 

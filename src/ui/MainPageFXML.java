@@ -228,7 +228,7 @@ public class MainPageFXML extends AnchorPane {
 
         
         singleButton.setOnAction((ActionEvent event) -> {
-            Parent root = new GameStageFXML(stage);
+            Parent root = new ChooseSymbolStageFXML(stage,"Computer",0);
             stage.setScene(new Scene(root, 600, 500));
         });
         

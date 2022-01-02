@@ -110,37 +110,37 @@
                   <Font size="57.0" />
                </font>
             </Label>
-            <Label fx:id="cellGrid3" prefHeight="84.0" prefWidth="80.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label fx:id="cellGrid3" alignment="CENTER" prefHeight="84.0" prefWidth="80.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="57.0" />
                </font>
             </Label>
-            <Label fx:id="cellGrid4" prefHeight="84.0" prefWidth="83.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label fx:id="cellGrid4" alignment="CENTER" prefHeight="84.0" prefWidth="83.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="57.0" />
                </font>
             </Label>
-            <Label fx:id="cellGrid5" prefHeight="84.0" prefWidth="77.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label fx:id="cellGrid5" alignment="CENTER" prefHeight="84.0" prefWidth="77.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="57.0" />
                </font>
             </Label>
-            <Label fx:id="cellGrid6" prefHeight="84.0" prefWidth="79.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label fx:id="cellGrid6" alignment="CENTER" prefHeight="84.0" prefWidth="79.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="57.0" />
                </font>
             </Label>
-            <Label fx:id="cellGrid7" prefHeight="84.0" prefWidth="80.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Label fx:id="cellGrid7" alignment="CENTER" prefHeight="84.0" prefWidth="80.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
                   <Font size="57.0" />
                </font>
             </Label>
-            <Label fx:id="cellGrid8" prefHeight="84.0" prefWidth="79.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Label fx:id="cellGrid8" alignment="CENTER" prefHeight="84.0" prefWidth="79.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
                   <Font size="57.0" />
                </font>
             </Label>
-            <Label fx:id="cellGrid9" prefHeight="84.0" prefWidth="79.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Label fx:id="cellGrid9" alignment="CENTER" prefHeight="84.0" prefWidth="79.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
                   <Font size="57.0" />
                </font>

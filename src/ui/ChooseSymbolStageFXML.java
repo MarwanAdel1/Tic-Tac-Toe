@@ -18,7 +18,7 @@ public class ChooseSymbolStageFXML extends AnchorPane {
     
     private Stage stage;
 
-    public ChooseSymbolStageFXML(Stage stage) {
+    public ChooseSymbolStageFXML(Stage stage,String opName,int mode) {
         this.stage=stage;
 
         XButtonChoose = new Button();
@@ -71,14 +71,45 @@ public class ChooseSymbolStageFXML extends AnchorPane {
         
         
         XButtonChoose.setOnAction((ActionEvent event) -> {
-            Parent root = new GameStageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Parent root;
+            switch (mode) {
+                case 0:
+                    root = new ComputerGameStageFXML(stage,"X",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 1:
+                    root = new TwoPlayerGameStageFXML(stage,"X",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 2:
+                    root = new OnlineGameStageFXML(stage,"X","Online Player");
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                default:
+                    break;
+            }
+            
         });
         
         
         OButtonChoose.setOnAction(((event) -> {
-            Parent root = new GameStageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Parent root;
+            switch (mode) {
+                case 0:
+                    root = new ComputerGameStageFXML(stage,"O",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 1:
+                    root = new TwoPlayerGameStageFXML(stage,"O",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 2:
+                    root = new OnlineGameStageFXML(stage,"O","Online Player");
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                default:
+                    break;
+            }
         }));
 
     }

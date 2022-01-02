@@ -13,19 +13,19 @@ import javafx.stage.Stage;
 public class PlayerTwoNameStageFXML extends AnchorPane {
 
     protected final Text text;
-    protected final TextField PlayerTwoTextField;
-    protected final Button SubmitButton;
-    protected final Text WarningText;
-    
+    protected final TextField playerTwoTextField;
+    protected final Button submitButton;
+    protected final Text warningText;
+
     private Stage stage;
 
     public PlayerTwoNameStageFXML(Stage stage) {
-        this.stage=stage;
-        
+        this.stage = stage;
+
         text = new Text();
-        PlayerTwoTextField = new TextField();
-        SubmitButton = new Button();
-        WarningText = new Text();
+        playerTwoTextField = new TextField();
+        submitButton = new Button();
+        warningText = new Text();
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -39,35 +39,39 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
         text.setWrappingWidth(399.125);
         text.setFont(new Font(48.0));
 
-        PlayerTwoTextField.setLayoutX(119.0);
-        PlayerTwoTextField.setLayoutY(169.0);
-        PlayerTwoTextField.setPrefHeight(31.0);
-        PlayerTwoTextField.setPrefWidth(344.0);
+        playerTwoTextField.setLayoutX(119.0);
+        playerTwoTextField.setLayoutY(169.0);
+        playerTwoTextField.setPrefHeight(31.0);
+        playerTwoTextField.setPrefWidth(344.0);
 
-        SubmitButton.setLayoutX(208.0);
-        SubmitButton.setLayoutY(282.0);
-        SubmitButton.setMnemonicParsing(false);
-        SubmitButton.setPrefHeight(49.0);
-        SubmitButton.setPrefWidth(121.0);
-        SubmitButton.setText("Submit");
+        submitButton.setLayoutX(208.0);
+        submitButton.setLayoutY(282.0);
+        submitButton.setMnemonicParsing(false);
+        submitButton.setPrefHeight(49.0);
+        submitButton.setPrefWidth(121.0);
+        submitButton.setText("Submit");
 
-        WarningText.setFill(javafx.scene.paint.Color.valueOf("#f80505"));
-        WarningText.setLayoutX(119.0);
-        WarningText.setLayoutY(219.0);
-        WarningText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        WarningText.setStrokeWidth(0.0);
-        WarningText.setText("Please enter player two name");
-        WarningText.setFont(new Font(18.0));
+        warningText.setFill(javafx.scene.paint.Color.valueOf("#f80505"));
+        warningText.setLayoutX(119.0);
+        warningText.setLayoutY(219.0);
+        warningText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        warningText.setStrokeWidth(0.0);
+        warningText.setFont(new Font(18.0));
+        warningText.setVisible(false);
 
         getChildren().add(text);
-        getChildren().add(PlayerTwoTextField);
-        getChildren().add(SubmitButton);
-        getChildren().add(WarningText);
-        
-        
-        SubmitButton.setOnAction((ActionEvent event) -> {
-            Parent root= new GameStageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+        getChildren().add(playerTwoTextField);
+        getChildren().add(submitButton);
+        getChildren().add(warningText);
+
+        submitButton.setOnAction((ActionEvent event) -> {
+            if (!playerTwoTextField.getText().isEmpty()) {
+                Parent root = new ChooseSymbolStageFXML(stage,playerTwoTextField.getText(), 1);
+                stage.setScene(new Scene(root, 600, 500));
+            }else{
+                warningText.setText("Please insert player's name");
+                warningText.setVisible(true);
+            }
         });
 
     }
