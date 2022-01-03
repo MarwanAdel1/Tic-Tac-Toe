@@ -1,5 +1,8 @@
-package ui.fxml;
+package ui;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -8,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class MainPageFXML extends AnchorPane {
 
@@ -34,8 +38,11 @@ public class MainPageFXML extends AnchorPane {
     protected final Label playedLabel;
     protected final Label wonLabel;
     protected final Label scoreLabel;
+    
+    private Stage stage;
 
-    public MainPageFXML() {
+    public MainPageFXML(Stage stage) {
+        this.stage=stage;
 
         TicTacLable = new Label();
         singleButton = new Button();
@@ -219,5 +226,26 @@ public class MainPageFXML extends AnchorPane {
         gridPane.getChildren().add(scoreLabel);
         getChildren().add(gridPane);
 
+        
+        singleButton.setOnAction((ActionEvent event) -> {
+            Parent root = new ChooseSymbolStageFXML(stage,"Computer",0);
+            stage.setScene(new Scene(root, 600, 500));
+        });
+        
+        twoButton.setOnAction((ActionEvent event) -> {
+            Parent root = new PlayerTwoNameStageFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
+        
+        multiButton.setOnAction((ActionEvent event) -> {
+            Parent root = new MultiplayersStageFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
+        
+        recordsButton.setOnAction((ActionEvent event) -> {
+            Parent root = new RecordsFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
     }
+    
 }

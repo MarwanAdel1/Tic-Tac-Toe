@@ -1,9 +1,13 @@
-package ui.fxml;
+package ui;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class ChooseSymbolStageFXML extends AnchorPane {
 
@@ -11,8 +15,11 @@ public class ChooseSymbolStageFXML extends AnchorPane {
     protected final Button OButtonChoose;
     protected final Text chooseText;
     protected final Text gameText;
+    
+    private Stage stage;
 
-    public ChooseSymbolStageFXML() {
+    public ChooseSymbolStageFXML(Stage stage,String opName,int mode) {
+        this.stage=stage;
 
         XButtonChoose = new Button();
         OButtonChoose = new Button();
@@ -61,6 +68,49 @@ public class ChooseSymbolStageFXML extends AnchorPane {
         getChildren().add(OButtonChoose);
         getChildren().add(chooseText);
         getChildren().add(gameText);
+        
+        
+        XButtonChoose.setOnAction((ActionEvent event) -> {
+            Parent root;
+            switch (mode) {
+                case 0:
+                    root = new ComputerGameStageFXML(stage,"X",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 1:
+                    root = new TwoPlayerGameStageFXML(stage,"X",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 2:
+                    root = new OnlineGameStageFXML(stage,"X","Online Player");
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                default:
+                    break;
+            }
+            
+        });
+        
+        
+        OButtonChoose.setOnAction(((event) -> {
+            Parent root;
+            switch (mode) {
+                case 0:
+                    root = new ComputerGameStageFXML(stage,"O",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 1:
+                    root = new TwoPlayerGameStageFXML(stage,"O",opName);
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                case 2:
+                    root = new OnlineGameStageFXML(stage,"O","Online Player");
+                    stage.setScene(new Scene(root, 600, 500));
+                    break;
+                default:
+                    break;
+            }
+        }));
 
     }
 }

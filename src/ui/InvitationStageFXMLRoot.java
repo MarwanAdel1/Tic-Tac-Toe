@@ -1,6 +1,8 @@
-package ui.fxml;
+package ui;
 
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
@@ -12,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class InvitationStageFXMLRoot extends BorderPane {
 
@@ -36,8 +39,11 @@ public class InvitationStageFXMLRoot extends BorderPane {
     protected final Text invitationStatusText;
     protected final Button invitationActionBt;
     protected final Button recordBt;
+    
+    private Stage stage;
 
-    public InvitationStageFXMLRoot() {
+    public InvitationStageFXMLRoot(Stage stage) {
+        this.stage=stage;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -224,6 +230,12 @@ public class InvitationStageFXMLRoot extends BorderPane {
         flowPane.getChildren().add(invitationActionBt);
         gridPane.getChildren().add(flowPane);
         gridPane.getChildren().add(recordBt);
+        
+        
+        invitationActionBt.setOnAction((event) -> {
+            Parent root = new ChooseSymbolStageFXML(stage, "Online Player", 2);
+            stage.setScene(new Scene(root, 600, 500));
+        });
 
     }
 }

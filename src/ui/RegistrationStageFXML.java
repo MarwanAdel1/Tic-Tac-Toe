@@ -1,5 +1,8 @@
-package ui.fxml;
+package ui;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
@@ -10,10 +13,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class RegistrationStageFXML extends AnchorPane {
 
-    protected final Button LoginButton;
+    protected final Button signUpButton;
     protected final Text text;
     protected final GridPane gridPane;
     protected final ColumnConstraints columnConstraints;
@@ -28,13 +32,17 @@ public class RegistrationStageFXML extends AnchorPane {
     protected final Text text2;
     protected final PasswordField confirmPasswordTextField;
     protected final Text text3;
-    protected final Hyperlink signupText;
+    protected final Hyperlink loginHyperText;
     protected final Text gameText;
     
 
-    public RegistrationStageFXML() {
+    private Stage stage;
 
-        LoginButton = new Button();
+
+    public RegistrationStageFXML(Stage stage) {
+        this.stage=stage;
+
+        signUpButton = new Button();
         text = new Text();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -49,7 +57,7 @@ public class RegistrationStageFXML extends AnchorPane {
         text2 = new Text();
         confirmPasswordTextField = new PasswordField();
         text3 = new Text();
-        signupText = new Hyperlink();
+        loginHyperText = new Hyperlink();
         gameText = new Text();
 
         setId("AnchorPane");
@@ -61,13 +69,13 @@ public class RegistrationStageFXML extends AnchorPane {
         setPrefWidth(464.0);
        
 
-        LoginButton.setLayoutX(176.0);
-        LoginButton.setLayoutY(277.0);
-        LoginButton.setMnemonicParsing(false);
-        LoginButton.setPrefHeight(32.0);
-        LoginButton.setPrefWidth(96.0);
-        LoginButton.setText("Sign-Up");
-        LoginButton.setFont(new Font(18.0));
+        signUpButton.setLayoutX(176.0);
+        signUpButton.setLayoutY(277.0);
+        signUpButton.setMnemonicParsing(false);
+        signUpButton.setPrefHeight(32.0);
+        signUpButton.setPrefWidth(96.0);
+        signUpButton.setText("Sign-Up");
+        signUpButton.setFont(new Font(18.0));
 
         text.setLayoutX(196.0);
         text.setLayoutY(391.0);
@@ -169,13 +177,13 @@ public class RegistrationStageFXML extends AnchorPane {
         text3.setText("Sign-Up");
         text3.setFont(new Font(48.0));
 
-        signupText.setLayoutX(401.0);
-        signupText.setLayoutY(366.0);
-        signupText.setPrefHeight(35.0);
-        signupText.setPrefWidth(76.0);
-        signupText.setText("Login");
-        signupText.setUnderline(true);
-        signupText.setFont(new Font(18.0));
+        loginHyperText.setLayoutX(401.0);
+        loginHyperText.setLayoutY(366.0);
+        loginHyperText.setPrefHeight(35.0);
+        loginHyperText.setPrefWidth(76.0);
+        loginHyperText.setText("Login");
+        loginHyperText.setUnderline(true);
+        loginHyperText.setFont(new Font(18.0));
 
         gameText.setLayoutX(-17.0);
         gameText.setLayoutY(57.0);
@@ -186,7 +194,7 @@ public class RegistrationStageFXML extends AnchorPane {
         gameText.setWrappingWidth(516.099609375);
         gameText.setFont(new Font("Segoe UI Bold", 46.0));
 
-        getChildren().add(LoginButton);
+        getChildren().add(signUpButton);
         getChildren().add(text);
         gridPane.getColumnConstraints().add(columnConstraints);
         gridPane.getColumnConstraints().add(columnConstraints0);
@@ -201,8 +209,18 @@ public class RegistrationStageFXML extends AnchorPane {
         gridPane.getChildren().add(confirmPasswordTextField);
         getChildren().add(gridPane);
         getChildren().add(text3);
-        getChildren().add(signupText);
+        getChildren().add(loginHyperText);
         getChildren().add(gameText);
+
+        signUpButton.setOnAction((ActionEvent event) -> {
+            Parent root = new LoginStageFXML(stage);
+            stage.setScene(new Scene(root, 460, 400));
+        });
+        
+        loginHyperText.setOnAction((ActionEvent event) -> {
+            Parent root = new LoginStageFXML(stage);
+            stage.setScene(new Scene(root, 460, 400));
+        });
 
     }
 }

@@ -1,6 +1,9 @@
-package ui.fxml;
+package ui;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -12,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class RecordsFXML extends BorderPane {
 
@@ -22,15 +26,15 @@ public class RecordsFXML extends BorderPane {
     protected final RowConstraints rowConstraints;
     protected final RowConstraints rowConstraints0;
     protected final RowConstraints rowConstraints1;
-    protected final Label label4;
-    protected final Label label3;
-    protected final Label label2;
-    protected final Label label9;
-    protected final Label label8;
-    protected final Label label7;
-    protected final Label label6;
-    protected final Label label5;
-    protected final Label label1;
+    protected final Label cell1;
+    protected final Label cell2;
+    protected final Label cell3;
+    protected final Label cell4;
+    protected final Label cell5;
+    protected final Label cell6;
+    protected final Label cell7;
+    protected final Label cell8;
+    protected final Label cell9;
     protected final ScrollPane scrollPane;
     protected final ListView listView;
     protected final GridPane gridPane0;
@@ -42,8 +46,11 @@ public class RecordsFXML extends BorderPane {
     protected final FlowPane flowPane;
     protected final Text text;
     protected final Label label;
+    
+    private Stage stage;
 
-    public RecordsFXML() {
+    public RecordsFXML(Stage stage) {
+        this.stage=stage;
 
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -52,15 +59,15 @@ public class RecordsFXML extends BorderPane {
         rowConstraints = new RowConstraints();
         rowConstraints0 = new RowConstraints();
         rowConstraints1 = new RowConstraints();
-        label4 = new Label();
-        label3 = new Label();
-        label2 = new Label();
-        label9 = new Label();
-        label8 = new Label();
-        label7 = new Label();
-        label6 = new Label();
-        label5 = new Label();
-        label1 = new Label();
+        cell1 = new Label();
+        cell2 = new Label();
+        cell3 = new Label();
+        cell4 = new Label();
+        cell5 = new Label();
+        cell6 = new Label();
+        cell7 = new Label();
+        cell8 = new Label();
+        cell9 = new Label();
         scrollPane = new ScrollPane();
         listView = new ListView();
         gridPane0 = new GridPane();
@@ -81,6 +88,7 @@ public class RecordsFXML extends BorderPane {
         setPrefWidth(600.0);
 
         BorderPane.setAlignment(gridPane, javafx.geometry.Pos.CENTER);
+        gridPane.setAlignment(javafx.geometry.Pos.CENTER);
         gridPane.setGridLinesVisible(true);
         gridPane.setMaxHeight(USE_PREF_SIZE);
         gridPane.setMaxWidth(USE_PREF_SIZE);
@@ -114,62 +122,66 @@ public class RecordsFXML extends BorderPane {
         rowConstraints1.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
         BorderPane.setMargin(gridPane, new Insets(0.0, 30.0, 30.0, 0.0));
 
-        GridPane.setRowIndex(label4, 1);
-        label4.setText("O");
-        label4.setVisible(false);
-        label4.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label4, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setHalignment(cell1, javafx.geometry.HPos.CENTER);
+        GridPane.setValignment(cell1, javafx.geometry.VPos.CENTER);
+        cell1.setAlignment(javafx.geometry.Pos.CENTER);
+        cell1.setPrefHeight(89.0);
+        cell1.setPrefWidth(105.0);
+        cell1.setFont(new Font(56.0));
 
-        GridPane.setColumnIndex(label3, 2);
-        label3.setText("O");
-        label3.setVisible(false);
-        label3.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label3, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setColumnIndex(cell2, 1);
+        cell2.setAlignment(javafx.geometry.Pos.CENTER);
+        cell2.setPrefHeight(111.0);
+        cell2.setPrefWidth(146.0);
+        cell2.setFont(new Font(56.0));
 
-        GridPane.setColumnIndex(label2, 1);
-        label2.setText("O");
-        label2.setVisible(false);
-        label2.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label2, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setColumnIndex(cell3, 2);
+        cell3.setAlignment(javafx.geometry.Pos.CENTER);
+        cell3.setPrefHeight(103.0);
+        cell3.setPrefWidth(129.0);
+        cell3.setFont(new Font(56.0));
 
-        GridPane.setColumnIndex(label9, 2);
-        GridPane.setRowIndex(label9, 2);
-        label9.setText("O");
-        label9.setVisible(false);
-        label9.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label9, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setRowIndex(cell4, 1);
+        cell4.setAlignment(javafx.geometry.Pos.CENTER);
+        cell4.setPrefHeight(110.0);
+        cell4.setPrefWidth(150.0);
+        cell4.setFont(new Font(56.0));
 
-        GridPane.setColumnIndex(label8, 1);
-        GridPane.setRowIndex(label8, 2);
-        label8.setText("O");
-        label8.setVisible(false);
-        label8.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label8, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setColumnIndex(cell5, 1);
+        GridPane.setRowIndex(cell5, 1);
+        cell5.setAlignment(javafx.geometry.Pos.CENTER);
+        cell5.setPrefHeight(102.0);
+        cell5.setPrefWidth(171.0);
+        cell5.setFont(new Font(56.0));
 
-        GridPane.setRowIndex(label7, 2);
-        label7.setText("O");
-        label7.setVisible(false);
-        label7.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label7, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setColumnIndex(cell6, 2);
+        GridPane.setRowIndex(cell6, 1);
+        cell6.setAlignment(javafx.geometry.Pos.CENTER);
+        cell6.setPrefHeight(98.0);
+        cell6.setPrefWidth(157.0);
+        cell6.setFont(new Font(56.0));
 
-        GridPane.setColumnIndex(label6, 2);
-        GridPane.setRowIndex(label6, 1);
-        label6.setText("O");
-        label6.setVisible(false);
-        label6.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label6, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setRowIndex(cell7, 2);
+        cell7.setAlignment(javafx.geometry.Pos.CENTER);
+        cell7.setPrefHeight(88.0);
+        cell7.setPrefWidth(155.0);
+        cell7.setFont(new Font(56.0));
 
-        GridPane.setColumnIndex(label5, 1);
-        GridPane.setRowIndex(label5, 1);
-        label5.setText("O");
-        label5.setVisible(false);
-        label5.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label5, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setColumnIndex(cell8, 1);
+        GridPane.setRowIndex(cell8, 2);
+        cell8.setAlignment(javafx.geometry.Pos.CENTER);
+        cell8.setPrefHeight(122.0);
+        cell8.setPrefWidth(200.0);
+        cell8.setFont(new Font(56.0));
 
-        label1.setText("O");
-        label1.setVisible(false);
-        label1.setFont(new Font("System Bold", 36.0));
-        GridPane.setMargin(label1, new Insets(0.0, 0.0, 0.0, 30.0));
+        GridPane.setColumnIndex(cell9, 2);
+        GridPane.setHalignment(cell9, javafx.geometry.HPos.CENTER);
+        GridPane.setRowIndex(cell9, 2);
+        GridPane.setValignment(cell9, javafx.geometry.VPos.CENTER);
+        cell9.setAlignment(javafx.geometry.Pos.CENTER);
+        cell9.setPrefHeight(105.0);
+        cell9.setPrefWidth(174.0);
+        cell9.setFont(new Font(56.0));
         setRight(gridPane);
 
         BorderPane.setAlignment(scrollPane, javafx.geometry.Pos.CENTER);
@@ -242,15 +254,15 @@ public class RecordsFXML extends BorderPane {
         gridPane.getRowConstraints().add(rowConstraints);
         gridPane.getRowConstraints().add(rowConstraints0);
         gridPane.getRowConstraints().add(rowConstraints1);
-        gridPane.getChildren().add(label4);
-        gridPane.getChildren().add(label3);
-        gridPane.getChildren().add(label2);
-        gridPane.getChildren().add(label9);
-        gridPane.getChildren().add(label8);
-        gridPane.getChildren().add(label7);
-        gridPane.getChildren().add(label6);
-        gridPane.getChildren().add(label5);
-        gridPane.getChildren().add(label1);
+        gridPane.getChildren().add(cell1);
+        gridPane.getChildren().add(cell2);
+        gridPane.getChildren().add(cell3);
+        gridPane.getChildren().add(cell4);
+        gridPane.getChildren().add(cell5);
+        gridPane.getChildren().add(cell6);
+        gridPane.getChildren().add(cell7);
+        gridPane.getChildren().add(cell8);
+        gridPane.getChildren().add(cell9);
         gridPane0.getColumnConstraints().add(columnConstraints2);
         gridPane0.getRowConstraints().add(rowConstraints2);
         gridPane0.getRowConstraints().add(rowConstraints3);
@@ -259,5 +271,13 @@ public class RecordsFXML extends BorderPane {
         flowPane.getChildren().add(text);
         flowPane.getChildren().add(label);
 
+        btnBack.setOnAction((ActionEvent event) -> {
+            Parent root= new MainPageFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
+        
+        btnPlay.setOnAction((ActionEvent event) -> {
+            
+        });
     }
 }
