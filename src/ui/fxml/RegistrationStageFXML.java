@@ -2,6 +2,7 @@ package ui.fxml;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -23,12 +24,13 @@ public class RegistrationStageFXML extends AnchorPane {
     protected final Text text0;
     protected final Text text1;
     protected final TextField usernameTextField;
-    protected final TextField passwordTextField;
+    protected final PasswordField passwordTextField;
     protected final Text text2;
-    protected final TextField confirmPasswordTextField;
+    protected final PasswordField confirmPasswordTextField;
     protected final Text text3;
     protected final Hyperlink signupText;
     protected final Text gameText;
+    
 
     public RegistrationStageFXML() {
 
@@ -43,9 +45,9 @@ public class RegistrationStageFXML extends AnchorPane {
         text0 = new Text();
         text1 = new Text();
         usernameTextField = new TextField();
-        passwordTextField = new TextField();
+        passwordTextField = new PasswordField();
         text2 = new Text();
-        confirmPasswordTextField = new TextField();
+        confirmPasswordTextField = new PasswordField();
         text3 = new Text();
         signupText = new Hyperlink();
         gameText = new Text();
@@ -57,6 +59,7 @@ public class RegistrationStageFXML extends AnchorPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(403.0);
         setPrefWidth(464.0);
+       
 
         LoginButton.setLayoutX(176.0);
         LoginButton.setLayoutY(277.0);
