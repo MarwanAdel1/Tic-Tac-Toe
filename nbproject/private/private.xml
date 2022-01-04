@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ITI/Java/Project/Tic-Tac-Toe%20Client/src/utility/BoardUtities.java</file>
             <file>file:/D:/ITI/Java/Project/Tic-Tac-Toe%20Client/src/ui/TwoPlayerGameStageFXML.java</file>
             <file>file:/D:/ITI/Java/Project/Tic-Tac-Toe%20Client/src/utility/AI.java</file>
             <file>file:/D:/ITI/Java/Project/Tic-Tac-Toe%20Client/src/pojo/Move.java</file>
             <file>file:/D:/ITI/Java/Project/Tic-Tac-Toe%20Client/src/ui/ComputerGameStageFXML.java</file>
+            <file>file:/D:/ITI/Java/Project/Tic-Tac-Toe%20Client/src/utility/BoardUtilities.java</file>
         </group>
     </open-files>
 </project-private>
