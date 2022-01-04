@@ -5,6 +5,7 @@
  */
 package utility;
 
+
 import java.util.Random;
 import javafx.scene.control.Label;
 import pojo.Move;
@@ -17,12 +18,14 @@ import pojo.Move;
 public class AI {
     
     public static int EasyAI(Label[] xoBoard){
+        
         int random = new Random().nextInt(8);
         while(!xoBoard[random].getText().isEmpty()){
             random =new Random().nextInt(9);
         }
         
         return random;
+
     }
     
 }
