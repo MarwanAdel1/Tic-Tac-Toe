@@ -6,23 +6,24 @@
 package ui;
 
 import javafx.application.Application;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
  *
- * @author Nour
+ * @author elshamey
  */
-import ui.fxml.PlayerTwoNameStageFXML;
-public class PlayerTwoNameStage extends Application {
+public class MainStage extends Application {
     
     @Override
-    public void start(Stage stage) {
-        Parent root = new PlayerTwoNameStageFXML();
-        Scene scene = new Scene(root, 600 , 500);
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) {
+        Parent root = new RegistrationStageFXML(primaryStage);
+        
+        primaryStage.setTitle("Tic-Tac-Toe Game");
+        primaryStage.setScene(new Scene(root, 460, 400));
+        primaryStage.show();
     }
 
     /**

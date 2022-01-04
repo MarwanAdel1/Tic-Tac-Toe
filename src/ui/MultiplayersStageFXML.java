@@ -1,5 +1,8 @@
-package ui.fxml;
+package ui;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -7,6 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class MultiplayersStageFXML extends AnchorPane {
 
@@ -17,9 +21,12 @@ public class MultiplayersStageFXML extends AnchorPane {
     protected final Button inviteBt;
     protected final ScrollPane scrollPane;
     protected final ListView listView;
+    
+    private Stage stage;
 
-    public MultiplayersStageFXML() {
-
+    public MultiplayersStageFXML(Stage stage) {
+        this.stage=stage;
+        
         gameText = new Text();
         label = new Label();
         backBt = new Button();
@@ -83,6 +90,21 @@ public class MultiplayersStageFXML extends AnchorPane {
         getChildren().add(refreshBt);
         getChildren().add(inviteBt);
         getChildren().add(scrollPane);
+        
+        
+        refreshBt.setOnAction((ActionEvent event) -> {
+            
+        });
+        
+        backBt.setOnAction((ActionEvent event) -> {
+            Parent root= new MainPageFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));     
+        });
+        
+        inviteBt.setOnAction((ActionEvent event) -> {
+            Parent root = new InvitationStageFXMLRoot(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
 
     }
 }

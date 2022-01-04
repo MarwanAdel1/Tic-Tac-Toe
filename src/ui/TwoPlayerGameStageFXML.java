@@ -1,9 +1,13 @@
-package ui.fxml;
+package ui;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
+import java.util.Optional;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -12,15 +16,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.stage.Stage;
+import utility.BoardUtilities;
 
-public class GameStageFXML extends BorderPane {
+public class TwoPlayerGameStageFXML extends BorderPane {
 
     protected final GridPane gridPane;
     protected final ColumnConstraints columnConstraints;
@@ -54,10 +53,29 @@ public class GameStageFXML extends BorderPane {
     protected final Label cellGrid8;
     protected final Label cellGrid9;
 
-  
+    private Stage stage;
+    private boolean symbolFlag, turnFlag;
+    private String[][] xoBoard;
 
-    
-    public GameStageFXML() {
+    public TwoPlayerGameStageFXML(Stage stage, String symbol, String opName) {
+        this.stage = stage;
+        if (symbol.equalsIgnoreCase("x")) {
+            symbolFlag = false;
+        } else {
+            symbolFlag = true;
+        }
+        turnFlag = false;
+
+        xoBoard = new String[3][3];
+        xoBoard[0][0] = "d";
+        xoBoard[0][1] = "d";
+        xoBoard[0][2] = "d";
+        xoBoard[1][0] = "d";
+        xoBoard[1][1] = "d";
+        xoBoard[1][2] = "d";
+        xoBoard[2][0] = "d";
+        xoBoard[2][1] = "d";
+        xoBoard[2][2] = "d";
 
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -153,7 +171,7 @@ public class GameStageFXML extends BorderPane {
         mySybmolLabel.setAlignment(javafx.geometry.Pos.CENTER);
         mySybmolLabel.setPrefHeight(17.0);
         mySybmolLabel.setPrefWidth(104.0);
-        mySybmolLabel.setText("X");
+        mySybmolLabel.setText(symbol);
         mySybmolLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         mySybmolLabel.setFont(new Font(59.0));
 
@@ -162,6 +180,7 @@ public class GameStageFXML extends BorderPane {
         myTurnLabel.setPrefWidth(109.0);
         myTurnLabel.setText("Your Turn");
         myTurnLabel.setFont(new Font(24.0));
+        myTurnLabel.setVisible(true);
         flowPane.setPadding(new Insets(70.0, 20.0, 30.0, 20.0));
         BorderPane.setMargin(flowPane, new Insets(50.0, 0.0, 0.0, 0.0));
         setLeft(flowPane);
@@ -175,14 +194,22 @@ public class GameStageFXML extends BorderPane {
         opponentNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
         opponentNameLabel.setPrefHeight(17.0);
         opponentNameLabel.setPrefWidth(116.0);
-        opponentNameLabel.setText("Player Name");
+        
+        opponentNameLabel.setText(opName);
+
+        opponentTurnLabel.setVisible(false);
         opponentNameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         opponentNameLabel.setFont(new Font("System Bold", 19.0));
 
         opponentSybmolLabel.setAlignment(javafx.geometry.Pos.CENTER);
         opponentSybmolLabel.setPrefHeight(86.0);
         opponentSybmolLabel.setPrefWidth(120.0);
-        opponentSybmolLabel.setText("O");
+        if (symbol.equalsIgnoreCase("x")) {
+            opponentSybmolLabel.setText("O");
+        } else if (symbol.equalsIgnoreCase("o")) {
+            opponentSybmolLabel.setText("X");
+        }
+
         opponentSybmolLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         opponentSybmolLabel.setFont(new Font(59.0));
 
@@ -230,61 +257,77 @@ public class GameStageFXML extends BorderPane {
         GridPane.setValignment(cellGrid1, javafx.geometry.VPos.CENTER);
         cellGrid1.setAlignment(javafx.geometry.Pos.CENTER);
         cellGrid1.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
+        cellGrid1.setPrefHeight(84.0);
+        cellGrid1.setPrefWidth(81.0);
         cellGrid1.setFont(new Font(57.0));
-        cellGrid1.setPrefSize(73.0, 84.0);
 
         GridPane.setColumnIndex(cellGrid2, 1);
         GridPane.setHalignment(cellGrid2, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(cellGrid2, javafx.geometry.VPos.CENTER);
         cellGrid2.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid2.setPrefHeight(84.0);
+        cellGrid2.setPrefWidth(77.0);
         cellGrid2.setFont(new Font(57.0));
-        cellGrid2.setPrefSize(73.0, 84.0);
 
         GridPane.setColumnIndex(cellGrid3, 2);
         GridPane.setHalignment(cellGrid3, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(cellGrid3, javafx.geometry.VPos.CENTER);
+        cellGrid3.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid3.setPrefHeight(84.0);
+        cellGrid3.setPrefWidth(80.0);
         cellGrid3.setFont(new Font(57.0));
-        cellGrid3.setPrefSize(73.0, 84.0);
 
         GridPane.setHalignment(cellGrid4, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid4, 1);
         GridPane.setValignment(cellGrid4, javafx.geometry.VPos.CENTER);
+        cellGrid4.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid4.setPrefHeight(84.0);
+        cellGrid4.setPrefWidth(83.0);
         cellGrid4.setFont(new Font(57.0));
-        cellGrid4.setPrefSize(73.0, 84.0);
 
         GridPane.setColumnIndex(cellGrid5, 1);
         GridPane.setHalignment(cellGrid5, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid5, 1);
         GridPane.setValignment(cellGrid5, javafx.geometry.VPos.CENTER);
+        cellGrid5.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid5.setPrefHeight(84.0);
+        cellGrid5.setPrefWidth(77.0);
         cellGrid5.setFont(new Font(57.0));
-        cellGrid5.setPrefSize(73.0, 84.0);
 
         GridPane.setColumnIndex(cellGrid6, 2);
         GridPane.setHalignment(cellGrid6, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid6, 1);
         GridPane.setValignment(cellGrid6, javafx.geometry.VPos.CENTER);
+        cellGrid6.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid6.setPrefHeight(84.0);
+        cellGrid6.setPrefWidth(79.0);
         cellGrid6.setFont(new Font(57.0));
-        cellGrid6.setPrefSize(73.0, 84.0);
 
         GridPane.setHalignment(cellGrid7, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid7, 2);
         GridPane.setValignment(cellGrid7, javafx.geometry.VPos.CENTER);
+        cellGrid7.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid7.setPrefHeight(84.0);
+        cellGrid7.setPrefWidth(80.0);
         cellGrid7.setFont(new Font(57.0));
-        cellGrid7.setPrefSize(73.0, 84.0);
 
         GridPane.setColumnIndex(cellGrid8, 1);
         GridPane.setHalignment(cellGrid8, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid8, 2);
         GridPane.setValignment(cellGrid8, javafx.geometry.VPos.CENTER);
+        cellGrid8.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid8.setPrefHeight(84.0);
+        cellGrid8.setPrefWidth(79.0);
         cellGrid8.setFont(new Font(57.0));
-        cellGrid8.setPrefSize(73.0, 84.0);
 
         GridPane.setColumnIndex(cellGrid9, 2);
         GridPane.setHalignment(cellGrid9, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(cellGrid9, 2);
         GridPane.setValignment(cellGrid9, javafx.geometry.VPos.CENTER);
+        cellGrid9.setAlignment(javafx.geometry.Pos.CENTER);
+        cellGrid9.setPrefHeight(84.0);
+        cellGrid9.setPrefWidth(79.0);
         cellGrid9.setFont(new Font(57.0));
-        cellGrid9.setPrefSize(73.0, 84.0);
         setCenter(gridPane0);
 
         gridPane.getColumnConstraints().add(columnConstraints);
@@ -314,7 +357,206 @@ public class GameStageFXML extends BorderPane {
         gridPane0.getChildren().add(cellGrid7);
         gridPane0.getChildren().add(cellGrid8);
         gridPane0.getChildren().add(cellGrid9);
-    
+
+        cellGrid1.setOnMouseClicked((event) -> {
+            if (cellGrid1.getText().isEmpty()) {
+                cellGrid1.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][0] = BoardUtilities.getSymbol(symbolFlag); /// return X - O
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag); //// check Win or Draw
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+
+            }
+        });
+
+        cellGrid2.setOnMouseClicked((event) -> {
+            if (cellGrid2.getText().isEmpty()) {
+                cellGrid2.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][1] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+            }
+        });
+
+        cellGrid3.setOnMouseClicked((event) -> {
+            if (cellGrid3.getText().isEmpty()) {
+                cellGrid3.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][2] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+            }
+        });
+
+        cellGrid4.setOnMouseClicked((event) -> {
+            if (cellGrid4.getText().isEmpty()) {
+                cellGrid4.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][0] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+            }
+        });
+
+        cellGrid5.setOnMouseClicked((event) -> {
+            if (cellGrid5.getText().isEmpty()) {
+                cellGrid5.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][1] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+            }
+        });
+
+        cellGrid6.setOnMouseClicked((event) -> {
+            if (cellGrid6.getText().isEmpty()) {
+                cellGrid6.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][2] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+            }
+        });
+
+        cellGrid7.setOnMouseClicked((event) -> {
+            if (cellGrid7.getText().isEmpty()) {
+                cellGrid7.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][0] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+            }
+        });
+
+        cellGrid8.setOnMouseClicked((event) -> {
+            if (cellGrid8.getText().isEmpty()) {
+                cellGrid8.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][1] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+            }
+        });
+        
+
+        cellGrid9.setOnMouseClicked((event) -> {
+            if (cellGrid9.getText().isEmpty()) {
+                cellGrid9.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][2] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
+                symbolFlag = !symbolFlag;
+                turnFlag = !turnFlag;
+
+                if (turnFlag) {
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                } else {
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+
+                /*
+                symbolFlag = !symbolFlag;
+                if(symbolFlag){
+                    opponentTurnLabel.setVisible(true);
+                    myTurnLabel.setVisible(false);
+                }else{
+                    opponentTurnLabel.setVisible(false);
+                    myTurnLabel.setVisible(true);
+                }
+                 */
+            }
+        });
+
+        ExitBt.setOnAction((ActionEvent event) -> {
+            Parent root = new MainPageFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
+        });
+
+        
     }
-  
+
 }
