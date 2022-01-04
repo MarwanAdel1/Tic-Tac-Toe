@@ -17,10 +17,13 @@ import ui.MainPageFXML;
  *
  * @author Marwan Adel
  */
-public class BoardUtities {
+public class BoardUtilities {
 
-    public static void checkBoard(Stage stage, String[][] xoBoard,boolean flag) {
+    public static int checkBoard(Stage stage, String[][] xoBoard,boolean flag) {
+        int check=0;
         if (isWin(xoBoard)) {
+            check =1;
+            
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game End");
             if (!flag) {
@@ -37,6 +40,8 @@ public class BoardUtities {
         }
         
         if (isDraw(xoBoard)) {
+            check =2;
+            
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game End");
             alert.setHeaderText("Draw");
@@ -49,6 +54,8 @@ public class BoardUtities {
             }
 
         }
+        
+        return check;
     }
 
     public static boolean isWin(String[][] xoBoard) {
