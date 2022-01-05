@@ -19,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-<<<<<<< HEAD:src/ui/fxml/GameStageFXML.java
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -27,12 +26,10 @@ import java.awt.event.MouseListener;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-=======
 import javafx.stage.Stage;
 import pojo.Move;
 import utility.AI;
 import utility.BoardUtilities;
->>>>>>> origin/Marwan:src/ui/ComputerGameStageFXML.java
 
 public class ComputerGameStageFXML extends BorderPane {
 
@@ -69,15 +66,13 @@ public class ComputerGameStageFXML extends BorderPane {
     protected final Label cellGrid8;
     protected final Label cellGrid9;
 
-<<<<<<< HEAD:src/ui/fxml/GameStageFXML.java
-  
-
-    
-    public GameStageFXML() {
-=======
     private final Stage stage;
     private boolean symbolFlag, turnFlag;
     private String[][] xoBoard;
+
+    
+
+
 
     public ComputerGameStageFXML(Stage stage, String symbol, String opName) {
         this.stage = stage;
@@ -97,7 +92,6 @@ public class ComputerGameStageFXML extends BorderPane {
         xoBoard[2][2] = "d";
 
         AI.COUNT = 0;
->>>>>>> origin/Marwan:src/ui/ComputerGameStageFXML.java
 
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -391,9 +385,7 @@ public class ComputerGameStageFXML extends BorderPane {
         gridPane0.getChildren().add(cellGrid7);
         gridPane0.getChildren().add(cellGrid8);
         gridPane0.getChildren().add(cellGrid9);
-<<<<<<< HEAD:src/ui/fxml/GameStageFXML.java
-    
-=======
+
 
         cellGrid1.setOnMouseClicked((event) -> {
             if (cellGrid1.getText().isEmpty()) {
@@ -533,7 +525,6 @@ public class ComputerGameStageFXML extends BorderPane {
             turnFlag = !turnFlag;
 
         }
->>>>>>> origin/Marwan:src/ui/ComputerGameStageFXML.java
     }
   
 }
