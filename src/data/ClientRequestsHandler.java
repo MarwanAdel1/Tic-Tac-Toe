@@ -22,9 +22,9 @@ public class ClientRequestsHandler {
     PrintStream printStream;
     DataInputStream dataInputStream;
 
-    public ClientRequestsHandler() {
+    public ClientRequestsHandler(String address) {
         try {
-            socket = new Socket("192.168.56.1", 11114);
+            socket = new Socket(address, 11114);
             printStream = new PrintStream(socket.getOutputStream());
             dataInputStream = new DataInputStream(socket.getInputStream());
 
@@ -48,9 +48,5 @@ public class ClientRequestsHandler {
         } catch (IOException ex) {
             Logger.getLogger(ClientRequestsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public static void main(String[] args) {
-        new ClientRequestsHandler();
     }
 }
