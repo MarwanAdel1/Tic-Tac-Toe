@@ -13,6 +13,10 @@ public class Move {
     private int i;
     private int j;
 
+    public Move(){
+        i=-1;
+        j=-1;
+    }
     /**
      * @return the i
      */
