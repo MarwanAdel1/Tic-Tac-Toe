@@ -17,7 +17,6 @@ import java.util.logging.Logger;
  * @author User
  */
 public class ClientHandler extends Thread {
-
     Socket socket;
     PrintStream printStream;
     DataInputStream inputStream;
@@ -36,7 +35,6 @@ public class ClientHandler extends Thread {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     public void run() {
         while (true) {
             try {
