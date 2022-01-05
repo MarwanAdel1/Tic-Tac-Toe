@@ -38,9 +38,9 @@ public class RegistrationStageFXML extends AnchorPane {
 
     private Stage stage;
 
-
     public RegistrationStageFXML(Stage stage) {
         this.stage=stage;
+
 
         signUpButton = new Button();
         text = new Text();

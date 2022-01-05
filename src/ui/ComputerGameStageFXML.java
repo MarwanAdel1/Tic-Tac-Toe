@@ -2,10 +2,16 @@ package ui;
 
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
+
+
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -23,8 +29,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pojo.Move;
 import utility.AI;
-import utility.BoardUtities;
 
+import utility.BoardUtilities;
 
 public class ComputerGameStageFXML extends BorderPane {
 
@@ -68,13 +74,11 @@ public class ComputerGameStageFXML extends BorderPane {
     private final Stage stage;
     private boolean symbolFlag, turnFlag;
     private String[][] xoBoard;
-   
-
 
     public ComputerGameStageFXML(Stage stage, String symbol, String opName) {
         this.stage = stage;
         symbolFlag = !symbol.equalsIgnoreCase("x");
-        
+
         turnFlag = false;
 
         xoBoard = new String[3][3];
@@ -87,8 +91,11 @@ public class ComputerGameStageFXML extends BorderPane {
         xoBoard[2][0] = "d";
         xoBoard[2][1] = "d";
         xoBoard[2][2] = "d";
-        
-        
+
+        AI.COUNT = 0;
+
+
+    
         
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -122,7 +129,9 @@ public class ComputerGameStageFXML extends BorderPane {
         cellGrid8 = new Label();
         cellGrid9 = new Label();
         
-        Label labels[]={cellGrid1,cellGrid2,cellGrid3,cellGrid4,cellGrid5,cellGrid6,cellGrid7,cellGrid8,cellGrid9};
+        Label labels[][] = {{cellGrid1, cellGrid2, cellGrid3}, {cellGrid4, cellGrid5, cellGrid6}, {cellGrid7, cellGrid8, cellGrid9}};
+
+       
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -219,7 +228,9 @@ public class ComputerGameStageFXML extends BorderPane {
         opponentSybmolLabel.setAlignment(javafx.geometry.Pos.CENTER);
         opponentSybmolLabel.setPrefHeight(86.0);
         opponentSybmolLabel.setPrefWidth(120.0);
-        
+
+
+
         if (symbol.equalsIgnoreCase("x")) {
             opponentSybmolLabel.setText("O");
         } else if (symbol.equalsIgnoreCase("o")) {
@@ -287,13 +298,13 @@ public class ComputerGameStageFXML extends BorderPane {
         cellGrid2.setPrefHeight(84.0);
         cellGrid2.setPrefWidth(77.0);
 
+
         cellGrid2.setFont(new Font(57.0));
        
 
         GridPane.setColumnIndex(cellGrid3, 2);
         GridPane.setHalignment(cellGrid3, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(cellGrid3, javafx.geometry.VPos.CENTER);
-
 
         cellGrid3.setAlignment(javafx.geometry.Pos.CENTER);
         cellGrid3.setPrefHeight(84.0);
@@ -406,158 +417,134 @@ public class ComputerGameStageFXML extends BorderPane {
 
         cellGrid1.setOnMouseClicked((event) -> {
             if (cellGrid1.getText().isEmpty()) {
-                cellGrid1.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[0].setText(BoardUtities.getSymbol(symbolFlag));
+                cellGrid1.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[0][0].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                //BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-                //BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
-
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
             }
         });
-        
 
         cellGrid2.setOnMouseClicked((event) -> {
             if (cellGrid2.getText().isEmpty()) {
-                cellGrid2.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[1].setText(BoardUtities.getSymbol(symbolFlag));
+                cellGrid2.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[0][1].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                //BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-                //BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
             }
         });
 
         cellGrid3.setOnMouseClicked((event) -> {
             if (cellGrid3.getText().isEmpty()) {
-                cellGrid3.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[2].setText(BoardUtities.getSymbol(symbolFlag));
 
-//                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid3.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[0][2].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-  //              BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
+
             }
         });
 
         cellGrid4.setOnMouseClicked((event) -> {
             if (cellGrid4.getText().isEmpty()) {
-                cellGrid4.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[3].setText(BoardUtities.getSymbol(symbolFlag));
 
-    //            BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid4.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[1][0].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-      //          BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
+
             }
         });
 
         cellGrid5.setOnMouseClicked((event) -> {
             if (cellGrid5.getText().isEmpty()) {
-                cellGrid5.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[4].setText(BoardUtities.getSymbol(symbolFlag));
 
-        //        BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid5.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[1][1].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-        //        BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
+
             }
         });
 
         cellGrid6.setOnMouseClicked((event) -> {
             if (cellGrid6.getText().isEmpty()) {
-                cellGrid6.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[5].setText(BoardUtities.getSymbol(symbolFlag));
 
-      //          BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid6.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[1][2].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-        //        BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
+
             }
         });
 
         cellGrid7.setOnMouseClicked((event) -> {
             if (cellGrid7.getText().isEmpty()) {
-                cellGrid7.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[6].setText(BoardUtities.getSymbol(symbolFlag));
 
-   //             BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid7.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[2][0].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-     //           BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
+
             }
         });
 
         cellGrid8.setOnMouseClicked((event) -> {
             if (cellGrid8.getText().isEmpty()) {
-                cellGrid8.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[7].setText(BoardUtities.getSymbol(symbolFlag));
 
-       //         BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid8.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[2][1].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-         //       BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
+                }
+
+
             }
         });
 
         cellGrid9.setOnMouseClicked((event) -> {
             if (cellGrid9.getText().isEmpty()) {
-                cellGrid9.setText(BoardUtities.getSymbol(symbolFlag));
-                labels[8].setText(BoardUtities.getSymbol(symbolFlag));
 
-           //     BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid9.setText(BoardUtilities.getSymbol(symbolFlag));
+                labels[2][2].setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                int move =AI.EasyAI(labels);
-                labels[move].setText(BoardUtities.getSymbol(!symbolFlag));
-                
-             //   BoardUtities.checkBoard(stage,xoBoard,turnFlag);
-                
-                System.out.println(move+"\n");
-
-                /*
-                symbolFlag = !symbolFlag;
-                if(symbolFlag){
-                    opponentTurnLabel.setVisible(true);
-                    myTurnLabel.setVisible(false);
-                }else{
-                    opponentTurnLabel.setVisible(false);
-                    myTurnLabel.setVisible(true);
+                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                if (check == 0) {
+                    computerTurn(labels);
                 }
-                 */
+
             }
         });
 
@@ -565,6 +552,23 @@ public class ComputerGameStageFXML extends BorderPane {
             Parent root = new MainPageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
+
+
+    }
+
+    public void computerTurn(Label[][] labels) {
+        turnFlag = !turnFlag;
+
+        Move move = AI.normalAI(xoBoard);
+        if (move.getI() != -1) {
+
+            labels[move.getI()][move.getJ()].setText(BoardUtilities.getSymbol(!symbolFlag));
+            xoBoard[move.getI()][move.getJ()] = BoardUtilities.getSymbol(!symbolFlag);
+
+            BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+            turnFlag = !turnFlag;
+
+        }
 
     }
 

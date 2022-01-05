@@ -17,7 +17,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import utility.BoardUtities;
+
+import utility.BoardUtilities;
 
 public class OnlineGameStageFXML extends BorderPane {
 
@@ -360,10 +361,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid1.setOnMouseClicked((event) -> {
             if (cellGrid1.getText().isEmpty()) {
-                cellGrid1.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[0][0] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid1.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][0] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -381,10 +384,11 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid2.setOnMouseClicked((event) -> {
             if (cellGrid2.getText().isEmpty()) {
-                cellGrid2.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[0][1] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid2.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][1] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -401,10 +405,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid3.setOnMouseClicked((event) -> {
             if (cellGrid3.getText().isEmpty()) {
-                cellGrid3.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[0][2] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid3.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[0][2] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -421,10 +427,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid4.setOnMouseClicked((event) -> {
             if (cellGrid4.getText().isEmpty()) {
-                cellGrid4.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[1][0] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid4.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][0] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -441,10 +449,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid5.setOnMouseClicked((event) -> {
             if (cellGrid5.getText().isEmpty()) {
-                cellGrid5.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[1][1] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid5.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][1] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -461,10 +471,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid6.setOnMouseClicked((event) -> {
             if (cellGrid6.getText().isEmpty()) {
-                cellGrid6.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[1][2] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid6.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[1][2] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -481,10 +493,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid7.setOnMouseClicked((event) -> {
             if (cellGrid7.getText().isEmpty()) {
-                cellGrid7.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[2][0] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid7.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][0] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -501,10 +515,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid8.setOnMouseClicked((event) -> {
             if (cellGrid8.getText().isEmpty()) {
-                cellGrid8.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[2][1] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid8.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][1] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -521,10 +537,12 @@ public class OnlineGameStageFXML extends BorderPane {
 
         cellGrid9.setOnMouseClicked((event) -> {
             if (cellGrid9.getText().isEmpty()) {
-                cellGrid9.setText(BoardUtities.getSymbol(symbolFlag));
-                xoBoard[2][2] = BoardUtities.getSymbol(symbolFlag);
 
-                BoardUtities.checkBoard(stage,xoBoard,turnFlag);
+                cellGrid9.setText(BoardUtilities.getSymbol(symbolFlag));
+                xoBoard[2][2] = BoardUtilities.getSymbol(symbolFlag);
+
+                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
