@@ -2,6 +2,7 @@ package ui;
 
 import data.ClientRequestsHandler;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -79,6 +80,12 @@ public class RegistrationStageFXML extends AnchorPane {
         signUpButton.setPrefWidth(96.0);
         signUpButton.setText("Sign-Up");
         signUpButton.setFont(new Font(18.0));
+        signUpButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            
+            }
+        });
 
         text.setLayoutX(196.0);
         text.setLayoutY(391.0);
