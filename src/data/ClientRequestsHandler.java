@@ -11,18 +11,20 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONObject;
 
 /**
  *
  * @author Marwan Adel
  */
 public class ClientRequestsHandler {
+    private Socket socket;
+    private PrintStream printStream;
+    private DataInputStream dataInputStream;
+    
+    private static ClientRequestsHandler clientRequestsHandler;
 
-    Socket socket;
-    PrintStream printStream;
-    DataInputStream dataInputStream;
-
-    public ClientRequestsHandler(String address) {
+    private ClientRequestsHandler(String address) {
         try {
             socket = new Socket(address, 11114);
             printStream = new PrintStream(socket.getOutputStream());
@@ -31,9 +33,7 @@ public class ClientRequestsHandler {
             Thread th =new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("Thread in Client is Running\n");
                     try {
-                        printStream.println("Message From The Client");
                         while (true) {
                             String messageFromServer = dataInputStream.readLine();
                             System.out.println("Server Message : " + messageFromServer);
@@ -48,5 +48,16 @@ public class ClientRequestsHandler {
         } catch (IOException ex) {
             Logger.getLogger(ClientRequestsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static ClientRequestsHandler createClientRequest(String address){
+        if(clientRequestsHandler==null){
+            clientRequestsHandler= new ClientRequestsHandler(address);
+        }
+        return clientRequestsHandler;
+    }
+    
+    public void sendJsonMessageToServer(JSONObject jSONObject){
+        printStream.println(jSONObject);
     }
 }
