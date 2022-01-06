@@ -52,7 +52,7 @@ public class IpPopUpWindowFXML extends AnchorPane {
         
         IPConfirmBt.setOnAction((event) -> {
             if(!IPTextField.getText().isEmpty()){
-                ClientRequestsHandler clientRequestsHandler = new ClientRequestsHandler(IPTextField.getText());
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(IPTextField.getText());
                 stage.close();
             }
         });

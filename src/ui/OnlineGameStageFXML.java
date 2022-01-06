@@ -1,6 +1,11 @@
 package ui;
 
+import data.ClientRequestsHandler;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -17,7 +22,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 import utility.BoardUtilities;
+import utility.JsonConverter;
 
 public class OnlineGameStageFXML extends BorderPane {
 
@@ -56,6 +63,8 @@ public class OnlineGameStageFXML extends BorderPane {
     private Stage stage;
     private boolean symbolFlag, turnFlag;
     private String[][] xoBoard;
+    String Source_ip;
+    String destination_Ip;
 
     public OnlineGameStageFXML(Stage stage, String symbol, String opName) {
         this.stage = stage;
@@ -363,7 +372,20 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid1.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[0][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                try {
+                    InetAddress IP = InetAddress.getLocalHost();
+                    Source_ip = IP.getHostAddress();
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(OnlineGameStageFXML.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 0, 0);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -384,7 +406,13 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid2.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[0][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 0, 1);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -404,7 +432,13 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid3.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[0][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 0, 2);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -424,7 +458,13 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid4.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[1][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 1, 0);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -444,7 +484,13 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid5.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[1][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 1, 1);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -464,7 +510,13 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid6.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[1][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 1, 2);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -484,7 +536,13 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid7.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[2][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 2, 0);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -504,7 +562,13 @@ public class OnlineGameStageFXML extends BorderPane {
                 cellGrid8.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[2][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 2, 1);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -519,12 +583,24 @@ public class OnlineGameStageFXML extends BorderPane {
             }
         });
 
+        try {
+            InetAddress IP = InetAddress.getLocalHost();
+            Source_ip = IP.getHostAddress();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(OnlineGameStageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
         cellGrid9.setOnMouseClicked((event) -> {
             if (cellGrid9.getText().isEmpty()) {
                 cellGrid9.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[2][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+
+                JSONObject convertedMessage = JsonConverter.convertGameMessageToJson(Source_ip, destination_Ip, 2, 2);
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;

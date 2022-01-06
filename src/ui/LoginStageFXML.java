@@ -1,5 +1,6 @@
 package ui;
 
+import data.ClientRequestsHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+import utility.JsonConverter;
 
 public class LoginStageFXML extends AnchorPane {
 
@@ -182,7 +185,14 @@ public class LoginStageFXML extends AnchorPane {
         });
         
         LoginButton.setOnAction((ActionEvent event) -> {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+            
+            JSONObject convertedMessage = JsonConverter.convertLoginMessageToJson(UsernameTextField.getText(), PasswordTextField.getText());
+
+            clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
+            
             stage.close();
+            
            
             Parent root = new MainPageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
