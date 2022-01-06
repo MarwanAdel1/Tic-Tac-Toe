@@ -1,5 +1,6 @@
 package ui;
 
+import data.ClientRequestsHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+import utility.JsonConverter;
 
 public class RegistrationStageFXML extends AnchorPane {
 
@@ -33,11 +36,11 @@ public class RegistrationStageFXML extends AnchorPane {
     protected final Text text3;
     protected final Hyperlink loginHyperText;
     protected final Text gameText;
-    
+
     private Stage stage;
 
     public RegistrationStageFXML(Stage stage) {
-        this.stage=stage;
+        this.stage = stage;
 
         signUpButton = new Button();
         text = new Text();
@@ -209,11 +212,18 @@ public class RegistrationStageFXML extends AnchorPane {
         getChildren().add(gameText);
 
         signUpButton.setOnAction((ActionEvent event) -> {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+            
+            JSONObject convertedMessage = JsonConverter.convertRegisterMessageToJson(usernameTextField.getText(), passwordTextField.getText());
+
+            clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
+            
             Parent root = new LoginStageFXML(stage);
             stage.setScene(new Scene(root, 460, 400));
         });
-        
+
         loginHyperText.setOnAction((ActionEvent event) -> {
+
             Parent root = new LoginStageFXML(stage);
             stage.setScene(new Scene(root, 460, 400));
         });
