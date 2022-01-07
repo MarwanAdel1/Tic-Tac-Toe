@@ -11,7 +11,9 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
 import org.json.JSONObject;
+import utility.ClientRequestHandling;
 
 /**
  *
@@ -37,6 +39,8 @@ public class ClientRequestsHandler {
                         while (true) {
                             String messageFromServer = dataInputStream.readLine();
                             System.out.println("Server Message : " + messageFromServer);
+                            
+                            ClientRequestHandling.requestHandling(messageFromServer);
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(ClientRequestsHandler.class.getName()).log(Level.SEVERE, null, ex);
