@@ -290,7 +290,7 @@ public class RegistrationStageFXML extends AnchorPane {
                     && !confirmPasswordTextField.getText().trim().isEmpty()
                     && passwordTextField.getText().equals(confirmPasswordTextField.getText())) {
                 
-                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
 
                 JSONObject convertedMessage = JsonConverter.convertRegisterMessageToJson(usernameTextField.getText(), passwordTextField.getText());
 

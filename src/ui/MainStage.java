@@ -33,7 +33,7 @@ public class MainStage extends Application {
         dialog.initModality(Modality.WINDOW_MODAL);
         dialog.initOwner(primaryStage);
         
-        Parent dialogVbox = new IpPopUpWindowFXML(dialog);
+        Parent dialogVbox = new IpPopUpWindowFXML(dialog,primaryStage);
         Scene dialogScene = new Scene(dialogVbox, 300, 200);
         
         dialog.setScene(dialogScene);
