@@ -10,8 +10,10 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ui.InvitationStageFXMLRoot;
 import ui.LoginStageFXML;
 import ui.MainPageFXML;
+import ui.MainStage;
 import ui.MultiplayersStageFXML;
 import ui.RegistrationStageFXML;
 
@@ -59,8 +61,22 @@ public class ClientRequestHandling {
                     MainPageFXML.updateMainPageUI(jSONObject);
 
                 });
-            } else if (header.equalsIgnoreCase("Invite") || header.equalsIgnoreCase("Invite_Response")) { /// send to another client
-
+            } else if (header.equalsIgnoreCase("bye")) {
+                Platform.runLater(() -> {
+                    MainStage.showDisconnectionDialog();
+                });
+            } else if (header.equalsIgnoreCase("Invite")) { /// send to another client
+                Platform.runLater(() -> {
+                    MainPageFXML.showInvitationDialog(jSONObject);
+                });
+            } else if (header.equalsIgnoreCase("Invite_Response")) {
+                Platform.runLater(() -> {
+                    InvitationStageFXMLRoot.updateInvitationUI(jSONObject);
+                });
+            } else if (header.equalsIgnoreCase("Ready")) {
+                Platform.runLater(() -> {
+                    InvitationStageFXMLRoot.updateAcceptedInvitationUI(jSONObject);
+                });
             } else if (header.equalsIgnoreCase("Game")) {
 
             }

@@ -45,12 +45,13 @@ public class ClientRequestsHandler {
             public void handle(WindowEvent event) {
                 try {
                     if (socket != null) {
-                        printStream.println(JsonConverter.converGoOfflineToJson());
+                        printStream.println(JsonConverter.convertGoOfflineToJson());
 
                         dataInputStream.close();
                         printStream.close();
                         socket.close();
                     }
+                    
                     Platform.exit();
                     System.exit(0);
                 } catch (IOException ex) {
@@ -86,27 +87,26 @@ public class ClientRequestsHandler {
                 th = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        
-                        boolean flag = true;
                         try {
-                            while (flag) {
+                            while (true) {
                                 String messageFromServer = dataInputStream.readLine();
                                 System.out.println("Server Message : " + messageFromServer);
 
-                               
                                 if (messageFromServer != null) {//////////////  nstop l thread 
                                     ClientRequestHandling.requestHandling(messageFromServer);
-                                    
+                                } else {
+                                    th.stop();
                                 }
                             }
                         } catch (SocketException se) {
                             try {
-                                printStream.println(JsonConverter.converGoOfflineToJson());
+                                printStream.println(JsonConverter.convertGoOfflineToJson()); //// msh hitb3t *******
 
-                                flag = false;
                                 socket.close();
                                 printStream.close();
                                 dataInputStream.close();
+                                
+                                th.stop();
 
                             } catch (IOException ex) {
                                 Logger.getLogger(ClientRequestsHandler.class.getName()).log(Level.SEVERE, null, ex);

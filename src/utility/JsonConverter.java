@@ -63,12 +63,12 @@ public class JsonConverter {
     }
 
     //invitation
-    public static JSONObject convertInviteMessageToJson(String sourceIP, String destinationIP) {
+    public static JSONObject convertInviteMessageToJson(String myUsername, String opponentUsername) {
         JSONObject jSONObject = new JSONObject();
         try {
             jSONObject.put("Header", "Invite");
-            jSONObject.put("Source IP", sourceIP);
-            jSONObject.put("Destination IP", destinationIP);
+            jSONObject.put("InvitationOwner", myUsername);
+            jSONObject.put("OpponentReciever", opponentUsername);
 
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
@@ -78,15 +78,13 @@ public class JsonConverter {
     }
 
     //invitation response
-    public static JSONObject convertInviteResponseMessageToJson(String sourceIP, String destinationIP, boolean isResponse) {
+    public static JSONObject convertInviteResponseMessageToJson(String myUsername, String opponentUsername, boolean isResponse) {
         JSONObject jSONObject = new JSONObject();
         try {
-
             jSONObject.put("Header", "Invite_Response");
-            jSONObject.put("Source IP", sourceIP);
-            jSONObject.put("Destination IP", destinationIP);
+            jSONObject.put("InvitationOwner", myUsername);
+            jSONObject.put("OpponentReciever", opponentUsername);
             jSONObject.put("Response", isResponse);
-
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
         }
@@ -94,7 +92,7 @@ public class JsonConverter {
         return jSONObject;
     }
 
-    public static JSONObject converGoOfflineToJson() {
+    public static JSONObject convertGoOfflineToJson() {
         JSONObject jSONObject = new JSONObject();
         try {
             jSONObject.put("Header", "Database");
@@ -102,6 +100,21 @@ public class JsonConverter {
         } catch (JSONException ex) {
             Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return jSONObject;
+    }
+
+    public static JSONObject convertReadyNotificationToJson(String myUsername, String opponentUsername, boolean ready) {
+        JSONObject jSONObject = new JSONObject();
+
+        try {
+            jSONObject.put("Header", "Ready");
+            jSONObject.put("ReadyOwner", myUsername);
+            jSONObject.put("ReadyReciever", opponentUsername);
+            jSONObject.put("Ready", ready);            
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return jSONObject;
     }
 
