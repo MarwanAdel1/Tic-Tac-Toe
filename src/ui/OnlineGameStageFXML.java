@@ -57,14 +57,10 @@ public class OnlineGameStageFXML extends BorderPane {
     private boolean symbolFlag, turnFlag;
     private String[][] xoBoard;
 
-    public OnlineGameStageFXML(Stage stage, String symbol, String opName) {
+    public OnlineGameStageFXML(Stage stage, String symbol, String myName, String opName,boolean flag) {
         this.stage = stage;
-        if (symbol.equalsIgnoreCase("x")) {
-            symbolFlag = false;
-        } else {
-            symbolFlag = true;
-        }
-        turnFlag = false;
+        
+        turnFlag = flag; ///////
 
         xoBoard = new String[3][3];
         xoBoard[0][0] = "d";
@@ -164,7 +160,7 @@ public class OnlineGameStageFXML extends BorderPane {
         playerNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
         playerNameLabel.setPrefHeight(17.0);
         playerNameLabel.setPrefWidth(116.0);
-        playerNameLabel.setText("Player Name");
+        playerNameLabel.setText(myName);
         playerNameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         playerNameLabel.setFont(new Font("System Bold", 19.0));
 

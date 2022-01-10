@@ -47,9 +47,11 @@ public class InvitationResponseStageFXML extends BorderPane {
     protected static Button recordBt = new Button();
 
     private static Stage stage;
+    private static String user;
     private static String invitedUser;
     public InvitationResponseStageFXML(Stage stage, String user, String invitedUser) {
         this.stage = stage;
+        this.user=user;
         this.invitedUser=invitedUser;
 
         invitationText = new Text();
@@ -260,7 +262,10 @@ public class InvitationResponseStageFXML extends BorderPane {
     public static void showGame(JSONObject jSONObject) {
         try {
             if (jSONObject.getString("Symbol").equalsIgnoreCase("X")) {
-                Parent root = new OnlineGameStageFXML(stage, "X",invitedUser );
+                Parent root = new OnlineGameStageFXML(stage, "X",user ,invitedUser,false);
+                stage.setScene(new Scene(root, 600, 500));
+            }else if(jSONObject.getString("Symbol").equalsIgnoreCase("O")){
+                Parent root = new OnlineGameStageFXML(stage, "O",user ,invitedUser,false);
                 stage.setScene(new Scene(root, 600, 500));
             }
         } catch (JSONException ex) {
