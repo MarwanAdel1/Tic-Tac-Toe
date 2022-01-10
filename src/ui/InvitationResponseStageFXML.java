@@ -46,10 +46,11 @@ public class InvitationResponseStageFXML extends BorderPane {
     protected static Button invitationActionBt = new Button();
     protected static Button recordBt = new Button();
 
-    private Stage stage;
-
+    private static Stage stage;
+    private static String invitedUser;
     public InvitationResponseStageFXML(Stage stage, String user, String invitedUser) {
         this.stage = stage;
+        this.invitedUser=invitedUser;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -238,6 +239,7 @@ public class InvitationResponseStageFXML extends BorderPane {
             ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             if (invitationActionBt.getText().equalsIgnoreCase("Ready")) {
                 invitationActionBt.setText("Cancel");
+                invitationStatusText.setText("Waiting to start..");
                 recordBt.setVisible(false);
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertReadyNotificationToJson(user, invitedUser, true));
             } else if (invitationActionBt.getText().equalsIgnoreCase("Cancel")) {
@@ -249,7 +251,20 @@ public class InvitationResponseStageFXML extends BorderPane {
 
     }
 
-    public static void updateInvitationResponseUI(JSONObject jSONObject) {
+    public static void updateStartUI() {
+        progressIndicator.setVisible(true);
+        invitationActionBt.setVisible(false);
+        invitationStatusText.setText("Starting now...");
+    }
 
+    public static void showGame(JSONObject jSONObject) {
+        try {
+            if (jSONObject.getString("Symbol").equalsIgnoreCase("X")) {
+                Parent root = new OnlineGameStageFXML(stage, "X",invitedUser );
+                stage.setScene(new Scene(root, 600, 500));
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(InvitationResponseStageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

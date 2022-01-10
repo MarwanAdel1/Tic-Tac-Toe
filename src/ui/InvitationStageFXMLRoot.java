@@ -1,11 +1,15 @@
 package ui;
 
+import data.ClientRequestsHandler;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
+import utility.JsonConverter;
 
 public class InvitationStageFXMLRoot extends BorderPane {
 
@@ -44,10 +49,12 @@ public class InvitationStageFXMLRoot extends BorderPane {
     protected static Button invitationActionBt = new Button();
     protected static Button recordBt = new Button();
 
-    private Stage stage;
+    private static Stage stage;
 
+    private String invitedUser;
     public InvitationStageFXMLRoot(Stage stage, String user, String invitedUser) {
         this.stage = stage;
+        this.invitedUser=invitedUser;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -238,7 +245,10 @@ public class InvitationStageFXMLRoot extends BorderPane {
                 Parent root = new MultiplayersStageFXML(stage);
                 stage.setScene(new Scene(root, 600, 500));
             } else if (invitationActionBt.getText().equalsIgnoreCase("Start")) {
-                Parent root = new ChooseSymbolStageFXML(stage, "Online Player", 2);
+                ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertStartGameToJson(invitedUser));
+                
+                Parent root = new ChooseSymbolStageFXML(stage, invitedUser, 2);
                 stage.setScene(new Scene(root, 600, 500));
             }
         });
@@ -281,6 +291,18 @@ public class InvitationStageFXMLRoot extends BorderPane {
         } catch (JSONException ex) {
             Logger.getLogger(InvitationStageFXMLRoot.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static void showNotAvailable(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Not available now");
+        Optional<ButtonType> result = alert.showAndWait();
+        
+        if(result.get()==ButtonType.OK){
+            Parent root = new MultiplayersStageFXML(stage);
+            stage.setScene(new Scene(root,600,500));
+        }
+        
     }
 
 }

@@ -88,8 +88,10 @@ public class InvitationPopUPStageFXML extends AnchorPane {
 
         nameOfOpponent.setText(invitationOwner);
 
+        ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+        clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(invitationReciever, false));
+
         acceptButton.setOnAction((event) -> {
-            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteResponseMessageToJson(invitationReciever, invitationOwner, true));
             Parent root = new InvitationResponseStageFXML(stage, invitationReciever, invitationOwner);
             Scene scene = new Scene(root, 600, 500);
@@ -98,14 +100,14 @@ public class InvitationPopUPStageFXML extends AnchorPane {
         });
 
         declineButton.setOnAction((event) -> {
-            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteResponseMessageToJson(invitationReciever, invitationOwner, false));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(invitationReciever, true));
             popUpStage.close();
         });
 
         popUpStage.setOnCloseRequest((event) -> {
-            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteResponseMessageToJson(invitationReciever, invitationOwner, false));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(invitationReciever, true));
             popUpStage.close();
         });
 

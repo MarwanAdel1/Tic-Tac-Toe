@@ -115,6 +115,7 @@ public class MultiplayersStageFXML extends AnchorPane {
             
             ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteMessageToJson(myUsername, selectedUser));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myUsername, false));
             
             Parent root = new InvitationStageFXMLRoot(stage,myUsername,selectedUser);
             stage.setScene(new Scene(root, 600, 500));

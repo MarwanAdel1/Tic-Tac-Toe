@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ui.InvitationResponseStageFXML;
 import ui.InvitationStageFXMLRoot;
 import ui.LoginStageFXML;
 import ui.MainPageFXML;
@@ -25,9 +26,7 @@ public class ClientRequestHandling {
 
     public static void requestHandling(String messageFromClient) {
         try {
-            final JSONObject jSONObject;
-
-            jSONObject = new JSONObject(messageFromClient);//
+            final JSONObject jSONObject = new JSONObject(messageFromClient);//
             String header = jSONObject.getString("Header");
 
             if (header.equalsIgnoreCase("Database")) { /// to/from Database
@@ -73,9 +72,21 @@ public class ClientRequestHandling {
                 Platform.runLater(() -> {
                     InvitationStageFXMLRoot.updateInvitationUI(jSONObject);
                 });
+            } else if (header.equalsIgnoreCase("NotAvailable")) {
+                Platform.runLater(() -> {
+                    InvitationStageFXMLRoot.showNotAvailable();
+                });
             } else if (header.equalsIgnoreCase("Ready")) {
                 Platform.runLater(() -> {
                     InvitationStageFXMLRoot.updateAcceptedInvitationUI(jSONObject);
+                });
+            }else if(header.equalsIgnoreCase("Start")){
+                Platform.runLater(() -> {
+                    InvitationResponseStageFXML.updateStartUI();
+                });
+            }else if(header.equalsIgnoreCase("ShowGame")){
+                Platform.runLater(() -> {
+                    InvitationResponseStageFXML.showGame(jSONObject);
                 });
             } else if (header.equalsIgnoreCase("Game")) {
 

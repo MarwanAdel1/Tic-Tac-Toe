@@ -61,6 +61,20 @@ public class JsonConverter {
         System.out.println(jSONObject);
         return jSONObject;
     }
+    
+    public static JSONObject convertShowGameToAllToJson(String opponentPlayer, String symbol) {
+        JSONObject jSONObject = new JSONObject();
+        try {
+            jSONObject.put("Header", "ShowGame");
+            jSONObject.put("OpponentPlayer", opponentPlayer);
+            jSONObject.put("Symbol", symbol);
+            
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println(jSONObject);
+        return jSONObject;
+    }
 
     //invitation
     public static JSONObject convertInviteMessageToJson(String myUsername, String opponentUsername) {
@@ -110,7 +124,36 @@ public class JsonConverter {
             jSONObject.put("Header", "Ready");
             jSONObject.put("ReadyOwner", myUsername);
             jSONObject.put("ReadyReciever", opponentUsername);
-            jSONObject.put("Ready", ready);            
+            jSONObject.put("Ready", ready);
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return jSONObject;
+    }
+
+    public static JSONObject convertAvailablityToJson(String myUsername, boolean available) {
+        JSONObject jSONObject = new JSONObject();
+
+        try {
+            jSONObject.put("Header", "Available");
+            jSONObject.put("User", myUsername);
+            jSONObject.put("Availablity", available);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return jSONObject;
+    }
+
+    public static JSONObject convertStartGameToJson(String opponentUsername) {
+        JSONObject jSONObject = new JSONObject();
+
+        try {
+            jSONObject.put("Header", "Start");
+            jSONObject.put("OpponentReciever", opponentUsername);
+            
         } catch (JSONException ex) {
             Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
         }
