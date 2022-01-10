@@ -16,6 +16,7 @@ import ui.LoginStageFXML;
 import ui.MainPageFXML;
 import ui.MainStage;
 import ui.MultiplayersStageFXML;
+import ui.OnlineGameStageFXML;
 import ui.RegistrationStageFXML;
 
 /**
@@ -89,7 +90,9 @@ public class ClientRequestHandling {
                     InvitationResponseStageFXML.showGame(jSONObject);
                 });
             } else if (header.equalsIgnoreCase("Game")) {
-
+                Platform.runLater(() -> {
+                    OnlineGameStageFXML.playAndChangeFlags(jSONObject);
+                });
             }
         } catch (JSONException ex) {
             Logger.getLogger(ClientRequestHandling.class.getName()).log(Level.SEVERE, null, ex);

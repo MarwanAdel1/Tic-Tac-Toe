@@ -51,10 +51,12 @@ public class InvitationStageFXMLRoot extends BorderPane {
 
     private static Stage stage;
 
-    private String invitedUser;
+    private static String user;
+    private static String invitedUser;
     public InvitationStageFXMLRoot(Stage stage, String user, String invitedUser) {
         this.stage = stage;
         this.invitedUser=invitedUser;
+        this.user=user;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -303,6 +305,20 @@ public class InvitationStageFXMLRoot extends BorderPane {
             stage.setScene(new Scene(root,600,500));
         }
         
+    }
+
+    /**
+     * @return the user
+     */
+    public static String getUser() {
+        return user;
+    }
+
+    /**
+     * @return the invitedUser
+     */
+    public static String getInvitedUser() {
+        return invitedUser;
     }
 
 }

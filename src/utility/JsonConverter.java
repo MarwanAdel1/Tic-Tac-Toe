@@ -46,12 +46,12 @@ public class JsonConverter {
     }
 
     //game
-    public static JSONObject convertGameMessageToJson(String sourceIP, String destinationIP, int row, int col) {
+    public static JSONObject convertGameMessageToJson(String opponentUsername, String symbol, int row, int col) {
         JSONObject jSONObject = new JSONObject();
         try {
             jSONObject.put("Header", "Game");
-            jSONObject.put("Source IP", sourceIP);
-            jSONObject.put("Destination IP", destinationIP);
+            jSONObject.put("OpponentPlayer", opponentUsername);
+            jSONObject.put("Symbol", symbol);
             jSONObject.put("Row", row);
             jSONObject.put("Column", col);
 
