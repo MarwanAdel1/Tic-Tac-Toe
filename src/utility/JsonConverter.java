@@ -16,9 +16,8 @@ import org.json.*;
 public class JsonConverter {
 
     public static JSONObject convertRegisterMessageToJson(String userName, String password) {
-        JSONObject jSONObject = null;
+        JSONObject jSONObject = new JSONObject();
         try {
-            jSONObject = new JSONObject();
             jSONObject.put("Header", "Database");
             jSONObject.put("SubHeader", "Register");
             jSONObject.put("Username", userName);
@@ -27,15 +26,13 @@ public class JsonConverter {
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
         }
-        System.out.println(jSONObject);
         return jSONObject;
     }
 
     //login 
     public static JSONObject convertLoginMessageToJson(String userName, String password) {
-        JSONObject jSONObject = null;
+        JSONObject jSONObject = new JSONObject();
         try {
-            jSONObject = new JSONObject();
             jSONObject.put("Header", "Database");
             jSONObject.put("SubHeader", "Login");
             jSONObject.put("Username", userName);
@@ -49,13 +46,12 @@ public class JsonConverter {
     }
 
     //game
-    public static JSONObject convertGameMessageToJson(String sourceIP, String destinationIP, int row, int col) {
-        JSONObject jSONObject = null;
+    public static JSONObject convertGameMessageToJson(String opponentUsername, String symbol, int row, int col) {
+        JSONObject jSONObject = new JSONObject();
         try {
-            jSONObject = new JSONObject();
             jSONObject.put("Header", "Game");
-            jSONObject.put("Source IP", sourceIP);
-            jSONObject.put("Destination IP", destinationIP);
+            jSONObject.put("OpponentPlayer", opponentUsername);
+            jSONObject.put("Symbol", symbol);
             jSONObject.put("Row", row);
             jSONObject.put("Column", col);
 
@@ -65,15 +61,28 @@ public class JsonConverter {
         System.out.println(jSONObject);
         return jSONObject;
     }
+    
+    public static JSONObject convertShowGameToAllToJson(String opponentPlayer, String symbol) {
+        JSONObject jSONObject = new JSONObject();
+        try {
+            jSONObject.put("Header", "ShowGame");
+            jSONObject.put("OpponentPlayer", opponentPlayer);
+            jSONObject.put("Symbol", symbol);
+            
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println(jSONObject);
+        return jSONObject;
+    }
 
     //invitation
-    public static JSONObject convertInviteMessageToJson(String sourceIP, String destinationIP) {
-        JSONObject jSONObject = null;
+    public static JSONObject convertInviteMessageToJson(String myUsername, String opponentUsername) {
+        JSONObject jSONObject = new JSONObject();
         try {
-            jSONObject = new JSONObject();
             jSONObject.put("Header", "Invite");
-            jSONObject.put("Source IP", sourceIP);
-            jSONObject.put("Destination IP", destinationIP);
+            jSONObject.put("InvitationOwner", myUsername);
+            jSONObject.put("OpponentReciever", opponentUsername);
 
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
@@ -83,19 +92,72 @@ public class JsonConverter {
     }
 
     //invitation response
-    public static JSONObject convertInviteResponseMessageToJson(String sourceIP, String destinationIP, boolean isResponse) {
-        JSONObject jSONObject = null;
+    public static JSONObject convertInviteResponseMessageToJson(String myUsername, String opponentUsername, boolean isResponse) {
+        JSONObject jSONObject = new JSONObject();
         try {
-            jSONObject = new JSONObject();
             jSONObject.put("Header", "Invite_Response");
-            jSONObject.put("Source IP", sourceIP);
-            jSONObject.put("Destination IP", destinationIP);
+            jSONObject.put("InvitationOwner", myUsername);
+            jSONObject.put("OpponentReciever", opponentUsername);
             jSONObject.put("Response", isResponse);
-
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
         }
         System.out.println(jSONObject);
+        return jSONObject;
+    }
+
+    public static JSONObject convertGoOfflineToJson() {
+        JSONObject jSONObject = new JSONObject();
+        try {
+            jSONObject.put("Header", "Database");
+            jSONObject.put("SubHeader", "GoOffline");
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return jSONObject;
+    }
+
+    public static JSONObject convertReadyNotificationToJson(String myUsername, String opponentUsername, boolean ready) {
+        JSONObject jSONObject = new JSONObject();
+
+        try {
+            jSONObject.put("Header", "Ready");
+            jSONObject.put("ReadyOwner", myUsername);
+            jSONObject.put("ReadyReciever", opponentUsername);
+            jSONObject.put("Ready", ready);
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return jSONObject;
+    }
+
+    public static JSONObject convertAvailablityToJson(String myUsername, boolean available) {
+        JSONObject jSONObject = new JSONObject();
+
+        try {
+            jSONObject.put("Header", "Available");
+            jSONObject.put("User", myUsername);
+            jSONObject.put("Availablity", available);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return jSONObject;
+    }
+
+    public static JSONObject convertStartGameToJson(String opponentUsername) {
+        JSONObject jSONObject = new JSONObject();
+
+        try {
+            jSONObject.put("Header", "Start");
+            jSONObject.put("OpponentReciever", opponentUsername);
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return jSONObject;
     }
 

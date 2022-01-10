@@ -3,10 +3,12 @@ package ui;
 import data.ClientRequestsHandler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -28,17 +30,25 @@ public class RegistrationStageFXML extends AnchorPane {
     protected final RowConstraints rowConstraints;
     protected final RowConstraints rowConstraints0;
     protected final RowConstraints rowConstraints1;
+    protected final RowConstraints rowConstraints2;
+    protected final RowConstraints rowConstraints3;
+    protected final RowConstraints rowConstraints4;
     protected final Text text0;
     protected final Text text1;
     protected final TextField usernameTextField;
     protected final TextField passwordTextField;
     protected final Text text2;
     protected final TextField confirmPasswordTextField;
+    protected static Label username_error = new Label();
+
+    protected static Label password_error = new Label();
+
+    protected final Label confirmPass_error;
     protected final Text text3;
     protected final Hyperlink loginHyperText;
     protected final Text gameText;
 
-    private Stage stage;
+    private static Stage stage;
 
     public RegistrationStageFXML(Stage stage) {
         this.stage = stage;
@@ -51,12 +61,17 @@ public class RegistrationStageFXML extends AnchorPane {
         rowConstraints = new RowConstraints();
         rowConstraints0 = new RowConstraints();
         rowConstraints1 = new RowConstraints();
+        rowConstraints2 = new RowConstraints();
+        rowConstraints3 = new RowConstraints();
+        rowConstraints4 = new RowConstraints();
         text0 = new Text();
         text1 = new Text();
         usernameTextField = new TextField();
         passwordTextField = new TextField();
         text2 = new Text();
         confirmPasswordTextField = new TextField();
+
+        confirmPass_error = new Label();
         text3 = new Text();
         loginHyperText = new Hyperlink();
         gameText = new Text();
@@ -69,8 +84,8 @@ public class RegistrationStageFXML extends AnchorPane {
         setPrefHeight(403.0);
         setPrefWidth(464.0);
 
-        signUpButton.setLayoutX(176.0);
-        signUpButton.setLayoutY(277.0);
+        signUpButton.setLayoutX(168.0);
+        signUpButton.setLayoutY(316.0);
         signUpButton.setMnemonicParsing(false);
         signUpButton.setPrefHeight(32.0);
         signUpButton.setPrefWidth(96.0);
@@ -90,9 +105,9 @@ public class RegistrationStageFXML extends AnchorPane {
         text.setText("Already hava an account?..");
         text.setFont(new Font(18.0));
 
-        gridPane.setLayoutX(35.0);
-        gridPane.setLayoutY(146.0);
-        gridPane.setPrefHeight(120.0);
+        gridPane.setLayoutX(32.0);
+        gridPane.setLayoutY(132.0);
+        gridPane.setPrefHeight(180.0);
         gridPane.setPrefWidth(400.0);
 
         columnConstraints.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
@@ -105,20 +120,35 @@ public class RegistrationStageFXML extends AnchorPane {
         columnConstraints0.setMinWidth(10.0);
         columnConstraints0.setPrefWidth(266.0);
 
-        rowConstraints.setMaxHeight(128.0);
-        rowConstraints.setMinHeight(10.0);
-        rowConstraints.setPrefHeight(70.0);
+        rowConstraints.setMaxHeight(40.0);
+        rowConstraints.setMinHeight(40.0);
+        rowConstraints.setPrefHeight(40.0);
         rowConstraints.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
-        rowConstraints0.setMaxHeight(154.0);
-        rowConstraints0.setMinHeight(10.0);
-        rowConstraints0.setPrefHeight(70.0);
+        rowConstraints0.setMaxHeight(20.0);
+        rowConstraints0.setMinHeight(20.0);
+        rowConstraints0.setPrefHeight(20.0);
         rowConstraints0.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
-        rowConstraints1.setMaxHeight(154.0);
-        rowConstraints1.setMinHeight(10.0);
-        rowConstraints1.setPrefHeight(70.0);
+        rowConstraints1.setMaxHeight(40.0);
+        rowConstraints1.setMinHeight(40.0);
+        rowConstraints1.setPrefHeight(40.0);
         rowConstraints1.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
+
+        rowConstraints2.setMaxHeight(20.0);
+        rowConstraints2.setMinHeight(20.0);
+        rowConstraints2.setPrefHeight(20.0);
+        rowConstraints2.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
+
+        rowConstraints3.setMaxHeight(40.0);
+        rowConstraints3.setMinHeight(40.0);
+        rowConstraints3.setPrefHeight(40.0);
+        rowConstraints3.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
+
+        rowConstraints4.setMaxHeight(20.0);
+        rowConstraints4.setMinHeight(20.0);
+        rowConstraints4.setPrefHeight(20.0);
+        rowConstraints4.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
         GridPane.setHalignment(text0, javafx.geometry.HPos.LEFT);
         GridPane.setValignment(text0, javafx.geometry.VPos.CENTER);
@@ -129,7 +159,7 @@ public class RegistrationStageFXML extends AnchorPane {
         text0.setFont(new Font(16.0));
 
         GridPane.setHalignment(text1, javafx.geometry.HPos.LEFT);
-        GridPane.setRowIndex(text1, 1);
+        GridPane.setRowIndex(text1, 2);
         GridPane.setValignment(text1, javafx.geometry.VPos.CENTER);
         text1.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text1.setStrokeWidth(0.0);
@@ -148,7 +178,7 @@ public class RegistrationStageFXML extends AnchorPane {
 
         GridPane.setColumnIndex(passwordTextField, 1);
         GridPane.setHalignment(passwordTextField, javafx.geometry.HPos.CENTER);
-        GridPane.setRowIndex(passwordTextField, 1);
+        GridPane.setRowIndex(passwordTextField, 2);
         GridPane.setValignment(passwordTextField, javafx.geometry.VPos.CENTER);
         passwordTextField.setMaxHeight(USE_PREF_SIZE);
         passwordTextField.setMaxWidth(USE_PREF_SIZE);
@@ -158,7 +188,7 @@ public class RegistrationStageFXML extends AnchorPane {
         passwordTextField.setPrefWidth(241.0);
 
         GridPane.setHalignment(text2, javafx.geometry.HPos.LEFT);
-        GridPane.setRowIndex(text2, 2);
+        GridPane.setRowIndex(text2, 4);
         GridPane.setValignment(text2, javafx.geometry.VPos.CENTER);
         text2.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text2.setStrokeWidth(0.0);
@@ -167,17 +197,38 @@ public class RegistrationStageFXML extends AnchorPane {
 
         GridPane.setColumnIndex(confirmPasswordTextField, 1);
         GridPane.setHalignment(confirmPasswordTextField, javafx.geometry.HPos.CENTER);
-        GridPane.setRowIndex(confirmPasswordTextField, 2);
+        GridPane.setRowIndex(confirmPasswordTextField, 4);
         GridPane.setValignment(confirmPasswordTextField, javafx.geometry.VPos.CENTER);
         confirmPasswordTextField.setMaxHeight(USE_PREF_SIZE);
         confirmPasswordTextField.setMaxWidth(USE_PREF_SIZE);
         confirmPasswordTextField.setMinHeight(USE_PREF_SIZE);
         confirmPasswordTextField.setMinWidth(USE_PREF_SIZE);
         confirmPasswordTextField.setPrefHeight(31.0);
-        confirmPasswordTextField.setPrefWidth(241.0);
+        confirmPasswordTextField.setPrefWidth(240.0);
+
+        GridPane.setColumnIndex(username_error, 1);
+        GridPane.setRowIndex(username_error, 1);
+        username_error.setPrefHeight(17.0);
+        username_error.setPrefWidth(229.0);
+        username_error.setTextFill(javafx.scene.paint.Color.RED);
+        GridPane.setMargin(username_error, new Insets(0.0, 0.0, 0.0, 20.0));
+
+        GridPane.setColumnIndex(password_error, 1);
+        GridPane.setRowIndex(password_error, 3);
+        password_error.setPrefHeight(17.0);
+        password_error.setPrefWidth(233.0);
+        password_error.setTextFill(javafx.scene.paint.Color.RED);
+        GridPane.setMargin(password_error, new Insets(0.0, 0.0, 0.0, 20.0));
+
+        GridPane.setColumnIndex(confirmPass_error, 1);
+        GridPane.setRowIndex(confirmPass_error, 5);
+        confirmPass_error.setPrefHeight(17.0);
+        confirmPass_error.setPrefWidth(228.0);
+        confirmPass_error.setTextFill(javafx.scene.paint.Color.RED);
+        GridPane.setMargin(confirmPass_error, new Insets(0.0, 0.0, 0.0, 20.0));
 
         text3.setLayoutX(149.0);
-        text3.setLayoutY(125.0);
+        text3.setLayoutY(113.0);
         text3.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text3.setStrokeWidth(0.0);
         text3.setText("Sign-Up");
@@ -207,33 +258,68 @@ public class RegistrationStageFXML extends AnchorPane {
         gridPane.getRowConstraints().add(rowConstraints);
         gridPane.getRowConstraints().add(rowConstraints0);
         gridPane.getRowConstraints().add(rowConstraints1);
+        gridPane.getRowConstraints().add(rowConstraints2);
+        gridPane.getRowConstraints().add(rowConstraints3);
+        gridPane.getRowConstraints().add(rowConstraints4);
         gridPane.getChildren().add(text0);
         gridPane.getChildren().add(text1);
         gridPane.getChildren().add(usernameTextField);
         gridPane.getChildren().add(passwordTextField);
         gridPane.getChildren().add(text2);
         gridPane.getChildren().add(confirmPasswordTextField);
+        gridPane.getChildren().add(username_error);
+        gridPane.getChildren().add(password_error);
+        gridPane.getChildren().add(confirmPass_error);
         getChildren().add(gridPane);
         getChildren().add(text3);
         getChildren().add(loginHyperText);
         getChildren().add(gameText);
 
         signUpButton.setOnAction((ActionEvent event) -> {
-            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+            username_error.setText("");
+            password_error.setText("");
+            confirmPass_error.setText("");
             
-            JSONObject convertedMessage = JsonConverter.convertRegisterMessageToJson(usernameTextField.getText(), passwordTextField.getText());
+            if (usernameTextField.getText().trim().isEmpty()) {
+                username_error.setText("Please Enter A Valid Username");
+            }
 
-            clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
-            
-            Parent root = new LoginStageFXML(stage);
-            stage.setScene(new Scene(root, 460, 400));
+            if (passwordTextField.getText().trim().isEmpty()) {
+                password_error.setText("Please Enter The Password");
+            }
+
+            if (!passwordTextField.getText().equals(confirmPasswordTextField.getText())) {
+                confirmPass_error.setText("Not Match");
+            }
+
+            if (!usernameTextField.getText().trim().isEmpty()
+                    && !passwordTextField.getText().trim().isEmpty()
+                    && !confirmPasswordTextField.getText().trim().isEmpty()
+                    && passwordTextField.getText().equals(confirmPasswordTextField.getText())) {
+                
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+
+                JSONObject convertedMessage = JsonConverter.convertRegisterMessageToJson(usernameTextField.getText(), passwordTextField.getText());
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
+
+            }
+
         });
 
         loginHyperText.setOnAction((ActionEvent event) -> {
-
             Parent root = new LoginStageFXML(stage);
             stage.setScene(new Scene(root, 460, 400));
         });
 
+    }
+
+    public static void updateRegisterationUI(int id) {
+        if (id == -1) {
+            username_error.setText("This username is already taken");
+        } else {
+            Parent root = new LoginStageFXML(stage);
+            stage.setScene(new Scene(root, 460, 400));
+        }
     }
 }

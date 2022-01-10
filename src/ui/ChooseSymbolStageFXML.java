@@ -1,5 +1,6 @@
 package ui;
 
+import data.ClientRequestsHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,6 +9,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import utility.ClientRequestHandling;
+import utility.JsonConverter;
 
 public class ChooseSymbolStageFXML extends AnchorPane {
 
@@ -18,7 +21,7 @@ public class ChooseSymbolStageFXML extends AnchorPane {
     
     private Stage stage;
 
-    public ChooseSymbolStageFXML(Stage stage,String opName,int mode) {
+    public ChooseSymbolStageFXML(Stage stage, String opName,int mode) {
         this.stage=stage;
 
         XButtonChoose = new Button();
@@ -82,7 +85,10 @@ public class ChooseSymbolStageFXML extends AnchorPane {
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 case 2:
-                    root = new OnlineGameStageFXML(stage,"X","Online Player");
+                    ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                    clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "X"));
+                    
+                    root = new OnlineGameStageFXML(stage,"X", InvitationStageFXMLRoot.getUser(), opName,true);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 default:
@@ -104,7 +110,10 @@ public class ChooseSymbolStageFXML extends AnchorPane {
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 case 2:
-                    root = new OnlineGameStageFXML(stage,"O","Online Player");
+                    ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                    clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "X"));
+                    
+                    root = new OnlineGameStageFXML(stage,"O",InvitationStageFXMLRoot.getUser(),opName,true);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 default:

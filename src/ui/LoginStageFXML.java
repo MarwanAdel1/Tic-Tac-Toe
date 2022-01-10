@@ -4,6 +4,7 @@ import data.ClientRequestsHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
@@ -15,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONObject;
+import static ui.RegistrationStageFXML.username_error;
 import utility.JsonConverter;
 
 public class LoginStageFXML extends AnchorPane {
@@ -28,16 +30,16 @@ public class LoginStageFXML extends AnchorPane {
     protected final RowConstraints rowConstraints0;
     protected final Text text0;
     protected final Text text1;
-    protected final TextField UsernameTextField;
-    protected final TextField PasswordTextField;
+    protected final TextField usernameTextField;
+    protected final TextField passwordTextField;
     protected final Text text2;
     protected final Hyperlink signupHyperText;
     protected final Text gameText;
-    
-    private Stage stage;
+
+    private static Stage stage;
 
     public LoginStageFXML(Stage stage) {
-        this.stage=stage;
+        this.stage = stage;
 
         LoginButton = new Button();
         text = new Text();
@@ -48,8 +50,8 @@ public class LoginStageFXML extends AnchorPane {
         rowConstraints0 = new RowConstraints();
         text0 = new Text();
         text1 = new Text();
-        UsernameTextField = new TextField();
-        PasswordTextField = new TextField();
+        usernameTextField = new TextField();
+        passwordTextField = new TextField();
         text2 = new Text();
         signupHyperText = new Hyperlink();
         gameText = new Text();
@@ -118,26 +120,26 @@ public class LoginStageFXML extends AnchorPane {
         text1.setText("Password:");
         text1.setFont(new Font(24.0));
 
-        GridPane.setColumnIndex(UsernameTextField, 1);
-        GridPane.setHalignment(UsernameTextField, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(UsernameTextField, javafx.geometry.VPos.CENTER);
-        UsernameTextField.setMaxHeight(USE_PREF_SIZE);
-        UsernameTextField.setMaxWidth(USE_PREF_SIZE);
-        UsernameTextField.setMinHeight(USE_PREF_SIZE);
-        UsernameTextField.setMinWidth(USE_PREF_SIZE);
-        UsernameTextField.setPrefHeight(31.0);
-        UsernameTextField.setPrefWidth(239.0);
+        GridPane.setColumnIndex(usernameTextField, 1);
+        GridPane.setHalignment(usernameTextField, javafx.geometry.HPos.CENTER);
+        GridPane.setValignment(usernameTextField, javafx.geometry.VPos.CENTER);
+        usernameTextField.setMaxHeight(USE_PREF_SIZE);
+        usernameTextField.setMaxWidth(USE_PREF_SIZE);
+        usernameTextField.setMinHeight(USE_PREF_SIZE);
+        usernameTextField.setMinWidth(USE_PREF_SIZE);
+        usernameTextField.setPrefHeight(31.0);
+        usernameTextField.setPrefWidth(239.0);
 
-        GridPane.setColumnIndex(PasswordTextField, 1);
-        GridPane.setHalignment(PasswordTextField, javafx.geometry.HPos.CENTER);
-        GridPane.setRowIndex(PasswordTextField, 1);
-        GridPane.setValignment(PasswordTextField, javafx.geometry.VPos.CENTER);
-        PasswordTextField.setMaxHeight(USE_PREF_SIZE);
-        PasswordTextField.setMaxWidth(USE_PREF_SIZE);
-        PasswordTextField.setMinHeight(USE_PREF_SIZE);
-        PasswordTextField.setMinWidth(USE_PREF_SIZE);
-        PasswordTextField.setPrefHeight(31.0);
-        PasswordTextField.setPrefWidth(241.0);
+        GridPane.setColumnIndex(passwordTextField, 1);
+        GridPane.setHalignment(passwordTextField, javafx.geometry.HPos.CENTER);
+        GridPane.setRowIndex(passwordTextField, 1);
+        GridPane.setValignment(passwordTextField, javafx.geometry.VPos.CENTER);
+        passwordTextField.setMaxHeight(USE_PREF_SIZE);
+        passwordTextField.setMaxWidth(USE_PREF_SIZE);
+        passwordTextField.setMinHeight(USE_PREF_SIZE);
+        passwordTextField.setMinWidth(USE_PREF_SIZE);
+        passwordTextField.setPrefHeight(31.0);
+        passwordTextField.setPrefWidth(241.0);
 
         text2.setLayoutX(167.0);
         text2.setLayoutY(126.0);
@@ -171,33 +173,59 @@ public class LoginStageFXML extends AnchorPane {
         gridPane.getRowConstraints().add(rowConstraints0);
         gridPane.getChildren().add(text0);
         gridPane.getChildren().add(text1);
-        gridPane.getChildren().add(UsernameTextField);
-        gridPane.getChildren().add(PasswordTextField);
+        gridPane.getChildren().add(usernameTextField);
+        gridPane.getChildren().add(passwordTextField);
         getChildren().add(gridPane);
         getChildren().add(text2);
         getChildren().add(signupHyperText);
         getChildren().add(gameText);
-        
-        
+
         signupHyperText.setOnAction((ActionEvent event) -> {
             Parent root = new RegistrationStageFXML(stage);
             stage.setScene(new Scene(root, 460, 400));
         });
-        
-        LoginButton.setOnAction((ActionEvent event) -> {
-            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
-            
-            JSONObject convertedMessage = JsonConverter.convertLoginMessageToJson(UsernameTextField.getText(), PasswordTextField.getText());
 
-            clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
-            
-            stage.close();
-            
-           
-            Parent root = new MainPageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
-            stage.show();
+        LoginButton.setOnAction((ActionEvent event) -> {
+            if (usernameTextField.getText().trim().isEmpty() || passwordTextField.getText().trim().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Please Fill All The Fields");
+                alert.showAndWait();
+            }
+
+            if (!usernameTextField.getText().trim().isEmpty() && !passwordTextField.getText().trim().isEmpty()) {
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+
+                JSONObject convertedMessage = JsonConverter.convertLoginMessageToJson(usernameTextField.getText(), passwordTextField.getText());
+
+                clientRequestsHandler.sendJsonMessageToServer(convertedMessage);
+            }
         });
 
     }
+
+    public static void updateLoginUI(int id) {
+        switch (id) {
+            case -2:
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Already Logged In");
+                    alert.showAndWait();
+                    break;
+                }
+            case -1:
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Username/Password is incorrect");
+                    alert.showAndWait();
+                    break;
+                }
+            default:
+                stage.close();
+                Parent root = new MainPageFXML(stage);
+                stage.setScene(new Scene(root, 600, 500));
+                stage.show();
+                break;
+        }
+    }
+
 }

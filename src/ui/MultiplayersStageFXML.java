@@ -1,8 +1,12 @@
 package ui;
 
+import data.ClientRequestsHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -11,6 +15,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import utility.JsonConverter;
 
 public class MultiplayersStageFXML extends AnchorPane {
 
@@ -20,20 +28,21 @@ public class MultiplayersStageFXML extends AnchorPane {
     protected final Button refreshBt;
     protected final Button inviteBt;
     protected final ScrollPane scrollPane;
-    protected final ListView listView;
+    protected static ListView listView = new ListView();
     
+    private static String myUsername;
+
     private Stage stage;
 
     public MultiplayersStageFXML(Stage stage) {
-        this.stage=stage;
-        
+        this.stage = stage;
+
         gameText = new Text();
         label = new Label();
         backBt = new Button();
         refreshBt = new Button();
         inviteBt = new Button();
         scrollPane = new ScrollPane();
-        listView = new ListView();
 
         setId("AnchorPane");
         setPrefHeight(500.0);
@@ -90,21 +99,48 @@ public class MultiplayersStageFXML extends AnchorPane {
         getChildren().add(refreshBt);
         getChildren().add(inviteBt);
         getChildren().add(scrollPane);
-        
-        
+
         refreshBt.setOnAction((ActionEvent event) -> {
-            
+
         });
-        
+
         backBt.setOnAction((ActionEvent event) -> {
-            Parent root= new MainPageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));     
-        });
-        
-        inviteBt.setOnAction((ActionEvent event) -> {
-            Parent root = new InvitationStageFXMLRoot(stage);
+            Parent root = new MainPageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
+
+        inviteBt.setOnAction((ActionEvent event) -> {
+            String selectedUser = (String) listView.getSelectionModel().getSelectedItem();
+            System.out.println(selectedUser);
+            
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteMessageToJson(myUsername, selectedUser));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myUsername, false));
+            
+            Parent root = new InvitationStageFXMLRoot(stage,myUsername,selectedUser);
+            stage.setScene(new Scene(root, 600, 500));
+        });
+
+    }
+
+    public static void updateOnlineListUI(JSONObject jSONObject) {
+        JSONArray jSONArray;
+        try {
+            jSONArray = jSONObject.getJSONArray("OnlinePlayers");
+            for (int i = 0; i < jSONArray.length(); i++) {
+                try {
+                    listView.getItems().add(jSONArray.get(i));
+                } catch (JSONException ex) {
+                    Logger.getLogger(MultiplayersStageFXML.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            myUsername=jSONObject.getString("myUsername");
+            listView.getItems().remove(myUsername);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(MultiplayersStageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 }
