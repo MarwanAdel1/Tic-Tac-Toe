@@ -193,7 +193,7 @@ public class LoginStageFXML extends AnchorPane {
             }
 
             if (!usernameTextField.getText().trim().isEmpty() && !passwordTextField.getText().trim().isEmpty()) {
-                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(""); ///// xxxxxxx
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
 
                 JSONObject convertedMessage = JsonConverter.convertLoginMessageToJson(usernameTextField.getText(), passwordTextField.getText());
 
@@ -204,19 +204,27 @@ public class LoginStageFXML extends AnchorPane {
     }
 
     public static void updateLoginUI(int id) {
-        if (id ==-2) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Already Logged In");
-            alert.showAndWait();
-        } else if (id == -1) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Username/Password is incorrect");
-            alert.showAndWait();
-        } else {
-            stage.close();
-            Parent root = new MainPageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
-            stage.show();
+        switch (id) {
+            case -2:
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Already Logged In");
+                    alert.showAndWait();
+                    break;
+                }
+            case -1:
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Username/Password is incorrect");
+                    alert.showAndWait();
+                    break;
+                }
+            default:
+                stage.close();
+                Parent root = new MainPageFXML(stage);
+                stage.setScene(new Scene(root, 600, 500));
+                stage.show();
+                break;
         }
     }
 

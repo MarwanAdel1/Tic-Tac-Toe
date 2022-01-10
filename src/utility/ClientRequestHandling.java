@@ -10,9 +10,13 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ui.InvitationResponseStageFXML;
+import ui.InvitationStageFXMLRoot;
 import ui.LoginStageFXML;
 import ui.MainPageFXML;
+import ui.MainStage;
 import ui.MultiplayersStageFXML;
+import ui.OnlineGameStageFXML;
 import ui.RegistrationStageFXML;
 
 /**
@@ -23,9 +27,7 @@ public class ClientRequestHandling {
 
     public static void requestHandling(String messageFromClient) {
         try {
-            final JSONObject jSONObject;
-
-            jSONObject = new JSONObject(messageFromClient);//
+            final JSONObject jSONObject = new JSONObject(messageFromClient);//
             String header = jSONObject.getString("Header");
 
             if (header.equalsIgnoreCase("Database")) { /// to/from Database
@@ -59,10 +61,38 @@ public class ClientRequestHandling {
                     MainPageFXML.updateMainPageUI(jSONObject);
 
                 });
-            } else if (header.equalsIgnoreCase("Invite") || header.equalsIgnoreCase("Invite_Response")) { /// send to another client
-
+            } else if (header.equalsIgnoreCase("bye")) {
+                Platform.runLater(() -> {
+                    MainStage.showDisconnectionDialog();
+                });
+            } else if (header.equalsIgnoreCase("Invite")) { /// send to another client
+                Platform.runLater(() -> {
+                    MainPageFXML.showInvitationDialog(jSONObject);
+                });
+            } else if (header.equalsIgnoreCase("Invite_Response")) {
+                Platform.runLater(() -> {
+                    InvitationStageFXMLRoot.updateInvitationUI(jSONObject);
+                });
+            } else if (header.equalsIgnoreCase("NotAvailable")) {
+                Platform.runLater(() -> {
+                    InvitationStageFXMLRoot.showNotAvailable();
+                });
+            } else if (header.equalsIgnoreCase("Ready")) {
+                Platform.runLater(() -> {
+                    InvitationStageFXMLRoot.updateAcceptedInvitationUI(jSONObject);
+                });
+            }else if(header.equalsIgnoreCase("Start")){
+                Platform.runLater(() -> {
+                    InvitationResponseStageFXML.updateStartUI();
+                });
+            }else if(header.equalsIgnoreCase("ShowGame")){
+                Platform.runLater(() -> {
+                    InvitationResponseStageFXML.showGame(jSONObject);
+                });
             } else if (header.equalsIgnoreCase("Game")) {
-
+                Platform.runLater(() -> {
+                    OnlineGameStageFXML.playAndChangeFlags(jSONObject);
+                });
             }
         } catch (JSONException ex) {
             Logger.getLogger(ClientRequestHandling.class.getName()).log(Level.SEVERE, null, ex);

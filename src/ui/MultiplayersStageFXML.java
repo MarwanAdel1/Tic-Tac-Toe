@@ -1,5 +1,6 @@
 package ui;
 
+import data.ClientRequestsHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import utility.JsonConverter;
 
 public class MultiplayersStageFXML extends AnchorPane {
 
@@ -27,7 +29,8 @@ public class MultiplayersStageFXML extends AnchorPane {
     protected final Button inviteBt;
     protected final ScrollPane scrollPane;
     protected static ListView listView = new ListView();
-    ;
+    
+    private static String myUsername;
 
     private Stage stage;
 
@@ -107,10 +110,15 @@ public class MultiplayersStageFXML extends AnchorPane {
         });
 
         inviteBt.setOnAction((ActionEvent event) -> {
-            String selectedItem = (String) listView.getSelectionModel().getSelectedItem();
-            System.out.println(selectedItem);
-            //Parent root = new InvitationStageFXMLRoot(stage);
-            //stage.setScene(new Scene(root, 600, 500));
+            String selectedUser = (String) listView.getSelectionModel().getSelectedItem();
+            System.out.println(selectedUser);
+            
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteMessageToJson(myUsername, selectedUser));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myUsername, false));
+            
+            Parent root = new InvitationStageFXMLRoot(stage,myUsername,selectedUser);
+            stage.setScene(new Scene(root, 600, 500));
         });
 
     }
@@ -127,7 +135,8 @@ public class MultiplayersStageFXML extends AnchorPane {
                 }
             }
 
-            listView.getItems().remove(jSONObject.getString("myUsername"));
+            myUsername=jSONObject.getString("myUsername");
+            listView.getItems().remove(myUsername);
 
         } catch (JSONException ex) {
             Logger.getLogger(MultiplayersStageFXML.class.getName()).log(Level.SEVERE, null, ex);

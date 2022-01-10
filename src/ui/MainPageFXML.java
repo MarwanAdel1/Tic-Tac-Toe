@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +26,7 @@ public class MainPageFXML extends AnchorPane {
     protected final Label TicTacLable;
     protected final Button singleButton;
     protected final Box PlayerBox;
-    protected static Label WelcomeLable=new Label();
+    protected static Label WelcomeLable = new Label();
     protected final Button twoButton;
     protected final Button multiButton;
     protected final Button recordsButton;
@@ -41,14 +43,17 @@ public class MainPageFXML extends AnchorPane {
     protected final Label label;
     protected final Label label0;
     protected final Label label1;
-    protected static Label playedLabel = new Label();;
-    protected static Label wonLabel = new Label();;
-    protected static Label scoreLabel = new Label();;
+    protected static Label playedLabel = new Label();
+    ;
+    protected static Label wonLabel = new Label();
+    ;
+    protected static Label scoreLabel = new Label();
+    ;
     
-    private Stage stage;
+    private static Stage stage;
 
     public MainPageFXML(Stage stage) {
-        this.stage=stage;
+        this.stage = stage;
 
         TicTacLable = new Label();
         singleButton = new Button();
@@ -69,7 +74,6 @@ public class MainPageFXML extends AnchorPane {
         label = new Label();
         label0 = new Label();
         label1 = new Label();
-        
 
         setId("AnchorPane");
         setPrefHeight(500.0);
@@ -225,31 +229,30 @@ public class MainPageFXML extends AnchorPane {
         gridPane.getChildren().add(scoreLabel);
         getChildren().add(gridPane);
 
-        
         singleButton.setOnAction((ActionEvent event) -> {
-            Parent root = new ChooseSymbolStageFXML(stage,"Computer",0);
+            Parent root = new ChooseSymbolStageFXML(stage, "Computer", 0);
             stage.setScene(new Scene(root, 600, 500));
         });
-        
+
         twoButton.setOnAction((ActionEvent event) -> {
             Parent root = new PlayerTwoNameStageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
-        
+
         multiButton.setOnAction((ActionEvent event) -> {
             Parent root = new MultiplayersStageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
-        
+
         recordsButton.setOnAction((ActionEvent event) -> {
             Parent root = new RecordsFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
     }
-    
+
     public static void updateMainPageUI(JSONObject jSONObject) {
         try {
-            WelcomeLable.setText("Welcome "+jSONObject.getString("myUsername"));
+            WelcomeLable.setText("Welcome " + jSONObject.getString("myUsername"));
             playedLabel.setText(String.valueOf(jSONObject.getInt("Played")));
             wonLabel.setText(String.valueOf(jSONObject.getInt("Win")));
             scoreLabel.setText(String.valueOf(jSONObject.getInt("Total_Score")));
@@ -258,5 +261,26 @@ public class MainPageFXML extends AnchorPane {
         }
 
     }
-    
+
+    public static void showInvitationDialog(JSONObject jSONObject) {
+        try {
+            Stage popUpStage = new Stage();
+
+            String invitationOwner = jSONObject.getString("InvitationOwner");
+            String invitationReciever = jSONObject.getString("OpponentReciever");
+            Parent root = new InvitationPopUPStageFXML(stage, popUpStage,invitationReciever, invitationOwner);
+
+            popUpStage.initModality(Modality.WINDOW_MODAL);
+            popUpStage.initOwner(stage);
+
+            Scene dialogScene = new Scene(root, 400, 350);
+
+            popUpStage.setTitle("Invitation");
+            popUpStage.setScene(dialogScene);
+            popUpStage.show();
+        } catch (JSONException ex) {
+            Logger.getLogger(MainPageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }
