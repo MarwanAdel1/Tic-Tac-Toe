@@ -1,8 +1,11 @@
 package ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -11,14 +14,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import static ui.MultiplayersStageFXML.listView;
 
 public class MainPageFXML extends AnchorPane {
 
     protected final Label TicTacLable;
     protected final Button singleButton;
     protected final Box PlayerBox;
-    protected final Label WelcomeLable;
+    protected static Label WelcomeLable = new Label();
     protected final Button twoButton;
     protected final Button multiButton;
     protected final Button recordsButton;
@@ -35,19 +43,21 @@ public class MainPageFXML extends AnchorPane {
     protected final Label label;
     protected final Label label0;
     protected final Label label1;
-    protected final Label playedLabel;
-    protected final Label wonLabel;
-    protected final Label scoreLabel;
+    protected static Label playedLabel = new Label();
+    ;
+    protected static Label wonLabel = new Label();
+    ;
+    protected static Label scoreLabel = new Label();
+    ;
     
-    private Stage stage;
+    private static Stage stage;
 
     public MainPageFXML(Stage stage) {
-        this.stage=stage;
+        this.stage = stage;
 
         TicTacLable = new Label();
         singleButton = new Button();
         PlayerBox = new Box();
-        WelcomeLable = new Label();
         twoButton = new Button();
         multiButton = new Button();
         recordsButton = new Button();
@@ -64,9 +74,6 @@ public class MainPageFXML extends AnchorPane {
         label = new Label();
         label0 = new Label();
         label1 = new Label();
-        playedLabel = new Label();
-        wonLabel = new Label();
-        scoreLabel = new Label();
 
         setId("AnchorPane");
         setPrefHeight(500.0);
@@ -92,7 +99,6 @@ public class MainPageFXML extends AnchorPane {
 
         WelcomeLable.setLayoutX(45.0);
         WelcomeLable.setLayoutY(146.0);
-        WelcomeLable.setText("Wlecome Ahmed");
         WelcomeLable.setFont(new Font("System Bold", 30.0));
 
         twoButton.setLayoutX(368.0);
@@ -107,7 +113,7 @@ public class MainPageFXML extends AnchorPane {
         multiButton.setMnemonicParsing(false);
         multiButton.setPrefHeight(61.0);
         multiButton.setPrefWidth(161.0);
-        multiButton.setText("MultiPlayers");
+        multiButton.setText("Multi players");
 
         recordsButton.setLayoutX(368.0);
         recordsButton.setLayoutY(361.0);
@@ -188,19 +194,16 @@ public class MainPageFXML extends AnchorPane {
         GridPane.setColumnIndex(playedLabel, 1);
         GridPane.setHalignment(playedLabel, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(playedLabel, javafx.geometry.VPos.CENTER);
-        playedLabel.setText("0");
 
         GridPane.setColumnIndex(wonLabel, 1);
         GridPane.setHalignment(wonLabel, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(wonLabel, 1);
         GridPane.setValignment(wonLabel, javafx.geometry.VPos.CENTER);
-        wonLabel.setText("0");
 
         GridPane.setColumnIndex(scoreLabel, 1);
         GridPane.setHalignment(scoreLabel, javafx.geometry.HPos.CENTER);
         GridPane.setRowIndex(scoreLabel, 2);
         GridPane.setValignment(scoreLabel, javafx.geometry.VPos.CENTER);
-        scoreLabel.setText("0");
 
         getChildren().add(TicTacLable);
         getChildren().add(singleButton);
@@ -226,26 +229,58 @@ public class MainPageFXML extends AnchorPane {
         gridPane.getChildren().add(scoreLabel);
         getChildren().add(gridPane);
 
-        
         singleButton.setOnAction((ActionEvent event) -> {
-            Parent root = new ChooseSymbolStageFXML(stage,"Computer",0);
+            Parent root = new ChooseSymbolStageFXML(stage, "Computer", 0);
             stage.setScene(new Scene(root, 600, 500));
         });
-        
+
         twoButton.setOnAction((ActionEvent event) -> {
             Parent root = new PlayerTwoNameStageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
-        
+
         multiButton.setOnAction((ActionEvent event) -> {
             Parent root = new MultiplayersStageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
-        
+
         recordsButton.setOnAction((ActionEvent event) -> {
             Parent root = new RecordsFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
     }
-    
+
+    public static void updateMainPageUI(JSONObject jSONObject) {
+        try {
+            WelcomeLable.setText("Welcome " + jSONObject.getString("myUsername"));
+            playedLabel.setText(String.valueOf(jSONObject.getInt("Played")));
+            wonLabel.setText(String.valueOf(jSONObject.getInt("Win")));
+            scoreLabel.setText(String.valueOf(jSONObject.getInt("Total_Score")));
+        } catch (JSONException ex) {
+            Logger.getLogger(MainPageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static void showInvitationDialog(JSONObject jSONObject) {
+        try {
+            Stage popUpStage = new Stage();
+
+            String invitationOwner = jSONObject.getString("InvitationOwner");
+            String invitationReciever = jSONObject.getString("OpponentReciever");
+            Parent root = new InvitationPopUPStageFXML(stage, popUpStage,invitationReciever, invitationOwner);
+
+            popUpStage.initModality(Modality.WINDOW_MODAL);
+            popUpStage.initOwner(stage);
+
+            Scene dialogScene = new Scene(root, 400, 350);
+
+            popUpStage.setTitle("Invitation");
+            popUpStage.setScene(dialogScene);
+            popUpStage.show();
+        } catch (JSONException ex) {
+            Logger.getLogger(MainPageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }

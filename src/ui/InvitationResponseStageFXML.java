@@ -1,15 +1,12 @@
 package ui;
 
 import data.ClientRequestsHandler;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import utility.JsonConverter;
 
-public class InvitationStageFXMLRoot extends BorderPane {
+public class InvitationResponseStageFXML extends BorderPane {
 
     protected final Text invitationText;
     protected final GridPane gridPane;
@@ -50,9 +47,8 @@ public class InvitationStageFXMLRoot extends BorderPane {
     protected static Button recordBt = new Button();
 
     private static Stage stage;
-
-    private String invitedUser;
-    public InvitationStageFXMLRoot(Stage stage, String user, String invitedUser) {
+    private static String invitedUser;
+    public InvitationResponseStageFXML(Stage stage, String user, String invitedUser) {
         this.stage = stage;
         this.invitedUser=invitedUser;
 
@@ -89,7 +85,7 @@ public class InvitationStageFXMLRoot extends BorderPane {
         BorderPane.setAlignment(invitationText, javafx.geometry.Pos.CENTER);
         invitationText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         invitationText.setStrokeWidth(0.0);
-        invitationText.setText("Invitation To " + invitedUser);
+        invitationText.setText("Invitation From " + invitedUser);
         invitationText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         invitationText.setWrappingWidth(599.13671875);
         invitationText.setFont(new Font("Segoe UI Bold", 58.0));
@@ -143,7 +139,7 @@ public class InvitationStageFXMLRoot extends BorderPane {
         GridPane.setValignment(myNameText, javafx.geometry.VPos.CENTER);
         myNameText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         myNameText.setStrokeWidth(0.0);
-        myNameText.setText(user);
+        myNameText.setText(invitedUser);
         myNameText.setFont(new Font(32.0));
 
         GridPane.setColumnIndex(text, 1);
@@ -161,7 +157,7 @@ public class InvitationStageFXMLRoot extends BorderPane {
         GridPane.setValignment(opponentNameText, javafx.geometry.VPos.CENTER);
         opponentNameText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         opponentNameText.setStrokeWidth(0.0);
-        opponentNameText.setText(invitedUser);
+        opponentNameText.setText(user);
         opponentNameText.setFont(new Font(32.0));
 
         GridPane.setHalignment(myImageView, javafx.geometry.HPos.CENTER);
@@ -196,14 +192,14 @@ public class InvitationStageFXMLRoot extends BorderPane {
 
         invitationStatusText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         invitationStatusText.setStrokeWidth(0.0);
-        invitationStatusText.setText("Waiting..");
+        invitationStatusText.setText("Waiting to be ready..");
         invitationStatusText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         invitationStatusText.setWrappingWidth(103.13671875);
 
         invitationActionBt.setMnemonicParsing(false);
         invitationActionBt.setPrefHeight(38.0);
         invitationActionBt.setPrefWidth(104.0);
-        invitationActionBt.setText("Cancel");
+        invitationActionBt.setText("Ready");
 
         GridPane.setColumnIndex(recordBt, 2);
         GridPane.setHalignment(recordBt, javafx.geometry.HPos.RIGHT);
@@ -212,7 +208,6 @@ public class InvitationStageFXMLRoot extends BorderPane {
         recordBt.setMnemonicParsing(false);
         recordBt.setText("Start Recording");
         recordBt.setFont(new Font(15.0));
-        recordBt.setVisible(false);
 
         ImageView recordIcon = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/record_icon.png")));
         recordIcon.setPreserveRatio(true);
@@ -241,68 +236,35 @@ public class InvitationStageFXMLRoot extends BorderPane {
         gridPane.getChildren().add(recordBt);
 
         invitationActionBt.setOnAction((event) -> {
-            if (invitationActionBt.getText().equalsIgnoreCase("Back") || invitationActionBt.getText().equalsIgnoreCase("Cancel")) {
-                Parent root = new MultiplayersStageFXML(stage);
-                stage.setScene(new Scene(root, 600, 500));
-            } else if (invitationActionBt.getText().equalsIgnoreCase("Start")) {
-                ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertStartGameToJson(invitedUser));
-                
-                Parent root = new ChooseSymbolStageFXML(stage, invitedUser, 2);
-                stage.setScene(new Scene(root, 600, 500));
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            if (invitationActionBt.getText().equalsIgnoreCase("Ready")) {
+                invitationActionBt.setText("Cancel");
+                invitationStatusText.setText("Waiting to start..");
+                recordBt.setVisible(false);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertReadyNotificationToJson(user, invitedUser, true));
+            } else if (invitationActionBt.getText().equalsIgnoreCase("Cancel")) {
+                invitationActionBt.setText("Ready");
+                recordBt.setVisible(true);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertReadyNotificationToJson(user, invitedUser, false));
             }
         });
 
     }
 
-    public static void updateInvitationUI(JSONObject jSONObject) {
-        try {
-            if (jSONObject.getBoolean("Response") == true) {
-                progressIndicator.setVisible(false);
-                invitationStatusText.setText("Accepted.. Waiting for " + jSONObject.getString("InvitationOwner") + " to be ready");
-                invitationActionBt.setText("Start");
-                invitationActionBt.setDisable(true);
-                recordBt.setVisible(true);
-            } else if (jSONObject.getBoolean("Response") == false) {
-                progressIndicator.setVisible(false);
-                invitationStatusText.setText("Rejected");
-                invitationActionBt.setText("Back");
-                recordBt.setVisible(false);
-                invitationActionBt.setDisable(false);
-            }
-        } catch (JSONException ex) {
-            Logger.getLogger(InvitationStageFXMLRoot.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void updateStartUI() {
+        progressIndicator.setVisible(true);
+        invitationActionBt.setVisible(false);
+        invitationStatusText.setText("Starting now...");
     }
 
-    public static void updateAcceptedInvitationUI(JSONObject jSONObject) {
+    public static void showGame(JSONObject jSONObject) {
         try {
-            if (jSONObject.getBoolean("Ready") == true) {
-                progressIndicator.setVisible(false);
-                invitationStatusText.setText(jSONObject.getString("ReadyOwner") + " is ready.. Start the game");
-                invitationActionBt.setText("Start");
-                invitationActionBt.setDisable(false);
-            } else if (jSONObject.getBoolean("Ready") == false) {
-                progressIndicator.setVisible(false);
-                invitationStatusText.setText("Accepted.. Waiting for " + jSONObject.getString("ReadyOwner") + " to be ready");
-                invitationActionBt.setText("Start");
-                invitationActionBt.setDisable(true);
+            if (jSONObject.getString("Symbol").equalsIgnoreCase("X")) {
+                Parent root = new OnlineGameStageFXML(stage, "X",invitedUser );
+                stage.setScene(new Scene(root, 600, 500));
             }
         } catch (JSONException ex) {
-            Logger.getLogger(InvitationStageFXMLRoot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvitationResponseStageFXML.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void showNotAvailable(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Not available now");
-        Optional<ButtonType> result = alert.showAndWait();
-        
-        if(result.get()==ButtonType.OK){
-            Parent root = new MultiplayersStageFXML(stage);
-            stage.setScene(new Scene(root,600,500));
-        }
-        
-    }
-
 }
