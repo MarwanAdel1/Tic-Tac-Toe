@@ -160,15 +160,32 @@ public class JsonConverter {
 
         return jSONObject;
     }
-
-    //convert json to string (invite - invite response accordong to the sent object)
-    public static String convertJsonToString(JSONObject jSONObject) {
-        String message;
-        jSONObject = new JSONObject();
-        message = jSONObject.toString();
-
-        System.out.println(jSONObject);
-        return message;
+    
+    public static JSONObject convertExitOnGameToJson(String opName){
+        JSONObject jSONObject = new JSONObject();
+        
+        try {
+            jSONObject.put("Header","ExitGame");
+            jSONObject.put("OpponentPlayer", opName);
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return jSONObject;
     }
 
+    
+    public static JSONObject convertCancelOwnerInvitationToJson(String opName){
+        JSONObject jSONObject = new JSONObject();
+        
+        try {
+            jSONObject.put("Header","CancelOwnerInvite");
+            jSONObject.put("OpponentPlayer", opName);
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return jSONObject;
+    }
+    
 }

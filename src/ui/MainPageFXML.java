@@ -230,7 +230,7 @@ public class MainPageFXML extends AnchorPane {
         getChildren().add(gridPane);
 
         singleButton.setOnAction((ActionEvent event) -> {
-            Parent root = new ChooseSymbolStageFXML(stage, "Computer", 0);
+            Parent root = new ChooseSymbolStageFXML(stage, "Computer", 0, 0);
             stage.setScene(new Scene(root, 600, 500));
         });
 

@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
+import static ui.InvitationStageFXMLRoot.recordBt;
 import utility.JsonConverter;
 
 public class InvitationResponseStageFXML extends BorderPane {
@@ -49,10 +50,12 @@ public class InvitationResponseStageFXML extends BorderPane {
     private static Stage stage;
     private static String user;
     private static String invitedUser;
+    static int recordFlag = 0;
+
     public InvitationResponseStageFXML(Stage stage, String user, String invitedUser) {
         this.stage = stage;
-        this.user=user;
-        this.invitedUser=invitedUser;
+        this.user = user;
+        this.invitedUser = invitedUser;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -251,6 +254,10 @@ public class InvitationResponseStageFXML extends BorderPane {
             }
         });
 
+        recordBt.setOnAction((event) -> {
+
+            recordFlag = 1;
+        });
     }
 
     public static void updateStartUI() {
@@ -262,10 +269,10 @@ public class InvitationResponseStageFXML extends BorderPane {
     public static void showGame(JSONObject jSONObject) {
         try {
             if (jSONObject.getString("Symbol").equalsIgnoreCase("X")) {
-                Parent root = new OnlineGameStageFXML(stage, "X",user ,invitedUser,false);
+                Parent root = new OnlineGameStageFXML(stage, "X", user, invitedUser, false, recordFlag);
                 stage.setScene(new Scene(root, 600, 500));
-            }else if(jSONObject.getString("Symbol").equalsIgnoreCase("O")){
-                Parent root = new OnlineGameStageFXML(stage, "O",user ,invitedUser,false);
+            } else if (jSONObject.getString("Symbol").equalsIgnoreCase("O")) {
+                Parent root = new OnlineGameStageFXML(stage, "O", user, invitedUser, false, recordFlag);
                 stage.setScene(new Scene(root, 600, 500));
             }
         } catch (JSONException ex) {

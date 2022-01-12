@@ -50,6 +50,7 @@ public class InvitationStageFXMLRoot extends BorderPane {
     protected static Button recordBt = new Button();
 
     private static Stage stage;
+    static int recordFlag=0;
 
     private static String user;
     private static String invitedUser;
@@ -215,6 +216,10 @@ public class InvitationStageFXMLRoot extends BorderPane {
         recordBt.setText("Start Recording");
         recordBt.setFont(new Font(15.0));
         recordBt.setVisible(false);
+        recordBt.setOnAction((event) -> {
+            
+            recordFlag=1;
+        });
 
         ImageView recordIcon = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/record_icon.png")));
         recordIcon.setPreserveRatio(true);
@@ -244,13 +249,17 @@ public class InvitationStageFXMLRoot extends BorderPane {
 
         invitationActionBt.setOnAction((event) -> {
             if (invitationActionBt.getText().equalsIgnoreCase("Back") || invitationActionBt.getText().equalsIgnoreCase("Cancel")) {
+                ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertCancelOwnerInvitationToJson(invitedUser));
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(user, true));
+                
                 Parent root = new MultiplayersStageFXML(stage);
                 stage.setScene(new Scene(root, 600, 500));
             } else if (invitationActionBt.getText().equalsIgnoreCase("Start")) {
                 ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertStartGameToJson(invitedUser));
                 
-                Parent root = new ChooseSymbolStageFXML(stage, invitedUser, 2);
+                Parent root = new ChooseSymbolStageFXML(stage, invitedUser, 2, recordFlag);
                 stage.setScene(new Scene(root, 600, 500));
             }
         });

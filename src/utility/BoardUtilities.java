@@ -18,12 +18,12 @@ import ui.MainPageFXML;
  * @author Marwan Adel
  */
 public class BoardUtilities {
-
-    public static int checkBoard(Stage stage, String[][] xoBoard,boolean flag) {
-        int check=0;
+    
+    public static int checkBoard(Stage stage, String[][] xoBoard, boolean flag) {
+        int check = 0;
         if (isWin(xoBoard)) {
-            check =1;
-            
+            check = 1;
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game End");
             if (!flag) {
@@ -31,6 +31,26 @@ public class BoardUtilities {
             } else {
                 alert.setHeaderText("Player Two Win");
             }
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                Parent root = new MainPageFXML(stage);
+                stage.setScene(new Scene(root, 600, 500));
+            }
+        }
+
+        return check;
+    }
+
+    public static int checkBoardOnline(Stage stage, String[][] xoBoard) {
+        int check=0;
+        if (isWin(xoBoard)) {
+            check =1;
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game End");
+            alert.setHeaderText("You Win");
+            
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
