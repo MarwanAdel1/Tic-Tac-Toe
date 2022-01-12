@@ -244,6 +244,10 @@ public class InvitationStageFXMLRoot extends BorderPane {
 
         invitationActionBt.setOnAction((event) -> {
             if (invitationActionBt.getText().equalsIgnoreCase("Back") || invitationActionBt.getText().equalsIgnoreCase("Cancel")) {
+                ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertCancelOwnerInvitationToJson(invitedUser));
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(user, true));
+                
                 Parent root = new MultiplayersStageFXML(stage);
                 stage.setScene(new Scene(root, 600, 500));
             } else if (invitationActionBt.getText().equalsIgnoreCase("Start")) {

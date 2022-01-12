@@ -5,17 +5,14 @@
  */
 package utility;
 
-
 import java.util.Random;
 import pojo.Move;
-
 
 /**
  *
  * @author Marwan Adel
  */
 public class AI {
-
 
     public static int COUNT = 0;
 
@@ -106,6 +103,5 @@ public class AI {
 
         return move;
     }
-
 
 }

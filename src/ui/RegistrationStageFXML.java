@@ -35,7 +35,7 @@ public class RegistrationStageFXML extends AnchorPane {
     protected final Text text0;
     protected final Text text1;
     protected final TextField usernameTextField;
-    protected final PasswordField passwordTextField;
+    protected final TextField passwordTextField;
     protected final Text text2;
     protected final TextField confirmPasswordTextField;
     protected static Label username_error = new Label();
@@ -52,7 +52,6 @@ public class RegistrationStageFXML extends AnchorPane {
     public RegistrationStageFXML(Stage stage) {
         this.stage = stage;
 
-
         signUpButton = new Button();
         text = new Text();
         gridPane = new GridPane();
@@ -67,7 +66,7 @@ public class RegistrationStageFXML extends AnchorPane {
         text0 = new Text();
         text1 = new Text();
         usernameTextField = new TextField();
-        passwordTextField = new PasswordField();
+        passwordTextField = new TextField();
         text2 = new Text();
         confirmPasswordTextField = new TextField();
 
@@ -83,7 +82,6 @@ public class RegistrationStageFXML extends AnchorPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(403.0);
         setPrefWidth(464.0);
-       
 
         signUpButton.setLayoutX(168.0);
         signUpButton.setLayoutY(316.0);
@@ -92,12 +90,6 @@ public class RegistrationStageFXML extends AnchorPane {
         signUpButton.setPrefWidth(96.0);
         signUpButton.setText("Sign-Up");
         signUpButton.setFont(new Font(18.0));
-        signUpButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            
-            }
-        });
 
         text.setLayoutX(196.0);
         text.setLayoutY(391.0);

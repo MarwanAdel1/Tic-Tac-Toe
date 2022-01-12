@@ -86,7 +86,7 @@ public class ChooseSymbolStageFXML extends AnchorPane {
                     break;
                 case 2:
                     ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
-                    clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "X"));
+                    clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "O"));
                     
                     root = new OnlineGameStageFXML(stage,"X", InvitationStageFXMLRoot.getUser(), opName,true);
                     stage.setScene(new Scene(root, 600, 500));

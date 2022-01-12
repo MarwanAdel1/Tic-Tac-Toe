@@ -5,6 +5,7 @@
  */
 package utility;
 
+import data.ClientRequestsHandler;
 import java.util.Optional;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,6 +44,48 @@ public class BoardUtilities {
             check =2;
             
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game End");
+            alert.setHeaderText("Draw");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                Parent root = new MainPageFXML(stage);
+                stage.setScene(new Scene(root, 600, 500));
+            }
+
+        }
+        
+        return check;
+    }
+public static int checkBoardOnline(Stage stage, String[][] xoBoard,String opName) {
+        
+      ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+        int check=0;
+        if (isWin(xoBoard)) {
+            check =1;
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+          clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertResultTojson(check,opName));
+
+            alert.setTitle("Game End");
+            
+              alert.setHeaderText("you Win");
+
+            
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                Parent root = new MainPageFXML(stage);
+                stage.setScene(new Scene(root, 600, 500));
+            }
+        }
+        
+        if (isDraw(xoBoard)) {
+            check =2;
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertResultTojson(check,opName));
             alert.setTitle("Game End");
             alert.setHeaderText("Draw");
 

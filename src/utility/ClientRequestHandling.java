@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ui.InvitationPopUPStageFXML;
 import ui.InvitationResponseStageFXML;
 import ui.InvitationStageFXMLRoot;
 import ui.LoginStageFXML;
@@ -92,6 +93,19 @@ public class ClientRequestHandling {
             } else if (header.equalsIgnoreCase("Game")) {
                 Platform.runLater(() -> {
                     OnlineGameStageFXML.playAndChangeFlags(jSONObject);
+                });
+            }else if(header.equalsIgnoreCase("ExitGame")){
+                Platform.runLater(() -> {
+                    OnlineGameStageFXML.exitGame();
+                });
+            }else if(header.equalsIgnoreCase("CancelOwnerInvite")){
+                Platform.runLater(() -> {
+                    InvitationPopUPStageFXML.invitationCanceled();
+                });
+            }
+            else if (header.equalsIgnoreCase("PlayerResult")) {
+                Platform.runLater(() -> {
+                  OnlineGameStageFXML.showLoseAlert(jSONObject);
                 });
             }
         } catch (JSONException ex) {
