@@ -43,20 +43,16 @@ public class ClientRequestsHandler {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                try {
-                    if (socket != null) {
-                        printStream.println(JsonConverter.convertGoOfflineToJson());
 
-                        dataInputStream.close();
-                        printStream.close();
-                        socket.close();
-                    }
-                    
-                    Platform.exit();
-                    System.exit(0);
-                } catch (IOException ex) {
+                if (socket != null) {
+                    printStream.println(JsonConverter.convertGoOfflineToJson());
 
+                    closeClient();
                 }
+
+                Platform.exit();
+                System.exit(0);
+
             }
         });
     }
@@ -99,18 +95,13 @@ public class ClientRequestsHandler {
                                 }
                             }
                         } catch (SocketException se) {
-                            try {
-                                printStream.println(JsonConverter.convertGoOfflineToJson()); //// msh hitb3t *******
 
-                                socket.close();
-                                printStream.close();
-                                dataInputStream.close();
-                                
-                                th.stop();
+                            printStream.println(JsonConverter.convertGoOfflineToJson()); //// msh hitb3t *******
 
-                            } catch (IOException ex) {
-                                Logger.getLogger(ClientRequestsHandler.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            closeClient();
+
+                            th.stop();
+
                         } catch (IOException ex) {
                             Logger.getLogger(ClientRequestsHandler.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -125,6 +116,16 @@ public class ClientRequestsHandler {
             });
         }
 
+    }
+
+    public void closeClient() {
+        try {
+            printStream.close();
+            dataInputStream.close();
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ClientRequestsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

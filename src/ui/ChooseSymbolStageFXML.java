@@ -1,6 +1,7 @@
 package ui;
 
 import data.ClientRequestsHandler;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,7 +22,7 @@ public class ChooseSymbolStageFXML extends AnchorPane {
     
     private Stage stage;
 
-    public ChooseSymbolStageFXML(Stage stage, String opName,int mode) {
+    public ChooseSymbolStageFXML(Stage stage, String opName,int mode,boolean recordFlag) {
         this.stage=stage;
 
         XButtonChoose = new Button();
@@ -86,9 +87,9 @@ public class ChooseSymbolStageFXML extends AnchorPane {
                     break;
                 case 2:
                     ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
-                    clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "X"));
+                    clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "O"));
                     
-                    root = new OnlineGameStageFXML(stage,"X", InvitationStageFXMLRoot.getUser(), opName,true);
+                    root = new OnlineGameStageFXML(stage,"X", InvitationStageFXMLRoot.getUser(), opName,true,recordFlag);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 default:
@@ -113,13 +114,21 @@ public class ChooseSymbolStageFXML extends AnchorPane {
                     ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
                     clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "X"));
                     
-                    root = new OnlineGameStageFXML(stage,"O",InvitationStageFXMLRoot.getUser(),opName,true);
+                    root = new OnlineGameStageFXML(stage,"O",InvitationStageFXMLRoot.getUser(),opName,true,recordFlag);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 default:
                     break;
             }
         }));
+        
+        stage.setOnCloseRequest((event) -> {
+            ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertExitOnGameToJson(opName));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            Platform.exit();
+            System.exit(0);
+        });
 
     }
 }

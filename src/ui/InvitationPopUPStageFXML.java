@@ -1,9 +1,12 @@
 package ui;
 
 import data.ClientRequestsHandler;
+import java.util.Optional;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -19,8 +22,15 @@ public class InvitationPopUPStageFXML extends AnchorPane {
     protected final Button acceptButton;
     protected final Text text1;
 
+    private static Stage popUpStage;
+    private static Stage stage;
+    private static String myName;
+    
     public InvitationPopUPStageFXML(Stage stage, Stage popUpStage, String invitationReciever, String invitationOwner) {
-
+        this.popUpStage=popUpStage;
+        this.stage=stage;
+        this.myName=invitationReciever;
+        
         nameOfOpponent = new Text();
         text = new Text();
         text0 = new Text();
@@ -110,6 +120,20 @@ public class InvitationPopUPStageFXML extends AnchorPane {
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(invitationReciever, true));
             popUpStage.close();
         });
+        
+        
 
+    }
+    
+    public static void invitationCanceled(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Invitation Cancelled");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (!result.isPresent() || result.get() == ButtonType.OK) {
+            popUpStage.close();
+            ClientRequestsHandler clientRequestsHandler= ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+        }
     }
 }

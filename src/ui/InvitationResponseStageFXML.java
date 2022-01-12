@@ -3,6 +3,7 @@ package ui;
 import data.ClientRequestsHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
+import static ui.InvitationStageFXMLRoot.recordBt;
 import utility.JsonConverter;
 
 public class InvitationResponseStageFXML extends BorderPane {
@@ -49,10 +51,15 @@ public class InvitationResponseStageFXML extends BorderPane {
     private static Stage stage;
     private static String user;
     private static String invitedUser;
+    
+    private static boolean reccordFlag;
+
     public InvitationResponseStageFXML(Stage stage, String user, String invitedUser) {
         this.stage = stage;
-        this.user=user;
-        this.invitedUser=invitedUser;
+        this.user = user;
+        this.invitedUser = invitedUser;
+        
+        reccordFlag = false;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -250,6 +257,24 @@ public class InvitationResponseStageFXML extends BorderPane {
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertReadyNotificationToJson(user, invitedUser, false));
             }
         });
+        
+        recordBt.setOnAction((event) -> {
+            if (recordBt.getText().equalsIgnoreCase("Start Recording")) {
+                recordBt.setText("Recording Now");
+                reccordFlag = true;
+            } else if (recordBt.getText().equalsIgnoreCase("Recording Now")) {
+                recordBt.setText("Start Recording");
+                reccordFlag = false;
+            }
+        });
+
+        stage.setOnCloseRequest((event) -> {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertCancelOwnerInvitationToJson(invitedUser));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            Platform.exit();
+            System.exit(0);
+        });
 
     }
 
@@ -262,10 +287,10 @@ public class InvitationResponseStageFXML extends BorderPane {
     public static void showGame(JSONObject jSONObject) {
         try {
             if (jSONObject.getString("Symbol").equalsIgnoreCase("X")) {
-                Parent root = new OnlineGameStageFXML(stage, "X",user ,invitedUser,false);
+                Parent root = new OnlineGameStageFXML(stage, "X", user, invitedUser, false,reccordFlag);
                 stage.setScene(new Scene(root, 600, 500));
-            }else if(jSONObject.getString("Symbol").equalsIgnoreCase("O")){
-                Parent root = new OnlineGameStageFXML(stage, "O",user ,invitedUser,false);
+            } else if (jSONObject.getString("Symbol").equalsIgnoreCase("O")) {
+                Parent root = new OnlineGameStageFXML(stage, "O", user, invitedUser, false,reccordFlag);
                 stage.setScene(new Scene(root, 600, 500));
             }
         } catch (JSONException ex) {

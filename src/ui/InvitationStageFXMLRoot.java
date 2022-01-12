@@ -4,6 +4,7 @@ import data.ClientRequestsHandler;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -53,10 +54,14 @@ public class InvitationStageFXMLRoot extends BorderPane {
 
     private static String user;
     private static String invitedUser;
+    private boolean recordFlag;
+
     public InvitationStageFXMLRoot(Stage stage, String user, String invitedUser) {
         this.stage = stage;
-        this.invitedUser=invitedUser;
-        this.user=user;
+        this.invitedUser = invitedUser;
+        this.user = user;
+
+        recordFlag = false;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -243,16 +248,44 @@ public class InvitationStageFXMLRoot extends BorderPane {
         gridPane.getChildren().add(recordBt);
 
         invitationActionBt.setOnAction((event) -> {
-            if (invitationActionBt.getText().equalsIgnoreCase("Back") || invitationActionBt.getText().equalsIgnoreCase("Cancel")) {
+            if (invitationActionBt.getText().equalsIgnoreCase("Back")) {
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(user, true));
+
                 Parent root = new MultiplayersStageFXML(stage);
                 stage.setScene(new Scene(root, 600, 500));
             } else if (invitationActionBt.getText().equalsIgnoreCase("Start")) {
-                ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertStartGameToJson(invitedUser));
-                
-                Parent root = new ChooseSymbolStageFXML(stage, invitedUser, 2);
+
+                Parent root = new ChooseSymbolStageFXML(stage, invitedUser, 2,recordFlag);
+                stage.setScene(new Scene(root, 600, 500));
+            } else if (invitationActionBt.getText().equalsIgnoreCase("Cancel")) {
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertCancelOwnerInvitationToJson(invitedUser));
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(user, true));
+
+                Parent root = new MultiplayersStageFXML(stage);
                 stage.setScene(new Scene(root, 600, 500));
             }
+        });
+
+        recordBt.setOnAction((event) -> {
+            if (recordBt.getText().equalsIgnoreCase("Start Recording")) {
+                recordBt.setText("Recording Now");
+                recordFlag = true;
+            } else if (recordBt.getText().equalsIgnoreCase("Recording Now")) {
+                recordBt.setText("Start Recording");
+                recordFlag = false;
+            }
+        });
+
+        stage.setOnCloseRequest((event) -> {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertCancelOwnerInvitationToJson(invitedUser));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            Platform.exit();
+            System.exit(0);
         });
 
     }
@@ -294,17 +327,17 @@ public class InvitationStageFXMLRoot extends BorderPane {
             Logger.getLogger(InvitationStageFXMLRoot.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void showNotAvailable(){
+
+    public static void showNotAvailable() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Not available now");
         Optional<ButtonType> result = alert.showAndWait();
-        
-        if(result.get()==ButtonType.OK){
+
+        if (result.get() == ButtonType.OK) {
             Parent root = new MultiplayersStageFXML(stage);
-            stage.setScene(new Scene(root,600,500));
+            stage.setScene(new Scene(root, 600, 500));
         }
-        
+
     }
 
     /**

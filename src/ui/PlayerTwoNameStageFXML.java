@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import ui.ChooseSymbolStageFXML;
 
 public class PlayerTwoNameStageFXML extends AnchorPane {
 
@@ -66,7 +67,7 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
 
         submitButton.setOnAction((ActionEvent event) -> {
             if (!playerTwoTextField.getText().isEmpty()) {
-                Parent root = new ChooseSymbolStageFXML(stage,playerTwoTextField.getText(), 1);
+                Parent root = new ChooseSymbolStageFXML(stage,playerTwoTextField.getText(), 1,false);
                 stage.setScene(new Scene(root, 600, 500));
             }else{
                 warningText.setText("Please insert player's name");

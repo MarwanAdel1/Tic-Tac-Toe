@@ -3,6 +3,7 @@ package ui;
 import data.ClientRequestsHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,7 +26,6 @@ public class MultiplayersStageFXML extends AnchorPane {
     protected final Text gameText;
     protected final Label label;
     protected final Button backBt;
-    protected final Button refreshBt;
     protected final Button inviteBt;
     protected final ScrollPane scrollPane;
     protected static ListView listView = new ListView();
@@ -40,7 +40,6 @@ public class MultiplayersStageFXML extends AnchorPane {
         gameText = new Text();
         label = new Label();
         backBt = new Button();
-        refreshBt = new Button();
         inviteBt = new Button();
         scrollPane = new ScrollPane();
 
@@ -70,13 +69,6 @@ public class MultiplayersStageFXML extends AnchorPane {
         backBt.setPrefWidth(87.0);
         backBt.setText("Back");
 
-        refreshBt.setLayoutX(237.0);
-        refreshBt.setLayoutY(426.0);
-        refreshBt.setMnemonicParsing(false);
-        refreshBt.setPrefHeight(36.0);
-        refreshBt.setPrefWidth(94.0);
-        refreshBt.setText("Refresh");
-
         inviteBt.setLayoutX(362.0);
         inviteBt.setLayoutY(426.0);
         inviteBt.setMnemonicParsing(false);
@@ -96,13 +88,9 @@ public class MultiplayersStageFXML extends AnchorPane {
         getChildren().add(gameText);
         getChildren().add(label);
         getChildren().add(backBt);
-        getChildren().add(refreshBt);
         getChildren().add(inviteBt);
         getChildren().add(scrollPane);
 
-        refreshBt.setOnAction((ActionEvent event) -> {
-
-        });
 
         backBt.setOnAction((ActionEvent event) -> {
             Parent root = new MainPageFXML(stage);
@@ -119,6 +107,13 @@ public class MultiplayersStageFXML extends AnchorPane {
             
             Parent root = new InvitationStageFXMLRoot(stage,myUsername,selectedUser);
             stage.setScene(new Scene(root, 600, 500));
+        });
+        
+        stage.setOnCloseRequest((event) -> {
+            ClientRequestsHandler clientRequestsHandler= ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            Platform.exit();
+            System.exit(0);
         });
 
     }

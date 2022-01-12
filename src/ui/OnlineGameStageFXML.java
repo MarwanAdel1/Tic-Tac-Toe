@@ -4,6 +4,7 @@ import data.ClientRequestsHandler;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -22,8 +23,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
+import pojo.GameStep;
 import utility.BoardUtilities;
 import utility.JsonConverter;
+import utility.RecordGame;
 
 public class OnlineGameStageFXML extends BorderPane {
 
@@ -49,38 +52,38 @@ public class OnlineGameStageFXML extends BorderPane {
     protected final RowConstraints rowConstraints1;
     protected final RowConstraints rowConstraints2;
     protected final RowConstraints rowConstraints3;
-    protected static Label cellGrid1=new Label();
-    protected static Label cellGrid2=new Label();
-    protected static Label cellGrid3=new Label();
-    protected static Label cellGrid4=new Label();
-    protected static Label cellGrid5=new Label();
-    protected static Label cellGrid6=new Label();
-    protected static Label cellGrid7=new Label();
-    protected static Label cellGrid8=new Label();
-    protected static Label cellGrid9=new Label();
+    protected static Label cellGrid1 = new Label();
+    protected static Label cellGrid2 = new Label();
+    protected static Label cellGrid3 = new Label();
+    protected static Label cellGrid4 = new Label();
+    protected static Label cellGrid5 = new Label();
+    protected static Label cellGrid6 = new Label();
+    protected static Label cellGrid7 = new Label();
+    protected static Label cellGrid8 = new Label();
+    protected static Label cellGrid9 = new Label();
 
-    private Stage stage;
+    private static Stage stage;
     private boolean userFlag;
-    private static boolean turnFlag=true;
-    private static String[][] xoBoard={{"d","d","d"},{"d","d","d"},{"d","d","d"}};
-    private static Label labels[][]={{cellGrid1, cellGrid2, cellGrid3}, {cellGrid4, cellGrid5, cellGrid6}, {cellGrid7, cellGrid8, cellGrid9}};
+    private static boolean turnFlag = true;
+    private static String[][] xoBoard = {{"d", "d", "d"}, {"d", "d", "d"}, {"d", "d", "d"}};
+    private static Label labels[][] = {{cellGrid1, cellGrid2, cellGrid3}, {cellGrid4, cellGrid5, cellGrid6}, {cellGrid7, cellGrid8, cellGrid9}};
 
-    public OnlineGameStageFXML(Stage stage, String symbol, String myName, String opName, boolean flag) {
+    private static String myName;
+    private static String opName;
+
+    private static RecordGame recordGame;
+    private static boolean recordFlag;
+
+    public OnlineGameStageFXML(Stage stage, String symbol, String myName, String opName, boolean flag, boolean reccordFlag) {
         this.stage = stage;
+
+        this.myName = myName;
+        this.opName = opName;
+        this.recordFlag = reccordFlag;
 
         userFlag = flag; /////// flag sabet (Reciever -> false , Sender -> true)
 
-/*
-        xoBoard = new String[3][3];
-        xoBoard[0][0] = "d";
-        xoBoard[0][1] = "d";
-        xoBoard[0][2] = "d";
-        xoBoard[1][0] = "d";
-        xoBoard[1][1] = "d";
-        xoBoard[1][2] = "d";
-        xoBoard[2][0] = "d";
-        xoBoard[2][1] = "d";
-        xoBoard[2][2] = "d";*/
+        resetVariables();
 
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -104,7 +107,7 @@ public class OnlineGameStageFXML extends BorderPane {
         rowConstraints1 = new RowConstraints();
         rowConstraints2 = new RowConstraints();
         rowConstraints3 = new RowConstraints();
-        
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -175,11 +178,7 @@ public class OnlineGameStageFXML extends BorderPane {
         myTurnLabel.setPrefHeight(17.0);
         myTurnLabel.setPrefWidth(109.0);
         myTurnLabel.setText("Your Turn");
-        if (turnFlag == userFlag) { /// m7tagen method
-            myTurnLabel.setVisible(true);
-        } else {
-            myTurnLabel.setVisible(false);
-        }
+
         myTurnLabel.setFont(new Font(24.0));
         myTurnLabel.setVisible(true);
         flowPane.setPadding(new Insets(70.0, 20.0, 30.0, 20.0));
@@ -218,10 +217,12 @@ public class OnlineGameStageFXML extends BorderPane {
         opponentTurnLabel.setPrefHeight(25.0);
         opponentTurnLabel.setPrefWidth(139.0);
         opponentTurnLabel.setText("Opponent's Turn");
-        if (turnFlag == userFlag) { /// m7tagen method
-            opponentTurnLabel.setVisible(true);
-        } else {
+        if (turnFlag == userFlag) {
             opponentTurnLabel.setVisible(false);
+            myTurnLabel.setVisible(true);
+        } else {
+            opponentTurnLabel.setVisible(true);
+            myTurnLabel.setVisible(false);
         }
         opponentTurnLabel.setFont(new Font(18.0));
         BorderPane.setMargin(flowPane0, new Insets(50.0, 0.0, 0.0, 0.0));
@@ -366,13 +367,27 @@ public class OnlineGameStageFXML extends BorderPane {
 
         ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
 
+        if (recordFlag == true) {
+            recordGame = new RecordGame();
+        }
+
         cellGrid1.setOnMouseClicked((event) -> {
             if (cellGrid1.getText().isEmpty() && turnFlag == userFlag) {
                 cellGrid1.setText(symbol);
 
                 xoBoard[0][0] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 0, 0));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(0);
+                    gameStep.setCol(0);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -383,7 +398,6 @@ public class OnlineGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(true);
                     myTurnLabel.setVisible(false);
                 }
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 0, 0));
             }
         });
 
@@ -393,7 +407,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[0][1] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 0, 1));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(0);
+                    gameStep.setCol(1);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -404,7 +428,7 @@ public class OnlineGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(true);
                     myTurnLabel.setVisible(false);
                 }
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 0, 1));
+
             }
         });
 
@@ -414,7 +438,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[0][2] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 0, 2));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(0);
+                    gameStep.setCol(2);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -425,7 +459,7 @@ public class OnlineGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(true);
                     myTurnLabel.setVisible(false);
                 }
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 0, 2));
+
             }
         });
 
@@ -435,7 +469,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[1][0] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 1, 0));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(1);
+                    gameStep.setCol(0);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -446,7 +490,7 @@ public class OnlineGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(true);
                     myTurnLabel.setVisible(false);
                 }
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 1, 0));
+
             }
         });
 
@@ -456,7 +500,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[1][1] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 1, 1));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(1);
+                    gameStep.setCol(1);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -467,7 +521,7 @@ public class OnlineGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(true);
                     myTurnLabel.setVisible(false);
                 }
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 1, 1));
+
             }
         });
 
@@ -477,7 +531,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[1][2] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 1, 2));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(1);
+                    gameStep.setCol(2);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -489,7 +553,6 @@ public class OnlineGameStageFXML extends BorderPane {
                     myTurnLabel.setVisible(false);
                 }
 
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 1, 2));
             }
         });
 
@@ -499,7 +562,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[2][0] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 2, 0));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(2);
+                    gameStep.setCol(0);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -510,7 +583,7 @@ public class OnlineGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(true);
                     myTurnLabel.setVisible(false);
                 }
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 2, 0));
+
             }
         });
 
@@ -520,7 +593,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[2][1] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 2, 1));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(2);
+                    gameStep.setCol(1);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -532,7 +615,6 @@ public class OnlineGameStageFXML extends BorderPane {
                     myTurnLabel.setVisible(false);
                 }
 
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 2, 1));
             }
         });
 
@@ -542,7 +624,17 @@ public class OnlineGameStageFXML extends BorderPane {
 
                 xoBoard[2][2] = symbol;
 
-                BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 2, 2));
+
+                if (recordFlag == true) {
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(symbol);
+                    gameStep.setRow(2);
+                    gameStep.setCol(2);
+                    recordGame.recordGameSteps(opName, gameStep);
+                }
+
+                BoardUtilities.checkBoardOnline(stage, xoBoard, myName, opName);
 
                 turnFlag = !turnFlag;
 
@@ -553,23 +645,25 @@ public class OnlineGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(true);
                     myTurnLabel.setVisible(false);
                 }
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGameMessageToJson(opName, symbol, 2, 2));
-                /*
-                symbolFlag = !symbolFlag;
-                if(symbolFlag){
-                    opponentTurnLabel.setVisible(true);
-                    myTurnLabel.setVisible(false);
-                }else{
-                    opponentTurnLabel.setVisible(false);
-                    myTurnLabel.setVisible(true);
-                }
-                 */
+
             }
         });
 
         ExitBt.setOnAction((ActionEvent event) -> {
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertExitOnGameToJson(opName));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+            recordGame.deleteFile(opName);
             Parent root = new MainPageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
+        });
+
+        stage.setOnCloseRequest((event) -> {
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertExitOnGameToJson(opName));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            
+            
+            Platform.exit();
+            System.exit(0);
         });
 
     }
@@ -578,13 +672,86 @@ public class OnlineGameStageFXML extends BorderPane {
         try {
             int row = jSONObject.getInt("Row");
             int col = jSONObject.getInt("Column");
-            String symbol=jSONObject.getString("Symbol");
-            xoBoard[row][col]=symbol;
+            String symbol = jSONObject.getString("Symbol");
+            xoBoard[row][col] = symbol;
             labels[row][col].setText(symbol);
-            
-            turnFlag=!turnFlag;
+
+            if (recordFlag == true) {
+                
+                GameStep gameStep = new GameStep();
+                gameStep.setSymbol(symbol);
+                gameStep.setRow(row);
+                gameStep.setCol(col);
+                recordGame.recordGameSteps(opName, gameStep);
+            }
+
+            turnFlag = !turnFlag;
         } catch (JSONException ex) {
             Logger.getLogger(OnlineGameStageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void exitGame() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(opName + " is not available now");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (!result.isPresent() || result.get() == ButtonType.OK) {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+
+            Parent root = new MainPageFXML(stage);
+            Scene scene = new Scene(root, 600, 500);
+            stage.setScene(scene);
+        }
+    }
+
+    public static void showLoseDialog(JSONObject jSONObject) {
+        try {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            int check=jSONObject.getInt("Result");
+            if(check==1){
+                alert.setHeaderText("You Loose :(");
+            }else if(check==2){
+                alert.setHeaderText("Draw :(");
+            }
+            Optional<ButtonType> result = alert.showAndWait();
+            
+            if (!result.isPresent() || result.get() == ButtonType.OK) {
+                ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+                
+                Parent root = new MainPageFXML(stage);
+                Scene scene = new Scene(root, 600, 500);
+                stage.setScene(scene);
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(OnlineGameStageFXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void showDrawDialog() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Draw");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (!result.isPresent() || result.get() == ButtonType.OK) {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+
+            Parent root = new MainPageFXML(stage);
+            Scene scene = new Scene(root, 600, 500);
+            stage.setScene(scene);
+        }
+    }
+
+    public void resetVariables() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                labels[i][j].setText("");
+                xoBoard[i][j] = "d";
+                turnFlag = true;
+            }
         }
     }
 

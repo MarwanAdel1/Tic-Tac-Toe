@@ -1,5 +1,6 @@
 package ui;
 
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -16,6 +17,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pojo.GameStep;
+import utility.RecordGame;
 
 public class RecordsFXML extends BorderPane {
 
@@ -46,11 +49,13 @@ public class RecordsFXML extends BorderPane {
     protected final FlowPane flowPane;
     protected final Text text;
     protected final Label label;
-    
+
     private Stage stage;
 
+    private Label labels[][] = new Label[3][3];
+
     public RecordsFXML(Stage stage) {
-        this.stage=stage;
+        this.stage = stage;
 
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -68,6 +73,17 @@ public class RecordsFXML extends BorderPane {
         cell7 = new Label();
         cell8 = new Label();
         cell9 = new Label();
+
+        labels[0][0] = cell1;
+        labels[0][1] = cell2;
+        labels[0][2] = cell3;
+        labels[1][0] = cell4;
+        labels[1][1] = cell5;
+        labels[1][2] = cell6;
+        labels[2][0] = cell7;
+        labels[2][1] = cell8;
+        labels[2][2] = cell9;
+
         scrollPane = new ScrollPane();
         listView = new ListView();
         gridPane0 = new GridPane();
@@ -272,12 +288,32 @@ public class RecordsFXML extends BorderPane {
         flowPane.getChildren().add(label);
 
         btnBack.setOnAction((ActionEvent event) -> {
-            Parent root= new MainPageFXML(stage);
+            Parent root = new MainPageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
-        
+
         btnPlay.setOnAction((ActionEvent event) -> {
-            
+            if (!listView.getSelectionModel().isEmpty()) {
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        labels[i][j].setText("");
+                    }
+                }
+
+                String fileName = listView.getSelectionModel().getSelectedItem().toString();
+                RecordGame recordGame = new RecordGame();
+                ArrayList<GameStep> steps = recordGame.playGameSteps(fileName);
+                
+                for (int i = 0; i < steps.size(); i++) {
+                    GameStep gameStep = steps.get(i);
+                    labels[gameStep.getRow()][gameStep.getCol()].setText(gameStep.getSymbol());
+                }
+            }
         });
+
+        String[] filesList = new RecordGame().getAllFiles();
+        for (String s : filesList) {
+            listView.getItems().add(s);
+        }
     }
 }
