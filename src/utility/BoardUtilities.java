@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import ui.MainPageFXML;
+import ui.WinnerFXML;
 
 /**
  *
@@ -23,6 +24,8 @@ public class BoardUtilities {
         int check = 0;
         if (isWin(xoBoard)) {
             check = 1;
+            
+            
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game End");
@@ -47,16 +50,9 @@ public class BoardUtilities {
         if (isWin(xoBoard)) {
             check =1;
             
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game End");
-            alert.setHeaderText("You Win");
+            Parent root = new WinnerFXML(stage);
+            stage.setScene(new Scene(root, 600, 500));
             
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.get() == ButtonType.OK) {
-                Parent root = new MainPageFXML(stage);
-                stage.setScene(new Scene(root, 600, 500));
-            }
         }
         
         if (isDraw(xoBoard)) {

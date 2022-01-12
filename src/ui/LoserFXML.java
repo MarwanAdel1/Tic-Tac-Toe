@@ -1,10 +1,18 @@
 package ui;
 
+import java.io.File;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class LoserFXML extends AnchorPane {
 
@@ -12,13 +20,21 @@ public class LoserFXML extends AnchorPane {
     protected final Label HardluckLable;
     protected final Label LoserLable;
     protected final Button BackButton;
+     private Stage stage;
 
-    public LoserFXML() {
+    public LoserFXML(Stage stage) {
+       this.stage = stage;
 
         LoserVideo = new MediaView();
         HardluckLable = new Label();
         LoserLable = new Label();
         BackButton = new Button();
+        File vidoeURL = new File("/assets/vidoes/TrialVidoe.jpg");
+
+        Media media = new Media(vidoeURL.toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        LoserVideo.setMediaPlayer(mediaPlayer);
+        mediaPlayer.setAutoPlay(true);
 
         setId("AnchorPane");
         setPrefHeight(500.0);
@@ -45,6 +61,13 @@ public class LoserFXML extends AnchorPane {
         BackButton.setPrefHeight(31.0);
         BackButton.setPrefWidth(80.0);
         BackButton.setText("Back");
+        BackButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Parent root = new MainPageFXML(stage);
+                stage.setScene(new Scene(root, 600, 500));
+            }
+        });
 
         getChildren().add(LoserVideo);
         getChildren().add(HardluckLable);
