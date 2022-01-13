@@ -4,6 +4,7 @@ import data.ClientRequestsHandler;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -22,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
+import pojo.GameStep;
 import utility.BoardUtilities;
 import utility.JsonConverter;
 import utility.RecordGame;
@@ -77,19 +79,14 @@ public class OnlineGameStageFXML extends BorderPane {
         this.myName = myName;
         this.opName = opName;
 
+        this.myName = myName;
+        this.opName = opName;
+        this.recordFlag = reccordFlag;
+
         userFlag = flag; /////// flag sabet (Reciever -> false , Sender -> true)
 
-        /*
-        xoBoard = new String[3][3];
-        xoBoard[0][0] = "d";
-        xoBoard[0][1] = "d";
-        xoBoard[0][2] = "d";
-        xoBoard[1][0] = "d";
-        xoBoard[1][1] = "d";
-        xoBoard[1][2] = "d";
-        xoBoard[2][0] = "d";
-        xoBoard[2][1] = "d";
-        xoBoard[2][2] = "d";*/
+        resetVariables();
+
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
         columnConstraints0 = new ColumnConstraints();
@@ -183,11 +180,7 @@ public class OnlineGameStageFXML extends BorderPane {
         myTurnLabel.setPrefHeight(17.0);
         myTurnLabel.setPrefWidth(109.0);
         myTurnLabel.setText("Your Turn");
-        if (turnFlag == userFlag) { /// m7tagen method
-            myTurnLabel.setVisible(true);
-        } else {
-            myTurnLabel.setVisible(false);
-        }
+
         myTurnLabel.setFont(new Font(24.0));
         myTurnLabel.setVisible(true);
         flowPane.setPadding(new Insets(70.0, 20.0, 30.0, 20.0));
@@ -226,10 +219,12 @@ public class OnlineGameStageFXML extends BorderPane {
         opponentTurnLabel.setPrefHeight(25.0);
         opponentTurnLabel.setPrefWidth(139.0);
         opponentTurnLabel.setText("Opponent's Turn");
-        if (turnFlag == userFlag) { /// m7tagen method
-            opponentTurnLabel.setVisible(true);
-        } else {
+        if (turnFlag == userFlag) {
             opponentTurnLabel.setVisible(false);
+            myTurnLabel.setVisible(true);
+        } else {
+            opponentTurnLabel.setVisible(true);
+            myTurnLabel.setVisible(false);
         }
         opponentTurnLabel.setFont(new Font(18.0));
         BorderPane.setMargin(flowPane0, new Insets(50.0, 0.0, 0.0, 0.0));
@@ -373,6 +368,10 @@ public class OnlineGameStageFXML extends BorderPane {
         gridPane0.getChildren().add(cellGrid9);
 
         ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+
+        if (recordFlag == true) {
+            recordGame = new RecordGame();
+        }
 
         cellGrid1.setOnMouseClicked((event) -> {
             if (cellGrid1.getText().isEmpty() && turnFlag == userFlag) {
@@ -606,7 +605,6 @@ public class OnlineGameStageFXML extends BorderPane {
         ExitBt.setOnAction((ActionEvent event) -> {
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertExitOnGameToJson(opName));
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
-
             Parent root = new MainPageFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
         });
@@ -635,9 +633,9 @@ public class OnlineGameStageFXML extends BorderPane {
         }
     }
 
-    public static void exitGame() {
+    public static void showDrawDialog() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(opName + " is not available now");
+        alert.setHeaderText("Draw");
         Optional<ButtonType> result = alert.showAndWait();
 
         if (!result.isPresent() || result.get() == ButtonType.OK) {
@@ -647,6 +645,16 @@ public class OnlineGameStageFXML extends BorderPane {
             Parent root = new MainPageFXML(stage);
             Scene scene = new Scene(root, 600, 500);
             stage.setScene(scene);
+        }
+    }
+
+    public void resetVariables() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                labels[i][j].setText("");
+                xoBoard[i][j] = "d";
+                turnFlag = true;
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package ui;
 import data.ClientRequestsHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -252,6 +253,24 @@ public class InvitationResponseStageFXML extends BorderPane {
                 recordBt.setVisible(true);
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertReadyNotificationToJson(user, invitedUser, false));
             }
+        });
+        
+        recordBt.setOnAction((event) -> {
+            if (recordBt.getText().equalsIgnoreCase("Start Recording")) {
+                recordBt.setText("Recording Now");
+                reccordFlag = true;
+            } else if (recordBt.getText().equalsIgnoreCase("Recording Now")) {
+                recordBt.setText("Start Recording");
+                reccordFlag = false;
+            }
+        });
+
+        stage.setOnCloseRequest((event) -> {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertCancelOwnerInvitationToJson(invitedUser));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            Platform.exit();
+            System.exit(0);
         });
 
         recordBt.setOnAction((event) -> {

@@ -1,6 +1,7 @@
 package ui;
 
 import data.ClientRequestsHandler;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -120,6 +121,14 @@ public class ChooseSymbolStageFXML extends AnchorPane {
                     break;
             }
         }));
+        
+        stage.setOnCloseRequest((event) -> {
+            ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertExitOnGameToJson(opName));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            Platform.exit();
+            System.exit(0);
+        });
 
     }
 }

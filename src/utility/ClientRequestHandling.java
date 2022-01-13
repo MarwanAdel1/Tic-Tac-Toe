@@ -102,6 +102,10 @@ public class ClientRequestHandling {
                 Platform.runLater(() -> {
                     InvitationPopUPStageFXML.invitationCanceled();
                 });
+            }else if(header.equalsIgnoreCase("Win")){
+                Platform.runLater(() -> {
+                    OnlineGameStageFXML.showLoseDialog(jSONObject);
+                });
             }
         } catch (JSONException ex) {
             Logger.getLogger(ClientRequestHandling.class.getName()).log(Level.SEVERE, null, ex);

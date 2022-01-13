@@ -57,65 +57,50 @@ public class RecordGame {
                 Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return file;
     }
 
-    public String[] StartReadingRecord(File file) {
-        String[] str = null;
-        FileInputStream fileInputStream = null;
+    public ArrayList<GameStep> playGameSteps(String fileName) {
         Scanner scanner = null;
-
+        ArrayList<GameStep> gameSteps = new ArrayList<>();
+        savedFile = new File(dir, fileName);
         try {
-            fileInputStream = new FileInputStream(file);
+            fileInputStream = new FileInputStream(savedFile);
             scanner = new Scanner(fileInputStream);
-            while (scanner.hasNextLine()) {
-                str = scanner.nextLine().split(";");
 
-                /*for (int i = 0; i < str.length; i++) {
-                    System.out.print(str[i]+"\n");
-                }*/
+            while (scanner.hasNextLine()) {
+                String[] str = scanner.nextLine().split(";");
+
+                GameStep gameStep = new GameStep();
+                gameStep.setSymbol(str[0]);
+                gameStep.setRow(Integer.parseInt(str[1]));
+                gameStep.setCol(Integer.parseInt(str[2]));
+                
+                gameSteps.add(gameStep);
             }
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
-
         } finally {
             try {
-                fileInputStream.close();
                 scanner.close();
+                fileInputStream.close();
             } catch (IOException ex) {
                 Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return str; //returns an array that contains row, col, symbol
+
+        return gameSteps;
+    }
+
+    public void deleteFile(String opName) {
+        savedFile = new File(dir, opName + " " + time);
+        savedFile.delete();
     }
 
     public String[] getAllFiles() {
+
         String[] files = dir.list();
- 
         return files;
     }
 
-    public String getFormatFromTime(LocalDateTime localDateTime, String opponentName) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd---HH-mm-ss");
-        dtf.format(localDateTime);
-
-        return opponentName + dtf.format(localDateTime);
-    }
-
-    public LocalDateTime getDateTime() {
-        LocalDateTime now = LocalDateTime.now();
-
-        return now;
-    }
-
-    public int printTime() {
-        System.out.println(getFormatFromTime(getDateTime(), "Ghada"));
-        return 1;
-    }
-
-    public static void main(String[] args) {
-
-        String testStr = "1;2;3\n";
-
-    }
 }

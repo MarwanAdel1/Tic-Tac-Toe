@@ -1,7 +1,9 @@
 package ui;
 
+import data.ClientRequestsHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static ui.MultiplayersStageFXML.listView;
+import utility.JsonConverter;
 
 public class MainPageFXML extends AnchorPane {
 
@@ -230,7 +233,7 @@ public class MainPageFXML extends AnchorPane {
         getChildren().add(gridPane);
 
         singleButton.setOnAction((ActionEvent event) -> {
-            Parent root = new ChooseSymbolStageFXML(stage, "Computer", 0, 0);
+            Parent root = new ChooseSymbolStageFXML(stage, "Computer", 0,false);
             stage.setScene(new Scene(root, 600, 500));
         });
 
@@ -247,6 +250,13 @@ public class MainPageFXML extends AnchorPane {
         recordsButton.setOnAction((ActionEvent event) -> {
             Parent root = new RecordsFXML(stage);
             stage.setScene(new Scene(root, 600, 500));
+        });
+        
+        stage.setOnCloseRequest((event) -> {
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
+            Platform.exit();
+            System.exit(0);
         });
     }
 

@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import ui.ChooseSymbolStageFXML;
 
 public class PlayerTwoNameStageFXML extends AnchorPane {
 

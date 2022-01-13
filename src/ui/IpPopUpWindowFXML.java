@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import utility.RecordGame;
 
 public class IpPopUpWindowFXML extends AnchorPane {
 
@@ -60,14 +61,14 @@ public class IpPopUpWindowFXML extends AnchorPane {
         getChildren().add(IPConfirmBt);
         getChildren().add(loadingIndicator);
 
-    IPConfirmBt.setOnAction((event) -> {
+        IPConfirmBt.setOnAction((event) -> {
             if (!IPTextField.getText().isEmpty()) {
                 ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(primaryStage);
-                
+
                 loadingIndicator.setVisible(true);
                 IPConfirmBt.setDisable(true);
                 IPTextField.setDisable(true);
-                
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

@@ -5,6 +5,7 @@
  */
 package utility;
 
+import data.ClientRequestsHandler;
 import java.util.Optional;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,6 +21,7 @@ import ui.WinnerFXML;
  */
 public class BoardUtilities {
     
+
     public static int checkBoard(Stage stage, String[][] xoBoard, boolean flag) {
         int check = 0;
         if (isWin(xoBoard)) {
@@ -45,18 +47,32 @@ public class BoardUtilities {
         return check;
     }
 
-    public static int checkBoardOnline(Stage stage, String[][] xoBoard) {
-        int check=0;
+    public static int checkBoardOnline(Stage stage, String[][] xoBoard,String myName,String opName) {
+        ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+        int check = 0;
         if (isWin(xoBoard)) {
-            check =1;
+            check = 1;
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertWinToJson(opName,check));
             
-            Parent root = new WinnerFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
-            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game End");
+
+            alert.setHeaderText("You Win");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+
+                Parent root = new MainPageFXML(stage);
+                stage.setScene(new Scene(root, 600, 500));
+            }
         }
-        
+
         if (isDraw(xoBoard)) {
-            check =2;
+            check = 2;
+
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertWinToJson(opName,check));
             
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game End");
@@ -65,12 +81,13 @@ public class BoardUtilities {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+                
                 Parent root = new MainPageFXML(stage);
                 stage.setScene(new Scene(root, 600, 500));
             }
 
         }
-        
         return check;
     }
 
