@@ -66,7 +66,7 @@ public class ClientRequestHandling {
                 Platform.runLater(() -> {
                     MainStage.showDisconnectionDialog();
                 });
-            } else if (header.equalsIgnoreCase("Invite")) { /// send to another client
+            } else if (header.equalsIgnoreCase("Invite")) { /// send names to UI
                 Platform.runLater(() -> {
                     MainPageFXML.showInvitationDialog(jSONObject);
                 });

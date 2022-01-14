@@ -5,10 +5,7 @@
  */
 package utility;
 
-/**
- *
- * @author karam
- */
+
 public class BestMove {
 
     public static class Move {

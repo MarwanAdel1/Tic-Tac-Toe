@@ -69,7 +69,7 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
 
         submitButton.setOnAction((ActionEvent event) -> {
             if (!playerTwoTextField.getText().isEmpty()) {
-                Parent root = new ChooseSymbolStageFXML(stage, myName, playerTwoTextField.getText(), 1, false);
+                Parent root = new ChooseSymbolStageFXML(stage, myName, playerTwoTextField.getText(), 1, false,0);
                 Scene scene = new Scene(root, 600, 500);
                 scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
                 stage.setScene(scene);

@@ -268,7 +268,7 @@ public class InvitationStageFXMLRoot extends BorderPane {
                 ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertStartGameToJson(invitedUser));
 
-                Parent root = new ChooseSymbolStageFXML(stage, "", invitedUser, 2, recordFlag);
+                Parent root = new ChooseSymbolStageFXML(stage, "", invitedUser, 2, recordFlag,0);
                 Scene scene = new Scene(root, 600, 500);
                 scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
                 stage.setScene(scene);

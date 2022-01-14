@@ -31,7 +31,7 @@ public class WinnerFXML extends AnchorPane {
         WinnerLable = new Label();
         BackButton = new Button();
 
-        setId("#greenStage");
+        setId("greenStage");
         setPrefHeight(500.0);
         setPrefWidth(600.0);
 

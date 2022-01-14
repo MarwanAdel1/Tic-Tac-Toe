@@ -22,7 +22,7 @@ public class ChooseSymbolStageFXML extends AnchorPane {
 
     private Stage stage;
 
-    public ChooseSymbolStageFXML(Stage stage, String myName, String opName, int mode, boolean recordFlag) {
+    public ChooseSymbolStageFXML(Stage stage, String myName, String opName, int mode, boolean recordFlag, int level) {
         this.stage = stage;
 
         XButtonChoose = new Button();
@@ -77,7 +77,7 @@ public class ChooseSymbolStageFXML extends AnchorPane {
             Parent root;
             switch (mode) {
                 case 0:
-                    root = new ComputerGameStageFXML(stage, "X", myName, opName);
+                    root = new ComputerGameStageFXML(stage, "X", myName, opName, level);
                     Scene scene = new Scene(root, 600, 500);
                     scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
                     stage.setScene(scene);
@@ -108,7 +108,7 @@ public class ChooseSymbolStageFXML extends AnchorPane {
             Parent root;
             switch (mode) {
                 case 0:
-                    root = new ComputerGameStageFXML(stage, "O", myName, opName);
+                    root = new ComputerGameStageFXML(stage, "O", myName, opName,0);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 case 1:

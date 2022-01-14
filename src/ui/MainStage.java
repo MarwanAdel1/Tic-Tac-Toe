@@ -44,6 +44,7 @@ public class MainStage extends Application {
 
         Parent dialogVbox = new IpPopUpWindowFXML(dialog, primaryStage);
         Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        dialogScene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
 
         dialog.setScene(dialogScene);
         dialog.setResizable(false);

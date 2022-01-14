@@ -58,7 +58,7 @@ public class ComputerGameStageFXML extends BorderPane {
     private boolean symbolFlag, turnFlag;
     private String[][] xoBoard;
 
-    public ComputerGameStageFXML(Stage stage, String symbol, String myName, String opName) {
+    public ComputerGameStageFXML(Stage stage, String symbol, String myName, String opName, int level) {
         this.stage = stage;
         symbolFlag = !symbol.equalsIgnoreCase("x");
 
@@ -155,6 +155,12 @@ public class ComputerGameStageFXML extends BorderPane {
         ExitBt.setPrefWidth(97.0);
         ExitBt.setText("Exit Game");
         setTop(gridPane);
+        ExitBt.setOnAction((ActionEvent event) -> {
+            Parent root = new MainPageFXML(stage);
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
+        });
 
         BorderPane.setAlignment(flowPane, javafx.geometry.Pos.CENTER);
         flowPane.setColumnHalignment(javafx.geometry.HPos.CENTER);
@@ -219,7 +225,7 @@ public class ComputerGameStageFXML extends BorderPane {
         opponentTurnLabel.setAlignment(javafx.geometry.Pos.CENTER);
         opponentTurnLabel.setPrefHeight(25.0);
         opponentTurnLabel.setPrefWidth(139.0);
-        opponentTurnLabel.setText("Opponent's Turn");
+        opponentTurnLabel.setText("Computer Turn");
         opponentTurnLabel.setFont(new Font(18.0));
         BorderPane.setMargin(flowPane0, new Insets(50.0, 0.0, 0.0, 0.0));
         setRight(flowPane0);
@@ -403,6 +409,23 @@ public class ComputerGameStageFXML extends BorderPane {
             scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
             stage.setScene(scene);
         });
+        Parent root;
+        switch (level) {
+
+            case 0:
+                AI.easyAI(xoBoard);
+                break;
+            case 1:
+                AI.normalAI(xoBoard);
+                break;
+            case 2:
+                
+                break;
+            default:
+                break;
+        }
+        
+        
 
     }
 
@@ -421,13 +444,11 @@ public class ComputerGameStageFXML extends BorderPane {
     public void computerTurn(Label[][] labels, String myName, String opName) {
         turnFlag = !turnFlag;
 
-        
-
         BestMove.Move move = BestMove.findBestMove(xoBoard, BoardUtilities.getSymbol(!symbolFlag));
         if (move.row != -1) {
             labels[move.row][move.col].setText(BoardUtilities.getSymbol(!symbolFlag));
             xoBoard[move.row][move.col] = BoardUtilities.getSymbol(!symbolFlag);
-            
+
             turnFlag = !turnFlag;
         }
         BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);

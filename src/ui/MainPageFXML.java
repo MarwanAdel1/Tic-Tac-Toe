@@ -79,7 +79,8 @@ public class MainPageFXML extends AnchorPane {
         setPrefHeight(500.0);
         setPrefWidth(600.0);
 
-        TicTacLable.setLayoutX(18.0);
+        TicTacLable.setLayoutX(120.0);
+        TicTacLable.setLayoutY(20.0);
         TicTacLable.setText("Tic-Tac-Toe  Game");
         TicTacLable.setFont(new Font("System Bold Italic", 65.0));
 
@@ -242,7 +243,7 @@ public class MainPageFXML extends AnchorPane {
         recordsButton.setId("greenButton");
 
         WelcomeLable.setId("greentext");
-        TicTacLable.setId("orangeText");
+        TicTacLable.setId("gameText");
         PointsLable.setId("scoreText");
 
         label.setId("greentext");
@@ -250,7 +251,7 @@ public class MainPageFXML extends AnchorPane {
         label1.setId("scoreText");
 
         singleButton.setOnAction((ActionEvent event) -> {
-            Parent root = new ChooseSymbolStageFXML(stage, myName, "Computer", 0, false);
+            Parent root = new ChooseLevelStageFXML(stage, myName, "Computer", 0, false);
             Scene scene = new Scene(root, 600, 500);
             scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
             stage.setScene(scene);
