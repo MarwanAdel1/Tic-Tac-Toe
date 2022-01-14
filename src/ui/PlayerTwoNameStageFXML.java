@@ -20,13 +20,17 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
 
     private Stage stage;
 
-    public PlayerTwoNameStageFXML(Stage stage) {
+    private static String css;
+
+    public PlayerTwoNameStageFXML(Stage stage, String myName) {
         this.stage = stage;
 
         text = new Text();
         playerTwoTextField = new TextField();
         submitButton = new Button();
         warningText = new Text();
+
+        css = getClass().getResource("/assets/styles/style.css").toExternalForm();
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -39,11 +43,13 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
         text.setText("Player Two Name ");
         text.setWrappingWidth(399.125);
         text.setFont(new Font(48.0));
+        text.setId("orangeText");
 
         playerTwoTextField.setLayoutX(119.0);
         playerTwoTextField.setLayoutY(169.0);
         playerTwoTextField.setPrefHeight(31.0);
         playerTwoTextField.setPrefWidth(344.0);
+        playerTwoTextField.setId("whiteField");
 
         submitButton.setLayoutX(208.0);
         submitButton.setLayoutY(282.0);
@@ -51,6 +57,7 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
         submitButton.setPrefHeight(49.0);
         submitButton.setPrefWidth(121.0);
         submitButton.setText("Submit");
+        submitButton.setId("greenButton");
 
         warningText.setFill(javafx.scene.paint.Color.valueOf("#f80505"));
         warningText.setLayoutX(119.0);
@@ -67,9 +74,11 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
 
         submitButton.setOnAction((ActionEvent event) -> {
             if (!playerTwoTextField.getText().isEmpty()) {
-                Parent root = new ChooseSymbolStageFXML(stage,playerTwoTextField.getText(), 1,false);
-                stage.setScene(new Scene(root, 600, 500));
-            }else{
+                Parent root = new ChooseSymbolStageFXML(stage, myName, playerTwoTextField.getText(), 1, false, -1);
+                Scene scene = new Scene(root, 600, 500);
+                scene.getStylesheets().add(getClass().getResource("/assets/styles/style.css").toExternalForm());
+                stage.setScene(scene);
+            } else {
                 warningText.setText("Please insert player's name");
                 warningText.setVisible(true);
             }

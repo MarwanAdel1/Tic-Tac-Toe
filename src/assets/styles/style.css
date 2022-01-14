@@ -1,0 +1,123 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 13, 2022, 3:14:43 PM
+    Author     : User
+*/
+@font-face {
+    src: url("dead-font-walking.regular.otf");
+}
+#gameText
+{
+    -fx-font-size: 50px;     
+    -fx-fill: #FF8717;
+    -fx-alignment: center;
+    -fx-text-fill: #FF8717;
+    -fx-font-family:"Dead Font Walking";
+}
+#field
+{
+    -fx-background-color: #F1F8F6;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+}
+#AnchorPane
+{
+    /*    -fx-background-color: #FFFFFF;*/
+    -fx-background-color: linear-gradient(to bottom, #FFF3E9 0%, #FFF3E9 20%, #ffffff 20%, #ffffff 100%);
+}
+
+#AnchorPaneGreen
+{
+    -fx-background-color: #F1F8F6;
+}
+
+#whiteField
+{
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+}
+#greentext
+{
+    -fx-fill:#14C69B;
+    -fx-text-fill:#14C69B;
+}
+#greenButton
+{
+    -fx-background-color: #14C69B;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-text-fill: #FFFFFF;
+}
+#orangeButton
+{
+    -fx-background-color: #FF8717;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-text-fill: #FFFFFF;
+}
+#orangeText
+{
+    -fx-fill: #FF8717;
+    -fx-text-fill:#FF8717;
+}
+#scoreText
+{
+    -fx-fill: #FF4D00;
+    -fx-text-fill:#FF4D00;
+}
+
+#container
+{
+    -fx-background-color:#FFFFFF;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-border-color: #D4F1EA;  
+}
+
+#containerSharp
+{
+    -fx-background-color:#FFFFFF;
+    /*    -fx-background-radius: 35px;
+        -fx-border-radius: 35px;*/
+    -fx-border-color: #D4F1EA;  
+}
+#containerGame
+{
+    -fx-background-color:#FFFFFF;
+    /*    -fx-background-radius: 35px;
+        -fx-border-radius: 35px;*/
+    -fx-border-color: #D4F1EA;  
+    -fx-border-width: 10px;
+}
+
+#containerPlayerGreen{
+
+    -fx-background-color:#FFFFFF;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-border-color: #D4F1EA;  
+    -fx-text-fill:#14C69B;
+}
+#containerPlayerOrange{
+
+    -fx-background-color:#FFFFFF;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-border-color: #D4F1EA;  
+    -fx-text-fill: #FF8717;
+}
+#greenStage
+{
+    -fx-background-color:#F1F8F6;
+}
+#orangeBoldButton
+{
+    -fx-background-color: #FF4D00;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-text-fill: #FFFFFF;
+}

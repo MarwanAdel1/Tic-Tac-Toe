@@ -174,11 +174,12 @@ public class JsonConverter {
         return jSONObject;
     }
 
-    public static JSONObject convertCancelOwnerInvitationToJson(String opName) {
+    public static JSONObject convertCancelOwnerInvitationToJson(String opName, int from) {
         JSONObject jSONObject = new JSONObject();
 
         try {
             jSONObject.put("Header", "CancelOwnerInvite");
+            jSONObject.put("From", from);
             jSONObject.put("OpponentPlayer", opName);
         } catch (JSONException ex) {
             Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
@@ -187,9 +188,22 @@ public class JsonConverter {
         return jSONObject;
     }
 
-    public static JSONObject convertWinToJson(String opName,int result) {
+    public static JSONObject convertCancelResponseInvitationToJson(String opName) {
         JSONObject jSONObject = new JSONObject();
-        
+
+        try {
+            jSONObject.put("Header", "CancelResponseInvite");
+            jSONObject.put("OpponentPlayer", opName);
+        } catch (JSONException ex) {
+            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return jSONObject;
+    }
+
+    public static JSONObject convertWinToJson(String opName, int result) {
+        JSONObject jSONObject = new JSONObject();
+
         try {
             jSONObject.put("Header", "Win");
             jSONObject.put("OpponentPlayer", opName);
@@ -197,7 +211,21 @@ public class JsonConverter {
         } catch (JSONException ex) {
             Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        return jSONObject;
+    }
+
+    public static JSONObject convertUpdateScoreToJson(String userName, int colNum) {
+        JSONObject jSONObject = new JSONObject();
+        try {
+            jSONObject.put("Header", "Database");
+            jSONObject.put("SubHeader", "UpdateScore");
+            jSONObject.put("Username", userName);
+            jSONObject.put("Operation", colNum);
+
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+        }
         return jSONObject;
     }
 

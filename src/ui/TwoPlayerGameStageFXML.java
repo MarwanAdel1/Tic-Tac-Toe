@@ -1,13 +1,10 @@
 package ui;
 
-import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -57,8 +54,12 @@ public class TwoPlayerGameStageFXML extends BorderPane {
     private boolean symbolFlag, turnFlag;
     private String[][] xoBoard;
 
-    public TwoPlayerGameStageFXML(Stage stage, String symbol, String opName) {
+    private static String css;
+
+    public TwoPlayerGameStageFXML(Stage stage, String symbol, String myName, String opName) {
         this.stage = stage;
+        css = getClass().getResource("/assets/styles/style.css").toExternalForm();
+
         if (symbol.equalsIgnoreCase("x")) {
             symbolFlag = false;
         } else {
@@ -164,7 +165,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
         playerNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
         playerNameLabel.setPrefHeight(17.0);
         playerNameLabel.setPrefWidth(116.0);
-        playerNameLabel.setText("Player Name");
+        playerNameLabel.setText(myName);
         playerNameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         playerNameLabel.setFont(new Font("System Bold", 19.0));
 
@@ -194,7 +195,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
         opponentNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
         opponentNameLabel.setPrefHeight(17.0);
         opponentNameLabel.setPrefWidth(116.0);
-        
+
         opponentNameLabel.setText(opName);
 
         opponentTurnLabel.setVisible(false);
@@ -358,12 +359,24 @@ public class TwoPlayerGameStageFXML extends BorderPane {
         gridPane0.getChildren().add(cellGrid8);
         gridPane0.getChildren().add(cellGrid9);
 
+        gameText.setId("gameText");
+        ExitBt.setId("orangeButton");
+        playerNameLabel.setId("containerPlayerGreen");
+        mySybmolLabel.setId("greentext");
+        myTurnLabel.setId("greentext");
+        opponentNameLabel.setId("containerPlayerOrange");
+        opponentSybmolLabel.setId("orangeText");
+        opponentTurnLabel.setId("orangeText");
+        gridPane0.setId("containerGame");
+
+        BoardUtilities boardUtilities = new BoardUtilities();
+        
         cellGrid1.setOnMouseClicked((event) -> {
             if (cellGrid1.getText().isEmpty()) {
                 cellGrid1.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[0][0] = BoardUtilities.getSymbol(symbolFlag); /// return X - O
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag); //// check Win or Draw
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName); //// check Win or Draw
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -384,7 +397,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 cellGrid2.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[0][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -404,7 +417,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 cellGrid3.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[0][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -424,7 +437,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 cellGrid4.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[1][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -444,7 +457,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 cellGrid5.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[1][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -464,7 +477,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 cellGrid6.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[1][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -484,7 +497,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 cellGrid7.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[2][0] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -504,7 +517,7 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 cellGrid8.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[2][1] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -518,14 +531,13 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                 }
             }
         });
-        
 
         cellGrid9.setOnMouseClicked((event) -> {
             if (cellGrid9.getText().isEmpty()) {
                 cellGrid9.setText(BoardUtilities.getSymbol(symbolFlag));
                 xoBoard[2][2] = BoardUtilities.getSymbol(symbolFlag);
 
-                BoardUtilities.checkBoard(stage,xoBoard,turnFlag);
+                BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
 
                 symbolFlag = !symbolFlag;
                 turnFlag = !turnFlag;
@@ -537,26 +549,16 @@ public class TwoPlayerGameStageFXML extends BorderPane {
                     opponentTurnLabel.setVisible(false);
                     myTurnLabel.setVisible(true);
                 }
-
-                /*
-                symbolFlag = !symbolFlag;
-                if(symbolFlag){
-                    opponentTurnLabel.setVisible(true);
-                    myTurnLabel.setVisible(false);
-                }else{
-                    opponentTurnLabel.setVisible(false);
-                    myTurnLabel.setVisible(true);
-                }
-                 */
             }
         });
 
         ExitBt.setOnAction((ActionEvent event) -> {
             Parent root = new MainPageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
         });
 
-        
     }
 
 }

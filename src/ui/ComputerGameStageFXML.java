@@ -1,16 +1,11 @@
 package ui;
 
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import data.ClientRequestsHandler;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -22,7 +17,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pojo.Move;
 import utility.AI;
+import utility.BestMove;
 import utility.BoardUtilities;
+import utility.JsonConverter;
 
 public class ComputerGameStageFXML extends BorderPane {
 
@@ -63,7 +60,7 @@ public class ComputerGameStageFXML extends BorderPane {
     private boolean symbolFlag, turnFlag;
     private String[][] xoBoard;
 
-    public ComputerGameStageFXML(Stage stage, String symbol, String opName) {
+    public ComputerGameStageFXML(Stage stage, String symbol, String myName, String opName, int level) {
         this.stage = stage;
         symbolFlag = !symbol.equalsIgnoreCase("x");
 
@@ -171,7 +168,7 @@ public class ComputerGameStageFXML extends BorderPane {
         playerNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
         playerNameLabel.setPrefHeight(17.0);
         playerNameLabel.setPrefWidth(116.0);
-        playerNameLabel.setText("Player Name");
+        playerNameLabel.setText(myName);
         playerNameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         playerNameLabel.setFont(new Font("System Bold", 19.0));
 
@@ -366,143 +363,117 @@ public class ComputerGameStageFXML extends BorderPane {
         gridPane0.getChildren().add(cellGrid8);
         gridPane0.getChildren().add(cellGrid9);
 
-        cellGrid1.setOnMouseClicked((event) -> {
-            if (cellGrid1.getText().isEmpty()) {
-                cellGrid1.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[0][0].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[0][0] = BoardUtilities.getSymbol(symbolFlag);
+        gameText.setId("gameText");
+        ExitBt.setId("orangeButton");
+        playerNameLabel.setId("containerPlayerGreen");
+        mySybmolLabel.setId("greentext");
+        myTurnLabel.setId("greentext");
+        opponentNameLabel.setId("containerPlayerOrange");
+        opponentSybmolLabel.setId("orangeText");
+        opponentTurnLabel.setId("orangeText");
+        gridPane0.setId("containerGame");
+        
+        BoardUtilities boardUtilities = new BoardUtilities();
+        
+        ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+        clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(myName, 0));
 
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+        cellGrid1.setOnMouseClicked((event) -> {
+            play(labels, 0, 0, myName, opName, level);
         });
 
         cellGrid2.setOnMouseClicked((event) -> {
-            if (cellGrid2.getText().isEmpty()) {
-                cellGrid2.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[0][1].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[0][1] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+            play(labels, 0, 1, myName, opName, level);
         });
 
         cellGrid3.setOnMouseClicked((event) -> {
-            if (cellGrid3.getText().isEmpty()) {
-                cellGrid3.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[0][2].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[0][2] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+            play(labels, 0, 2, myName, opName, level);
         });
 
         cellGrid4.setOnMouseClicked((event) -> {
-            if (cellGrid4.getText().isEmpty()) {
-                cellGrid4.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[1][0].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[1][0] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+            play(labels, 1, 0, myName, opName, level);
         });
 
         cellGrid5.setOnMouseClicked((event) -> {
-            if (cellGrid5.getText().isEmpty()) {
-                cellGrid5.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[1][1].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[1][1] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+            play(labels, 1, 1, myName, opName, level);
         });
 
         cellGrid6.setOnMouseClicked((event) -> {
-            if (cellGrid6.getText().isEmpty()) {
-                cellGrid6.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[1][2].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[1][2] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+            play(labels, 1, 2, myName, opName, level);
         });
 
         cellGrid7.setOnMouseClicked((event) -> {
-            if (cellGrid7.getText().isEmpty()) {
-                cellGrid7.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[2][0].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[2][0] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+            play(labels, 2, 0, myName, opName, level);
         });
 
         cellGrid8.setOnMouseClicked((event) -> {
-            if (cellGrid8.getText().isEmpty()) {
-                cellGrid8.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[2][1].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[2][1] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-
-            }
+            play(labels, 2, 1, myName, opName, level);
         });
 
         cellGrid9.setOnMouseClicked((event) -> {
-            if (cellGrid9.getText().isEmpty()) {
-                cellGrid9.setText(BoardUtilities.getSymbol(symbolFlag));
-                labels[2][2].setText(BoardUtilities.getSymbol(symbolFlag));
-                xoBoard[2][2] = BoardUtilities.getSymbol(symbolFlag);
-
-                int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-                if (check == 0) {
-                    computerTurn(labels);
-                }
-            }
+            play(labels, 2, 2, myName, opName, level);
         });
 
         ExitBt.setOnAction((ActionEvent event) -> {
             Parent root = new MainPageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/assets/styles/style.css").toExternalForm());
+            stage.setScene(scene);
         });
 
     }
 
-    public void computerTurn(Label[][] labels) {
-        turnFlag = !turnFlag;
+    public void play(Label[][] labels, int row, int col, String myName, String opName, int level) {
+        if (labels[row][col].getText().isEmpty()) {
+            labels[row][col].setText(BoardUtilities.getSymbol(symbolFlag));
+            xoBoard[row][col] = BoardUtilities.getSymbol(symbolFlag);
 
-        Move move = AI.normalAI(xoBoard);
-        if (move.getI() != -1) {
-
-            labels[move.getI()][move.getJ()].setText(BoardUtilities.getSymbol(!symbolFlag));
-            xoBoard[move.getI()][move.getJ()] = BoardUtilities.getSymbol(!symbolFlag);
-
-            BoardUtilities.checkBoard(stage, xoBoard, turnFlag);
-            turnFlag = !turnFlag;
-
+            int check = BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
+            if (check == 0) {
+                computerTurn(labels, myName, opName, level);
+            }
         }
+    }
+
+    public void computerTurn(Label[][] labels, String myName, String opName, int level) {
+        turnFlag = !turnFlag;
+        Move moves;
+
+        switch (level) {
+            case 0:
+                moves = AI.easyAI(xoBoard);
+                if (moves.getI() != -1) {
+
+                    labels[moves.getI()][moves.getJ()].setText(BoardUtilities.getSymbol(!symbolFlag));
+                    xoBoard[moves.getI()][moves.getJ()] = BoardUtilities.getSymbol(!symbolFlag);
+
+                    BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
+                    turnFlag = !turnFlag;
+                }
+                break;
+            case 1:
+                moves = AI.normalAI(xoBoard);
+                if (moves.getI() != -1) {
+
+                    labels[moves.getI()][moves.getJ()].setText(BoardUtilities.getSymbol(!symbolFlag));
+                    xoBoard[moves.getI()][moves.getJ()] = BoardUtilities.getSymbol(!symbolFlag);
+
+                    BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
+                    turnFlag = !turnFlag;
+
+                }
+                break;
+            case 2:
+                BestMove.Move move = BestMove.findBestMove(xoBoard, BoardUtilities.getSymbol(!symbolFlag));
+                if (move.row != -1) {
+                    labels[move.row][move.col].setText(BoardUtilities.getSymbol(!symbolFlag));
+                    xoBoard[move.row][move.col] = BoardUtilities.getSymbol(!symbolFlag);
+
+                    BoardUtilities.checkBoard(stage, xoBoard, turnFlag, myName, opName);
+                    turnFlag = !turnFlag;
+                }
+                break;
+        }
+
     }
 }

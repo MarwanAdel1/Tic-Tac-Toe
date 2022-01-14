@@ -10,6 +10,7 @@ package pojo;
  * @author Marwan Adel
  */
 public class GameStep {
+
     private String symbol;
     private int row;
     private int col;
@@ -55,5 +56,5 @@ public class GameStep {
     public void setCol(int col) {
         this.col = col;
     }
-    
+
 }

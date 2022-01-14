@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -49,13 +50,16 @@ public class RecordsFXML extends BorderPane {
     protected final FlowPane flowPane;
     protected final Text text;
     protected final Label label;
+    private static String css;
 
     private Stage stage;
 
-    private Label labels[][] = new Label[3][3];
+    private static Label labels[][] = new Label[3][3];
 
     public RecordsFXML(Stage stage) {
         this.stage = stage;
+
+        css = getClass().getResource("/assets/styles/style.css").toExternalForm();
 
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -287,9 +291,22 @@ public class RecordsFXML extends BorderPane {
         flowPane.getChildren().add(text);
         flowPane.getChildren().add(label);
 
+        scrollPane.setId("containerSharp");
+        listView.setId("containerSharp");
+        gridPane.setId("containerGame");
+        btnPlay.setId("greenButton");
+        btnBack.setId("orangeButton");
+        text.setId("gameText");
+        label.setId("greentext");
+
+        RecordGame recordGame = new RecordGame();
+
         btnBack.setOnAction((ActionEvent event) -> {
+            recordGame.stopReadingThread();
             Parent root = new MainPageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
         });
 
         btnPlay.setOnAction((ActionEvent event) -> {
@@ -301,19 +318,30 @@ public class RecordsFXML extends BorderPane {
                 }
 
                 String fileName = listView.getSelectionModel().getSelectedItem().toString();
-                RecordGame recordGame = new RecordGame();
-                ArrayList<GameStep> steps = recordGame.playGameSteps(fileName);
-                
-                for (int i = 0; i < steps.size(); i++) {
+                /*ArrayList<GameStep> steps = */
+                recordGame.playGameSteps(fileName);
+
+                /*for (int i = 0; i < steps.size(); i++) {
                     GameStep gameStep = steps.get(i);
                     labels[gameStep.getRow()][gameStep.getCol()].setText(gameStep.getSymbol());
-                }
+                }*/
             }
         });
 
         String[] filesList = new RecordGame().getAllFiles();
         for (String s : filesList) {
             listView.getItems().add(s);
+
         }
+    }
+
+    public static void showStep(String symbol, int row, int col) {
+        labels[row][col].setText(symbol);
+    }
+
+    public static void showFileNotFoundDialog() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("File Not Found.. Reload The Page");
+        alert.showAndWait();
     }
 }

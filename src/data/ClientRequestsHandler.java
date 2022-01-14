@@ -70,6 +70,7 @@ public class ClientRequestsHandler {
 
     public void connectToServer(String address) {
         try {
+            socket = null;
             socket = new Socket(address, 11114);
 
             if (socket != null) {

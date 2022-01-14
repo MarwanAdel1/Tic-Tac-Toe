@@ -12,8 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,15 +22,21 @@ import javafx.stage.Stage;
 public class MainStage extends Application {
 
     private static Stage stage;
+    private static String css;
 
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
+        css = getClass().getResource("/assets/styles/style.css").toExternalForm();
 
         Parent root = new RegistrationStageFXML(primaryStage);
 
         primaryStage.setTitle("Tic-Tac-Toe Game");
-        primaryStage.setScene(new Scene(root, 460, 400));
+        Scene scene = new Scene(root, 460, 400);
+        scene.getStylesheets().add(getClass().getResource("/assets/styles/style.css").toExternalForm());
+        primaryStage.setScene(scene);
+        stage.setResizable(false);
+
         primaryStage.show();
 
         Stage dialog = new Stage();
@@ -41,8 +45,11 @@ public class MainStage extends Application {
 
         Parent dialogVbox = new IpPopUpWindowFXML(dialog, primaryStage);
         Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        dialogScene.getStylesheets().add(getClass().getResource("/assets/styles/style.css").toExternalForm());
 
+        dialog.setTitle("Connection To Server");
         dialog.setScene(dialogScene);
+        dialog.setResizable(false);
         dialog.show();
     }
 
@@ -60,8 +67,24 @@ public class MainStage extends Application {
 
         if (!result.isPresent() || result.get() == ButtonType.OK) {
             stage.close();
-            stage.setScene(new Scene(new LoginStageFXML(stage), 460, 400));
+            Parent root = new LoginStageFXML(stage);
+            Scene scene = new Scene(root, 460, 400);
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
             stage.show();
+
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.initOwner(stage);
+
+            Parent dialogVbox = new IpPopUpWindowFXML(dialog, stage);
+            Scene dialogScene = new Scene(dialogVbox, 300, 200);
+            dialogScene.getStylesheets().add(css);
+
+            dialog.setTitle("Connection To Server");
+            dialog.setScene(dialogScene);
+            dialog.setResizable(false);
+            dialog.show();
         }
 
     }

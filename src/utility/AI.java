@@ -96,10 +96,9 @@ public class AI {
                 }
 
             } while (!xoBoard[move.getI()][move.getJ()].equalsIgnoreCase("d") && COUNT < 4);
-            
+
             COUNT++;
         }
-        
 
         return move;
     }

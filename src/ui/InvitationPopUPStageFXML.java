@@ -25,19 +25,22 @@ public class InvitationPopUPStageFXML extends AnchorPane {
     private static Stage popUpStage;
     private static Stage stage;
     private static String myName;
-    
+    private static String css;
+
     public InvitationPopUPStageFXML(Stage stage, Stage popUpStage, String invitationReciever, String invitationOwner) {
-        this.popUpStage=popUpStage;
-        this.stage=stage;
-        this.myName=invitationReciever;
-        
+        this.popUpStage = popUpStage;
+        this.stage = stage;
+        this.myName = invitationReciever;
+
         nameOfOpponent = new Text();
         text = new Text();
         text0 = new Text();
         declineButton = new Button();
         acceptButton = new Button();
         text1 = new Text();
+        css = getClass().getResource("/assets/styles/style.css").toExternalForm();
 
+        setId("greenStage");
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -98,6 +101,12 @@ public class InvitationPopUPStageFXML extends AnchorPane {
 
         nameOfOpponent.setText(invitationOwner);
 
+        text.setId("greenText");
+        text0.setId("greenText");
+        nameOfOpponent.setId("orangeText");
+        acceptButton.setId("greenButton");
+        declineButton.setId("orangeButton");
+
         ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
         clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(invitationReciever, false));
 
@@ -105,6 +114,7 @@ public class InvitationPopUPStageFXML extends AnchorPane {
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteResponseMessageToJson(invitationReciever, invitationOwner, true));
             Parent root = new InvitationResponseStageFXML(stage, invitationReciever, invitationOwner);
             Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/assets/styles/style.css").toExternalForm());
             popUpStage.close();
             stage.setScene(scene);
         });
@@ -120,20 +130,23 @@ public class InvitationPopUPStageFXML extends AnchorPane {
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(invitationReciever, true));
             popUpStage.close();
         });
-        
-        
 
     }
-    
-    public static void invitationCanceled(){
+
+    public static void invitationCanceled() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText("Invitation Cancelled");
         Optional<ButtonType> result = alert.showAndWait();
 
         if (!result.isPresent() || result.get() == ButtonType.OK) {
-            popUpStage.close();
-            ClientRequestsHandler clientRequestsHandler= ClientRequestsHandler.createClientRequest(stage);
+            if (popUpStage != null) {
+                popUpStage.close();
+            }
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
+            Parent root = new MainPageFXML(stage);
+            Scene scene = new Scene(root, 600, 500);
+            stage.setScene(scene);
         }
     }
 }

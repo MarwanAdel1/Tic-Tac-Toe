@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -35,9 +36,9 @@ public class RegistrationStageFXML extends AnchorPane {
     protected final Text text0;
     protected final Text text1;
     protected final TextField usernameTextField;
-    protected final TextField passwordTextField;
+    protected final PasswordField passwordTextField;
     protected final Text text2;
-    protected final TextField confirmPasswordTextField;
+    protected final PasswordField confirmPasswordTextField;
     protected static Label username_error = new Label();
 
     protected static Label password_error = new Label();
@@ -46,11 +47,13 @@ public class RegistrationStageFXML extends AnchorPane {
     protected final Text text3;
     protected final Hyperlink loginHyperText;
     protected final Text gameText;
-
+    private static String css;
     private static Stage stage;
 
     public RegistrationStageFXML(Stage stage) {
         this.stage = stage;
+
+        css = getClass().getResource("/assets/styles/style.css").toExternalForm();
 
         signUpButton = new Button();
         text = new Text();
@@ -66,9 +69,9 @@ public class RegistrationStageFXML extends AnchorPane {
         text0 = new Text();
         text1 = new Text();
         usernameTextField = new TextField();
-        passwordTextField = new TextField();
+        passwordTextField = new PasswordField();
         text2 = new Text();
-        confirmPasswordTextField = new TextField();
+        confirmPasswordTextField = new PasswordField();
 
         confirmPass_error = new Label();
         text3 = new Text();
@@ -88,14 +91,14 @@ public class RegistrationStageFXML extends AnchorPane {
         signUpButton.setMnemonicParsing(false);
         signUpButton.setPrefHeight(32.0);
         signUpButton.setPrefWidth(96.0);
-        signUpButton.setText("Sign-Up");
+        signUpButton.setText("Register");
         signUpButton.setFont(new Font(18.0));
 
         text.setLayoutX(196.0);
         text.setLayoutY(391.0);
         text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text.setStrokeWidth(0.0);
-        text.setText("Already hava an account?..");
+        text.setText("Already have an account?..");
         text.setFont(new Font(18.0));
 
         gridPane.setLayoutX(32.0);
@@ -224,8 +227,8 @@ public class RegistrationStageFXML extends AnchorPane {
         text3.setLayoutY(113.0);
         text3.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text3.setStrokeWidth(0.0);
-        text3.setText("Sign-Up");
-        text3.setFont(new Font(48.0));
+        text3.setText("Register");
+        text3.setFont(new Font(40.0));
 
         loginHyperText.setLayoutX(401.0);
         loginHyperText.setLayoutY(366.0);
@@ -268,11 +271,19 @@ public class RegistrationStageFXML extends AnchorPane {
         getChildren().add(loginHyperText);
         getChildren().add(gameText);
 
+        signUpButton.setId("greenButton");
+        gameText.setId("gameText");
+        usernameTextField.setId("field");
+        passwordTextField.setId("field");
+        confirmPasswordTextField.setId("field");
+        gridPane.setId("STAGE");
+        text3.setId("greentext");
+
         signUpButton.setOnAction((ActionEvent event) -> {
             username_error.setText("");
             password_error.setText("");
             confirmPass_error.setText("");
-            
+
             if (usernameTextField.getText().trim().isEmpty()) {
                 username_error.setText("Please Enter A Valid Username");
             }
@@ -289,7 +300,7 @@ public class RegistrationStageFXML extends AnchorPane {
                     && !passwordTextField.getText().trim().isEmpty()
                     && !confirmPasswordTextField.getText().trim().isEmpty()
                     && passwordTextField.getText().equals(confirmPasswordTextField.getText())) {
-                
+
                 ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
 
                 JSONObject convertedMessage = JsonConverter.convertRegisterMessageToJson(usernameTextField.getText(), passwordTextField.getText());
@@ -302,7 +313,9 @@ public class RegistrationStageFXML extends AnchorPane {
 
         loginHyperText.setOnAction((ActionEvent event) -> {
             Parent root = new LoginStageFXML(stage);
-            stage.setScene(new Scene(root, 460, 400));
+            Scene scene = new Scene(root, 460, 400);
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
         });
 
     }
@@ -312,7 +325,9 @@ public class RegistrationStageFXML extends AnchorPane {
             username_error.setText("This username is already taken");
         } else {
             Parent root = new LoginStageFXML(stage);
-            stage.setScene(new Scene(root, 460, 400));
+            Scene scene = new Scene(root, 460, 400);
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
         }
     }
 }

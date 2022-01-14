@@ -82,27 +82,36 @@ public class ClientRequestHandling {
                 Platform.runLater(() -> {
                     InvitationStageFXMLRoot.updateAcceptedInvitationUI(jSONObject);
                 });
-            }else if(header.equalsIgnoreCase("Start")){
+            } else if (header.equalsIgnoreCase("Start")) {
                 Platform.runLater(() -> {
                     InvitationResponseStageFXML.updateStartUI();
                 });
-            }else if(header.equalsIgnoreCase("ShowGame")){
+            } else if (header.equalsIgnoreCase("ShowGame")) {
                 Platform.runLater(() -> {
                     InvitationResponseStageFXML.showGame(jSONObject);
                 });
             } else if (header.equalsIgnoreCase("Game")) {
                 Platform.runLater(() -> {
-                    OnlineGameStageFXML.playAndChangeFlags(jSONObject);
+                    OnlineGameStageFXML.playFromServer(jSONObject);
                 });
-            }else if(header.equalsIgnoreCase("ExitGame")){
+            } else if (header.equalsIgnoreCase("ExitGame")) {
                 Platform.runLater(() -> {
                     OnlineGameStageFXML.exitGame();
                 });
-            }else if(header.equalsIgnoreCase("CancelOwnerInvite")){
+            } else if (header.equalsIgnoreCase("CancelOwnerInvite")) {
+                int from = jSONObject.getInt("From");
                 Platform.runLater(() -> {
-                    InvitationPopUPStageFXML.invitationCanceled();
+                    if (from == 0) {
+                        InvitationPopUPStageFXML.invitationCanceled();
+                    } else if (from == 1) {
+                        InvitationResponseStageFXML.invitationCanceled();
+                    }
                 });
-            }else if(header.equalsIgnoreCase("Win")){
+            } else if (header.equalsIgnoreCase("CancelResponseInvite")) {
+                Platform.runLater(() -> {
+                    InvitationStageFXMLRoot.invitationCanceled();
+                });
+            } else if (header.equalsIgnoreCase("Win")) {
                 Platform.runLater(() -> {
                     OnlineGameStageFXML.showLoseDialog(jSONObject);
                 });

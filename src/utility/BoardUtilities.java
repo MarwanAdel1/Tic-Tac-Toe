@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import ui.MainPageFXML;
+import ui.WinnerFXML;
 
 /**
  *
@@ -20,7 +21,14 @@ import ui.MainPageFXML;
  */
 public class BoardUtilities {
 
-    public static int checkBoard(Stage stage, String[][] xoBoard, boolean flag) {
+    private static String css;
+
+    public BoardUtilities() {
+        css = getClass().getResource("/assets/styles/style.css").toExternalForm();
+    }
+
+    public static int checkBoard(Stage stage, String[][] xoBoard, boolean flag, String myName, String opName) {
+        ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
         int check = 0;
         if (isWin(xoBoard)) {
             check = 1;
@@ -28,48 +36,66 @@ public class BoardUtilities {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game End");
             if (!flag) {
-                alert.setHeaderText("Player One Win");
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(myName, check));
+                alert.setHeaderText(myName + " Win");
             } else {
-                alert.setHeaderText("Player Two Win");
+                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(myName, 3));
+                alert.setHeaderText(opName + " Win");
             }
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
                 Parent root = new MainPageFXML(stage);
-                stage.setScene(new Scene(root, 600, 500));
-            }
-        }
-
-        return check;
-    }
-
-    public static int checkBoardOnline(Stage stage, String[][] xoBoard,String myName,String opName) {
-        ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
-        int check = 0;
-        if (isWin(xoBoard)) {
-            check = 1;
-            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertWinToJson(opName,check));
-            
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game End");
-
-            alert.setHeaderText("You Win");
-
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.get() == ButtonType.OK) {
-                clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
-
-                Parent root = new MainPageFXML(stage);
-                stage.setScene(new Scene(root, 600, 500));
+                Scene scene = new Scene(root, 600, 500);
+                scene.getStylesheets().add(css);
+                stage.setScene(scene);
             }
         }
 
         if (isDraw(xoBoard)) {
             check = 2;
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(myName, check));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game End");
+            alert.setHeaderText("Draw");
 
-            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertWinToJson(opName,check));
-            
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+
+                Parent root = new MainPageFXML(stage);
+                Scene scene = new Scene(root, 600, 500);
+                scene.getStylesheets().add(css);
+                stage.setScene(scene);
+            }
+
+        }
+
+        return check;
+    }
+
+    public static int checkBoardOnline(Stage stage, String[][] xoBoard, String myName, String opName) {
+        ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
+        int check = 0;
+        if (isWin(xoBoard)) {
+            check = 1;
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertWinToJson(opName, check));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(myName, check));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(opName, 3));
+
+            Parent root = new WinnerFXML(stage, myName);
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
+        }
+
+        if (isDraw(xoBoard)) {
+            check = 2;
+
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertWinToJson(opName, check));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(myName, check));
+            clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertUpdateScoreToJson(opName, check));
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game End");
             alert.setHeaderText("Draw");
@@ -78,9 +104,11 @@ public class BoardUtilities {
 
             if (result.get() == ButtonType.OK) {
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
-                
+
                 Parent root = new MainPageFXML(stage);
-                stage.setScene(new Scene(root, 600, 500));
+                Scene scene = new Scene(root, 600, 500);
+                scene.getStylesheets().add(css);
+                stage.setScene(scene);
             }
 
         }

@@ -27,6 +27,7 @@ public class IpPopUpWindowFXML extends AnchorPane {
 
         label = new Label();
 
+        setId("greenStage");
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -49,7 +50,7 @@ public class IpPopUpWindowFXML extends AnchorPane {
         IPConfirmBt.setMnemonicParsing(false);
         IPConfirmBt.setPrefHeight(38.0);
         IPConfirmBt.setPrefWidth(96.0);
-        IPConfirmBt.setText("Confirm");
+        IPConfirmBt.setText("Connect");
         IPConfirmBt.setFont(new Font("System Bold", 13.0));
 
         loadingIndicator.setLayoutX(129.0);
@@ -60,6 +61,10 @@ public class IpPopUpWindowFXML extends AnchorPane {
         getChildren().add(label);
         getChildren().add(IPConfirmBt);
         getChildren().add(loadingIndicator);
+
+        IPConfirmBt.setId("orangeButton");
+        label.setId("orangeText");
+        IPTextField.setId("whiteField");
 
         IPConfirmBt.setOnAction((event) -> {
             if (!IPTextField.getText().isEmpty()) {

@@ -18,7 +18,16 @@ import java.util.logging.Logger;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
+import javafx.application.Platform;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 import pojo.GameStep;
+import ui.MainPageFXML;
+import ui.RecordsFXML;
 
 /**
  *
@@ -31,6 +40,10 @@ public class RecordGame {
     DateTimeFormatter dateTimeFormatter;
     FileOutputStream fileOutputStream;
     FileInputStream fileInputStream;
+
+    ArrayList<GameStep> gameSteps;
+    int i;
+    Thread th;
 
     public RecordGame() {
         dir = new File("../Records");
@@ -65,46 +78,72 @@ public class RecordGame {
         }
     }
 
-    public ArrayList<GameStep> playGameSteps(String fileName) {
-        Scanner scanner = null;
-        ArrayList<GameStep> gameSteps = new ArrayList<>();
-        savedFile = new File(dir, fileName);
-        try {
-            fileInputStream = new FileInputStream(savedFile);
-            scanner = new Scanner(fileInputStream);
-
-            while (scanner.hasNextLine()) {
-                String[] str = scanner.nextLine().split(";");
-
-                GameStep gameStep = new GameStep();
-                gameStep.setSymbol(str[0]);
-                gameStep.setRow(Integer.parseInt(str[1]));
-                gameStep.setCol(Integer.parseInt(str[2]));
-                
-                gameSteps.add(gameStep);
-            }
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                scanner.close();
-                fileInputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
+    public void playGameSteps(String fileName) {
+        if (th != null) {
+            if (th.isAlive()) {
+                th.suspend();
             }
         }
+        th = new Thread(() -> {
+            Scanner scanner = null;
+            gameSteps = new ArrayList<>();
+            savedFile = new File(dir, fileName);
+            if (savedFile.exists()) {
+                try {
+                    fileInputStream = new FileInputStream(savedFile);
+                    scanner = new Scanner(fileInputStream);
 
-        return gameSteps;
+                    while (scanner.hasNextLine()) {
+                        String[] str = scanner.nextLine().split(";");
+
+                        GameStep gameStep = new GameStep();
+                        gameStep.setSymbol(str[0]);
+                        gameStep.setRow(Integer.parseInt(str[1]));
+                        gameStep.setCol(Integer.parseInt(str[2]));
+
+                        gameSteps.add(gameStep);
+                    }
+
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        scanner.close();
+                        fileInputStream.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                for (i = 0; i < gameSteps.size(); i++) {
+                    Platform.runLater(() -> {
+                        RecordsFXML.showStep(gameSteps.get(i).getSymbol(), gameSteps.get(i).getRow(), gameSteps.get(i).getCol());
+                    });
+
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } else {
+                Platform.runLater(() -> {
+                    RecordsFXML.showFileNotFoundDialog();
+                });
+            }
+        });
+        th.start();
     }
 
-    public void deleteFile(String opName) {
-        savedFile = new File(dir, opName + " " + time);
-        savedFile.delete();
+    public void stopReadingThread() {
+        if (th != null) {
+            if (th.isAlive()) {
+                th.suspend();
+            }
+        }
     }
 
     public String[] getAllFiles() {
-
         String[] files = dir.list();
         return files;
     }
