@@ -201,18 +201,4 @@ public class JsonConverter {
         return jSONObject;
     }
 
-    
-    public static JSONObject convertCancelOwnerInvitationToJson(String opName){
-        JSONObject jSONObject = new JSONObject();
-        
-        try {
-            jSONObject.put("Header","CancelOwnerInvite");
-            jSONObject.put("OpponentPlayer", opName);
-        } catch (JSONException ex) {
-            Logger.getLogger(JsonConverter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return jSONObject;
-    }
-    
 }

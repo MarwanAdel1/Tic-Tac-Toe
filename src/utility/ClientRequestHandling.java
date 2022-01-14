@@ -92,7 +92,7 @@ public class ClientRequestHandling {
                 });
             } else if (header.equalsIgnoreCase("Game")) {
                 Platform.runLater(() -> {
-                    OnlineGameStageFXML.playAndChangeFlags(jSONObject);
+                    OnlineGameStageFXML.playFromServer(jSONObject);
                 });
             }else if(header.equalsIgnoreCase("ExitGame")){
                 Platform.runLater(() -> {

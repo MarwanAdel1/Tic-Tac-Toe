@@ -12,8 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -30,9 +28,14 @@ public class MainStage extends Application {
         stage = primaryStage;
 
         Parent root = new RegistrationStageFXML(primaryStage);
+        Scene scene = new Scene(root, 460, 400);
+        scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+        primaryStage.setScene(scene);
 
         primaryStage.setTitle("Tic-Tac-Toe Game");
-        primaryStage.setScene(new Scene(root, 460, 400));
+
+        stage.setResizable(false);
+
         primaryStage.show();
 
         Stage dialog = new Stage();
@@ -43,6 +46,7 @@ public class MainStage extends Application {
         Scene dialogScene = new Scene(dialogVbox, 300, 200);
 
         dialog.setScene(dialogScene);
+        dialog.setResizable(false);
         dialog.show();
     }
 

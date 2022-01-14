@@ -18,34 +18,48 @@ import java.util.logging.Logger;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
+import pojo.GameStep;
+import ui.MainPageFXML;
+import ui.RecordsFXML;
 
 /**
  *
- * @author User
+ * @author Marwan Adel
  */
 public class RecordGame {
 
-    
-    File dir;
-    File file;
+    File dir, savedFile;
+    String time;
+    DateTimeFormatter dateTimeFormatter;
+    FileOutputStream fileOutputStream;
+    FileInputStream fileInputStream;
 
     public RecordGame() {
         dir = new File("../Records");
+
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        file = new File(dir, getFormatFromTime(getDateTime(), "Ghada"));
+        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd---HH-mm-ss");
+        time = dateTimeFormatter.format(LocalDateTime.now());
     }
 
-    public File StartRecordingGame(int row, int col, String symbol) {
+    public void recordGameSteps(String opName, GameStep gameStep) {
 
-        FileOutputStream fileOutputStream = null;
+        savedFile = new File(dir, opName + " " + time);
+
+        String step = gameStep.getSymbol() + ";" + String.valueOf(gameStep.getRow()) + ";" + String.valueOf(gameStep.getCol()) + "\n";
+
         try {
-            String Step = row + ";" + col + ";" + symbol + "\n";
-            fileOutputStream = new FileOutputStream(file, true);
-            fileOutputStream.write(Step.getBytes());
+            fileOutputStream = new FileOutputStream(savedFile, true);
+            fileOutputStream.write(step.getBytes());
             fileOutputStream.flush();
-
         } catch (FileNotFoundException ex) {
             Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -63,30 +77,36 @@ public class RecordGame {
         Scanner scanner = null;
         ArrayList<GameStep> gameSteps = new ArrayList<>();
         savedFile = new File(dir, fileName);
-        try {
-            fileInputStream = new FileInputStream(savedFile);
-            scanner = new Scanner(fileInputStream);
-
-            while (scanner.hasNextLine()) {
-                String[] str = scanner.nextLine().split(";");
-
-                GameStep gameStep = new GameStep();
-                gameStep.setSymbol(str[0]);
-                gameStep.setRow(Integer.parseInt(str[1]));
-                gameStep.setCol(Integer.parseInt(str[2]));
-                
-                gameSteps.add(gameStep);
-            }
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        if (savedFile.exists()) {
             try {
-                scanner.close();
-                fileInputStream.close();
-            } catch (IOException ex) {
+                fileInputStream = new FileInputStream(savedFile);
+                scanner = new Scanner(fileInputStream);
+
+                while (scanner.hasNextLine()) {
+                    String[] str = scanner.nextLine().split(";");
+
+                    GameStep gameStep = new GameStep();
+                    gameStep.setSymbol(str[0]);
+                    gameStep.setRow(Integer.parseInt(str[1]));
+                    gameStep.setCol(Integer.parseInt(str[2]));
+
+                    gameSteps.add(gameStep);
+                }
+
+            } catch (FileNotFoundException ex) {
                 Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    scanner.close();
+                    fileInputStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(RecordGame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("File Not Found.. Reload The Page");
+            alert.showAndWait();
         }
 
         return gameSteps;

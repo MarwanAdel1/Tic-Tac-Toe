@@ -20,7 +20,7 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
 
     private Stage stage;
 
-    public PlayerTwoNameStageFXML(Stage stage) {
+    public PlayerTwoNameStageFXML(Stage stage, String myName) {
         this.stage = stage;
 
         text = new Text();
@@ -64,12 +64,16 @@ public class PlayerTwoNameStageFXML extends AnchorPane {
         getChildren().add(playerTwoTextField);
         getChildren().add(submitButton);
         getChildren().add(warningText);
+        
+        
 
         submitButton.setOnAction((ActionEvent event) -> {
             if (!playerTwoTextField.getText().isEmpty()) {
-                Parent root = new ChooseSymbolStageFXML(stage,playerTwoTextField.getText(), 1,0);
-                stage.setScene(new Scene(root, 600, 500));
-            }else{
+                Parent root = new ChooseSymbolStageFXML(stage, myName, playerTwoTextField.getText(), 1, false);
+                Scene scene = new Scene(root, 600, 500);
+                scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+                stage.setScene(scene);
+            } else {
                 warningText.setText("Please insert player's name");
                 warningText.setVisible(true);
             }

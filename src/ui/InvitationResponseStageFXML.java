@@ -51,12 +51,15 @@ public class InvitationResponseStageFXML extends BorderPane {
     private static Stage stage;
     private static String user;
     private static String invitedUser;
-    static int recordFlag = 0;
+
+    private static boolean reccordFlag;
 
     public InvitationResponseStageFXML(Stage stage, String user, String invitedUser) {
         this.stage = stage;
         this.user = user;
         this.invitedUser = invitedUser;
+
+        reccordFlag = false;
 
         invitationText = new Text();
         gridPane = new GridPane();
@@ -73,14 +76,14 @@ public class InvitationResponseStageFXML extends BorderPane {
         text = new Text();
         opponentNameText = new Text();
 
-        myImageView = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/player_image.jpg")));
-        opponentImageView = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/opponent_image.jpg")));
+        myImageView = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/player_image.png")));
+        opponentImageView = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/opponent_image.png")));
 
         flowPane = new FlowPane();
         invitationStatusText = new Text();
         invitationActionBt = new Button();
         recordBt = new Button();
-
+        setId("AnchorPane");
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -93,8 +96,8 @@ public class InvitationResponseStageFXML extends BorderPane {
         invitationText.setStrokeWidth(0.0);
         invitationText.setText("Invitation From " + invitedUser);
         invitationText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        invitationText.setWrappingWidth(599.13671875);
-        invitationText.setFont(new Font("Segoe UI Bold", 58.0));
+        invitationText.setWrappingWidth(300.13671875);
+        invitationText.setFont(new Font("Segoe UI Bold", 35.0));
         BorderPane.setMargin(invitationText, new Insets(0.0));
         setTop(invitationText);
         setPadding(new Insets(10.0));
@@ -241,6 +244,14 @@ public class InvitationResponseStageFXML extends BorderPane {
         gridPane.getChildren().add(flowPane);
         gridPane.getChildren().add(recordBt);
 
+        //ID
+        invitationText.setId("orangeText");
+        invitationActionBt.setId("greenButton");
+        myNameText.setId("greentext");
+        opponentNameText.setId("orangeText");
+        recordBt.setId("greenButton");
+        
+
         invitationActionBt.setOnAction((event) -> {
             ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             if (invitationActionBt.getText().equalsIgnoreCase("Ready")) {
@@ -254,13 +265,15 @@ public class InvitationResponseStageFXML extends BorderPane {
                 clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertReadyNotificationToJson(user, invitedUser, false));
             }
         });
-        
+
         recordBt.setOnAction((event) -> {
             if (recordBt.getText().equalsIgnoreCase("Start Recording")) {
                 recordBt.setText("Recording Now");
+                recordBt.setId("orangeButton");
                 reccordFlag = true;
             } else if (recordBt.getText().equalsIgnoreCase("Recording Now")) {
                 recordBt.setText("Start Recording");
+                recordBt.setId("greenButton");
                 reccordFlag = false;
             }
         });
@@ -273,10 +286,6 @@ public class InvitationResponseStageFXML extends BorderPane {
             System.exit(0);
         });
 
-        recordBt.setOnAction((event) -> {
-
-            recordFlag = 1;
-        });
     }
 
     public static void updateStartUI() {
@@ -288,10 +297,10 @@ public class InvitationResponseStageFXML extends BorderPane {
     public static void showGame(JSONObject jSONObject) {
         try {
             if (jSONObject.getString("Symbol").equalsIgnoreCase("X")) {
-                Parent root = new OnlineGameStageFXML(stage, "X", user, invitedUser, false, recordFlag);
+                Parent root = new OnlineGameStageFXML(stage, "X", user, invitedUser, false, reccordFlag);
                 stage.setScene(new Scene(root, 600, 500));
             } else if (jSONObject.getString("Symbol").equalsIgnoreCase("O")) {
-                Parent root = new OnlineGameStageFXML(stage, "O", user, invitedUser, false, recordFlag);
+                Parent root = new OnlineGameStageFXML(stage, "O", user, invitedUser, false, reccordFlag);
                 stage.setScene(new Scene(root, 600, 500));
             }
         } catch (JSONException ex) {

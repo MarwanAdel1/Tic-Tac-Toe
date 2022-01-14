@@ -1,0 +1,76 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 13, 2022, 3:14:43 PM
+    Author     : User
+*/
+
+
+
+
+#gameText
+{
+    -fx-font-size: 45px;     
+    -fx-fill: #FF8717;
+    -fx-alignment: center;
+    -fx-text-fill: #FFF3E9;
+}
+#field
+{
+    -fx-background-color: #F1F8F6;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    
+}
+#AnchorPane
+{
+/*    -fx-background-color: #FFFFFF;*/
+    -fx-background-color: linear-gradient(to bottom, #FFF3E9 0%, #FFF3E9 20%, #ffffff 20%, #ffffff 100%);
+}
+#greentext
+{
+    -fx-text-fill:#14C69B;
+}
+#greenButton
+{
+    -fx-background-color: #14C69B;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-text-fill: #FFFFFF;
+}
+#orangeButton
+{
+    -fx-background-color: #FF8717;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-text-fill: #FFFFFF;
+}
+#orangeText
+{
+    -fx-text-fill: #FF8717;
+}
+#scoreText
+{
+    -fx-text-fill: #FF4D00;
+}
+#container
+{
+    -fx-background-color:#FFFFFF;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-border-color: #D4F1EA;
+}
+#greenStage
+{
+    -fx-background-color:#F1F8F6;
+}
+
+/*//-fx-font-family: "Courier New";*/
+/*@font-face {
+    font-family: TRON;
+    src: url('TRON"');
+}*/
+

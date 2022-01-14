@@ -38,6 +38,7 @@ public class InvitationPopUPStageFXML extends AnchorPane {
         acceptButton = new Button();
         text1 = new Text();
 
+        setId("greenStage");
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -58,14 +59,16 @@ public class InvitationPopUPStageFXML extends AnchorPane {
         text.setLayoutY(193.0);
         text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text.setStrokeWidth(0.0);
-        text.setText("Invite you to play a game ");
+        text.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        text.setText("Invites you to play a game ");
         text.setFont(new Font(24.0));
 
         text0.setLayoutX(106.0);
         text0.setLayoutY(225.0);
         text0.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text0.setStrokeWidth(0.0);
-        text0.setText("Do you want to play ?");
+        text0.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        text0.setText("Do you want to accept?");
         text0.setFont(new Font(24.0));
 
         declineButton.setLayoutX(100.0);
@@ -95,16 +98,27 @@ public class InvitationPopUPStageFXML extends AnchorPane {
         getChildren().add(declineButton);
         getChildren().add(acceptButton);
         getChildren().add(text1);
+        
+        
 
         nameOfOpponent.setText(invitationOwner);
 
         ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
         clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(invitationReciever, false));
+        
+        //ID
+        text.setId("greenText");
+        text0.setId("greenText");
+        nameOfOpponent.setId("orangeText");
+        acceptButton.setId("greenButton");
+        declineButton.setId("orangeButton");
 
         acceptButton.setOnAction((event) -> {
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertInviteResponseMessageToJson(invitationReciever, invitationOwner, true));
             Parent root = new InvitationResponseStageFXML(stage, invitationReciever, invitationOwner);
             Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            
             popUpStage.close();
             stage.setScene(scene);
         });
@@ -134,17 +148,6 @@ public class InvitationPopUPStageFXML extends AnchorPane {
             popUpStage.close();
             ClientRequestsHandler clientRequestsHandler= ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertAvailablityToJson(myName, true));
-        }
-    }
-    
-    public static void invitationCanceled(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText("Invitation Cancelled");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (!result.isPresent() || result.get() == ButtonType.OK) {
-            popUpStage.close();
-            
         }
     }
 }

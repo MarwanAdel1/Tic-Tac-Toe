@@ -19,11 +19,11 @@ public class ChooseSymbolStageFXML extends AnchorPane {
     protected final Button OButtonChoose;
     protected final Text chooseText;
     protected final Text gameText;
-    
+
     private Stage stage;
 
-    public ChooseSymbolStageFXML(Stage stage, String opName,int mode, int recordFlag) {
-        this.stage=stage;
+    public ChooseSymbolStageFXML(Stage stage, String myName, String opName, int mode, boolean recordFlag) {
+        this.stage = stage;
 
         XButtonChoose = new Button();
         OButtonChoose = new Button();
@@ -72,58 +72,63 @@ public class ChooseSymbolStageFXML extends AnchorPane {
         getChildren().add(OButtonChoose);
         getChildren().add(chooseText);
         getChildren().add(gameText);
-        
-        
+
         XButtonChoose.setOnAction((ActionEvent event) -> {
             Parent root;
             switch (mode) {
                 case 0:
-                    root = new ComputerGameStageFXML(stage,"X",opName);
-                    stage.setScene(new Scene(root, 600, 500));
+                    root = new ComputerGameStageFXML(stage, "X", myName, opName);
+                    Scene scene = new Scene(root, 600, 500);
+                    scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+                    stage.setScene(scene);
                     break;
                 case 1:
-                    root = new TwoPlayerGameStageFXML(stage,"X",opName);
-                    stage.setScene(new Scene(root, 600, 500));
+                    root = new TwoPlayerGameStageFXML(stage, "X", myName, opName);
+                    Scene scene2 = new Scene(root, 600, 500);
+                    scene2.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+                    stage.setScene(scene2);
                     break;
                 case 2:
-                    ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                    ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
                     clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "O"));
-                    
-                    root = new OnlineGameStageFXML(stage,"X", InvitationStageFXMLRoot.getUser(), opName,true, recordFlag);
-                    stage.setScene(new Scene(root, 600, 500));
+
+                    root = new OnlineGameStageFXML(stage, "X", InvitationStageFXMLRoot.getUser(), opName, true, recordFlag);
+
+                    Scene scene3 = new Scene(root, 600, 500);
+                    scene3.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+                    stage.setScene(scene3);
                     break;
                 default:
                     break;
             }
-            
+
         });
-        
-        
+
         OButtonChoose.setOnAction(((event) -> {
             Parent root;
             switch (mode) {
                 case 0:
-                    root = new ComputerGameStageFXML(stage,"O",opName);
+                    root = new ComputerGameStageFXML(stage, "O", myName, opName);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 case 1:
-                    root = new TwoPlayerGameStageFXML(stage,"O",opName);
+                    root = new TwoPlayerGameStageFXML(stage, "O", myName, opName);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 case 2:
-                    ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+                    ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
                     clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertShowGameToAllToJson(opName, "X"));
-                    
-                    root = new OnlineGameStageFXML(stage,"O",InvitationStageFXMLRoot.getUser(),opName,true, recordFlag);
+
+                    root = new OnlineGameStageFXML(stage, "O", InvitationStageFXMLRoot.getUser(), opName, true, recordFlag);
                     stage.setScene(new Scene(root, 600, 500));
                     break;
                 default:
                     break;
             }
         }));
-        
+
         stage.setOnCloseRequest((event) -> {
-            ClientRequestsHandler clientRequestsHandler=ClientRequestsHandler.createClientRequest(stage);
+            ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertExitOnGameToJson(opName));
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
             Platform.exit();

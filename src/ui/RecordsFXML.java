@@ -17,6 +17,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pojo.GameStep;
 import utility.RecordGame;
 
 public class RecordsFXML extends BorderPane {
@@ -206,11 +207,6 @@ public class RecordsFXML extends BorderPane {
         listView.setPrefHeight(323.0);
         listView.setPrefWidth(177.0);
         scrollPane.setContent(listView);
-        RecordGame recordGame = new RecordGame();
-        String[] files = recordGame.getAllFiles();
-        for (String s : files) {
-            listView.getItems().add(s);
-        }
         BorderPane.setMargin(scrollPane, new Insets(55.0, 0.0, 80.0, 30.0));
         setLeft(scrollPane);
 
@@ -318,6 +314,7 @@ public class RecordsFXML extends BorderPane {
         String[] filesList = new RecordGame().getAllFiles();
         for (String s : filesList) {
             listView.getItems().add(s);
+            
         }
     }
 }

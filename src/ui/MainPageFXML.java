@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -18,10 +17,8 @@ import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import static ui.MultiplayersStageFXML.listView;
 import utility.JsonConverter;
 
 public class MainPageFXML extends AnchorPane {
@@ -47,13 +44,12 @@ public class MainPageFXML extends AnchorPane {
     protected final Label label0;
     protected final Label label1;
     protected static Label playedLabel = new Label();
-    ;
     protected static Label wonLabel = new Label();
-    ;
     protected static Label scoreLabel = new Label();
-    ;
-    
+
     private static Stage stage;
+    private static String myName;
+    private static String css;
 
     public MainPageFXML(Stage stage) {
         this.stage = stage;
@@ -77,6 +73,7 @@ public class MainPageFXML extends AnchorPane {
         label = new Label();
         label0 = new Label();
         label1 = new Label();
+        css= getClass().getResource("/styles/style.css").toExternalForm();
 
         setId("AnchorPane");
         setPrefHeight(500.0);
@@ -232,26 +229,55 @@ public class MainPageFXML extends AnchorPane {
         gridPane.getChildren().add(scoreLabel);
         getChildren().add(gridPane);
 
+        //ID
+        PlayerBox.setId("greenButton");
+        singleButton.setId("greenButton");
+        twoButton.setId("greenButton");
+        multiButton.setId("greenButton");
+        PlayedLable.setId("greentext");
+        playedLabel.setId("greentext");
+        wonLabel.setId("orangeText");
+        WinLable.setId("orangeText");
+        scoreLabel.setId("scoreText");
+        recordsButton.setId("greenButton");
+
+        WelcomeLable.setId("greentext");
+        TicTacLable.setId("orangeText");
+        PointsLable.setId("scoreText");
+
+        label.setId("greentext");
+        label0.setId("orangeText");
+        label1.setId("scoreText");
+
         singleButton.setOnAction((ActionEvent event) -> {
-            Parent root = new ChooseSymbolStageFXML(stage, "Computer", 0,false);
-            stage.setScene(new Scene(root, 600, 500));
+            Parent root = new ChooseSymbolStageFXML(stage, myName, "Computer", 0, false);
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
+
         });
 
         twoButton.setOnAction((ActionEvent event) -> {
-            Parent root = new PlayerTwoNameStageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Parent root = new PlayerTwoNameStageFXML(stage, myName);
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
         });
 
         multiButton.setOnAction((ActionEvent event) -> {
             Parent root = new MultiplayersStageFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
         });
 
         recordsButton.setOnAction((ActionEvent event) -> {
             Parent root = new RecordsFXML(stage);
-            stage.setScene(new Scene(root, 600, 500));
+            Scene scene = new Scene(root, 600, 500);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
         });
-        
+
         stage.setOnCloseRequest((event) -> {
             ClientRequestsHandler clientRequestsHandler = ClientRequestsHandler.createClientRequest(stage);
             clientRequestsHandler.sendJsonMessageToServer(JsonConverter.convertGoOfflineToJson());
@@ -262,7 +288,8 @@ public class MainPageFXML extends AnchorPane {
 
     public static void updateMainPageUI(JSONObject jSONObject) {
         try {
-            WelcomeLable.setText("Welcome " + jSONObject.getString("myUsername"));
+            myName = jSONObject.getString("myUsername");
+            WelcomeLable.setText("Welcome " + myName);
             playedLabel.setText(String.valueOf(jSONObject.getInt("Played")));
             wonLabel.setText(String.valueOf(jSONObject.getInt("Win")));
             scoreLabel.setText(String.valueOf(jSONObject.getInt("Total_Score")));
@@ -278,12 +305,14 @@ public class MainPageFXML extends AnchorPane {
 
             String invitationOwner = jSONObject.getString("InvitationOwner");
             String invitationReciever = jSONObject.getString("OpponentReciever");
-            Parent root = new InvitationPopUPStageFXML(stage, popUpStage,invitationReciever, invitationOwner);
+            Parent root = new InvitationPopUPStageFXML(stage, popUpStage, invitationReciever, invitationOwner);
 
             popUpStage.initModality(Modality.WINDOW_MODAL);
             popUpStage.initOwner(stage);
+            popUpStage.setResizable(false);
 
             Scene dialogScene = new Scene(root, 400, 350);
+            dialogScene.getStylesheets().add(css);
 
             popUpStage.setTitle("Invitation");
             popUpStage.setScene(dialogScene);

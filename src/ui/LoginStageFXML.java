@@ -37,6 +37,7 @@ public class LoginStageFXML extends AnchorPane {
     protected final Text gameText;
 
     private static Stage stage;
+    private static String css;
 
     public LoginStageFXML(Stage stage) {
         this.stage = stage;
@@ -55,6 +56,8 @@ public class LoginStageFXML extends AnchorPane {
         text2 = new Text();
         signupHyperText = new Hyperlink();
         gameText = new Text();
+        
+        css= getClass().getResource("/styles/style.css").toExternalForm();
 
         setId("AnchorPane");
         setMaxHeight(USE_PREF_SIZE);
@@ -146,7 +149,7 @@ public class LoginStageFXML extends AnchorPane {
         text2.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text2.setStrokeWidth(0.0);
         text2.setText("Login");
-        text2.setFont(new Font(48.0));
+        text2.setFont(new Font(40.0));
 
         signupHyperText.setLayoutX(389.0);
         signupHyperText.setLayoutY(366.0);
@@ -180,9 +183,18 @@ public class LoginStageFXML extends AnchorPane {
         getChildren().add(signupHyperText);
         getChildren().add(gameText);
 
+        //ID
+        gameText.setId("gameText");
+        usernameTextField.setId("field");
+        passwordTextField.setId("field");
+        LoginButton.setId("greenButton");
+        text2.setId("greentext");
+
         signupHyperText.setOnAction((ActionEvent event) -> {
             Parent root = new RegistrationStageFXML(stage);
-            stage.setScene(new Scene(root, 460, 400));
+            Scene scene = new Scene(root, 460, 400);
+            scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+            stage.setScene(scene);
         });
 
         LoginButton.setOnAction((ActionEvent event) -> {
@@ -205,24 +217,25 @@ public class LoginStageFXML extends AnchorPane {
 
     public static void updateLoginUI(int id) {
         switch (id) {
-            case -2:
-                {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Already Logged In");
-                    alert.showAndWait();
-                    break;
-                }
-            case -1:
-                {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Username/Password is incorrect");
-                    alert.showAndWait();
-                    break;
-                }
+            case -2: {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Already Logged In");
+                alert.showAndWait();
+                break;
+            }
+            case -1: {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Username/Password is incorrect");
+                alert.showAndWait();
+                break;
+            }
             default:
                 stage.close();
+
                 Parent root = new MainPageFXML(stage);
-                stage.setScene(new Scene(root, 600, 500));
+                Scene scene = new Scene(root, 600, 500);
+                scene.getStylesheets().add(css);
+                stage.setScene(scene);
                 stage.show();
                 break;
         }
