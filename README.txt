@@ -22,7 +22,7 @@ SET-UP FOR THE GAME:
 First, you double click on the provided Jar file to open the game. After the game opens you need to connect to the server before you start playing in any mode. 
 Then, you should have an account to login using this account, if not, you are asked to register using a unique username and a password.
 
-Team Members (Group 6):
+Team Members:
 1. Ghada Mustafa Awad.
 2. Marwan Adel Abdelrehim.
 3. Nour Mahmoud Gweda.
